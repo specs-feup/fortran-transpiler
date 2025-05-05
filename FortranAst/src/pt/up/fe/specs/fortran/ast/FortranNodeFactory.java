@@ -88,11 +88,12 @@ public class FortranNodeFactory {
         return new Program(data, units);
     }
 
-    public MainProgram mainProgram(String programName) {
+
+    public MainProgram mainProgram(String programName, List<FortranNode> execution) {
         DataStore data = newDataStore(MainProgram.class);
         data.set(MainProgram.PROGRAM_NAME, Optional.ofNullable(programName));
 
-        return new MainProgram(data, Collections.emptyList());
+        return new MainProgram(data, execution);
     }
 
     // STMT
@@ -117,7 +118,7 @@ public class FortranNodeFactory {
     public StringLiteral stringLiteral(String literal, String kindParam) {
         DataStore data = newDataStore(StringLiteral.class);
         data.set(Literal.SOURCE_LITERAL, literal);
-        
+
         return new StringLiteral(data, Collections.emptyList());
     }
 

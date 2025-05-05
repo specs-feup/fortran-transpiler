@@ -37,6 +37,7 @@ public class FortranAstTest {
 
         var resourceName = BASE_RESOURCE + expected;
         if (!SpecsIo.hasResource(resourceName)) {
+            System.out.println("CODE:\n" + code);
             fail("Could not find resource '" + resourceName + "'. Expected code:\n\n" + code);
         }
 
@@ -44,14 +45,22 @@ public class FortranAstTest {
         var expectedNormalized = SpecsStrings.normalizeFileContents(SpecsIo.getResource(resourceName), true);
         var codeNormalized = SpecsStrings.normalizeFileContents(code, true);
 
-        assertEquals(expectedNormalized, codeNormalized, "Codes do not match");
+        assertEquals(expectedNormalized, codeNormalized, "Codes do not match.\nOriginal code:\n" + code);
     }
 
     @Test
     void testMainProgram() {
         // Build AST
-        var program = factory.program(List.of(factory.mainProgram("hello")));
+        var program = factory.program(List.of(factory.mainProgram("hello", List.of())));
         test("mainProgram.f90", program);
+    }
+
+    @Test
+    void testHelloWorld() {
+        // Build AST
+        var print = factory.printStmt(factory.formatStar(), factory.stringLiteral("Hello, World!"));
+        var program = factory.program(List.of(factory.mainProgram("hello", List.of(print))));
+        test("hello.f90", program);
     }
 
 
