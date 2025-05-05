@@ -3,9 +3,14 @@ package pt.up.fe.specs.fortran.ast;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import org.suikasoft.jOptions.storedefinition.StoreDefinitions;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
+import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
+import pt.up.fe.specs.fortran.ast.nodes.program.Program;
+import pt.up.fe.specs.fortran.ast.nodes.program.ProgramUnit;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 public class FortranNodeFactory {
 
@@ -66,5 +71,18 @@ public class FortranNodeFactory {
         }
     }
 
+    // PROGRAM
+
+    public Program program(List<ProgramUnit> units) {
+        DataStore data = newDataStore(Program.class);
+        return new Program(data, units);
+    }
+
+    public MainProgram mainProgram(String programName) {
+        DataStore data = newDataStore(MainProgram.class);
+        data.set(MainProgram.PROGRAM_NAME, Optional.ofNullable(programName));
+
+        return new MainProgram(data, Collections.emptyList());
+    }
 
 }
