@@ -4,7 +4,7 @@ Fortran source-to-source compiler based on the LARA framework.
 
 ## Previous Work
 
-This compiler will be heavily inspired on Clava, a C/C++ source-to-source compiler that is also based on the LARA framework.
+This compiler will be heavily inspired by Clava, a C/C++ source-to-source compiler that is also based on the LARA framework.
 
 Clava already supports the following transformations:
 
