@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * R501 program
+ * <p>
  * The root node of a Fortran application. Contains one or more ProgramUnit children.
  */
 public class Program extends FortranNode {
@@ -23,7 +25,7 @@ public class Program extends FortranNode {
 
     @Override
     public String getCode() {
-        
+
         // Print each program unit
         return getProgramUnits().stream()
                 .map(ProgramUnit::getCode)

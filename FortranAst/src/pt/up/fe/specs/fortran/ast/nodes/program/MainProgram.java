@@ -11,6 +11,13 @@ import java.util.Optional;
 import static pt.up.fe.specs.fortran.ast.FortranKeyword.END;
 import static pt.up.fe.specs.fortran.ast.FortranKeyword.PROGRAM;
 
+/**
+ * R1401 main-program
+ * <p>
+ * [program-stmt] [specification-part] [execution-part] [internal-subprogram-part] end-program-stmt
+ * <p>
+ * Missing: [specification-part] [execution-part] [internal-subprogram-part]
+ */
 public class MainProgram extends ProgramUnit {
 
     // DATAKEYS BEGIN

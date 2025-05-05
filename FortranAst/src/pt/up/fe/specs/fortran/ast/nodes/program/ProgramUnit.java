@@ -6,7 +6,7 @@ import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import java.util.Collection;
 
 /**
- *
+ * R502 program-unit
  */
 public abstract class ProgramUnit extends FortranNode {
     public ProgramUnit(DataStore data, Collection<? extends FortranNode> children) {

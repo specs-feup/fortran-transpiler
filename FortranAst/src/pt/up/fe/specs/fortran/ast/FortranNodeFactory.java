@@ -6,6 +6,10 @@ import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
 import pt.up.fe.specs.fortran.ast.nodes.program.Program;
 import pt.up.fe.specs.fortran.ast.nodes.program.ProgramUnit;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
+import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
+import pt.up.fe.specs.fortran.ast.nodes.utils.FormatStar;
+import pt.up.fe.specs.util.SpecsCollections;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -85,4 +89,22 @@ public class FortranNodeFactory {
         return new MainProgram(data, Collections.emptyList());
     }
 
+    // STMT
+
+    public PrintStmt printStmt(Format format, FortranNode... outputItems) {
+        return printStmt(format, List.of(outputItems));
+    }
+
+    public PrintStmt printStmt(Format format, List<FortranNode> outputItems) {
+        DataStore data = newDataStore(PrintStmt.class);
+
+        return new PrintStmt(data, SpecsCollections.concat(format, outputItems));
+    }
+
+    // MISC
+
+    public FormatStar formatStar() {
+        DataStore data = newDataStore(FormatStar.class);
+        return new FormatStar(data, Collections.emptyList());
+    }
 }
