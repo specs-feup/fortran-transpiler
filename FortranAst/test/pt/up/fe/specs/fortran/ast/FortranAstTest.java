@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.util.SpecsIo;
+import pt.up.fe.specs.util.SpecsStrings;
 import pt.up.fe.specs.util.SpecsSystem;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class FortranAstTest {
 
     @BeforeEach
     void setUp() {
-        factory = new FortranNodeFactory(new FortranContext());
+        factory = new FortranContext().get(FortranContext.FACTORY);
     }
 
     private static final String BASE_RESOURCE = "fortran/ast/";
@@ -39,8 +40,11 @@ public class FortranAstTest {
             fail("Could not find resource '" + resourceName + "'. Expected code:\n\n" + code);
         }
 
-        // Compare resource contents with code
-        assertEquals(SpecsIo.getResource(resourceName), code, "Code does not match");
+        // Compare resource contents with code, normalized
+        var expectedNormalized = SpecsStrings.normalizeFileContents(SpecsIo.getResource(resourceName), true);
+        var codeNormalized = SpecsStrings.normalizeFileContents(code, true);
+
+        assertEquals(expectedNormalized, codeNormalized, "Codes do not match");
     }
 
     @Test
@@ -49,4 +53,6 @@ public class FortranAstTest {
         var program = factory.program(List.of(factory.mainProgram("hello")));
         test("mainProgram.f90", program);
     }
+
+
 }

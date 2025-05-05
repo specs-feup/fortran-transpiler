@@ -3,6 +3,8 @@ package pt.up.fe.specs.fortran.ast;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import org.suikasoft.jOptions.storedefinition.StoreDefinitions;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
+import pt.up.fe.specs.fortran.ast.nodes.expr.Literal;
+import pt.up.fe.specs.fortran.ast.nodes.expr.StringLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
 import pt.up.fe.specs.fortran.ast.nodes.program.Program;
 import pt.up.fe.specs.fortran.ast.nodes.program.ProgramUnit;
@@ -28,6 +30,10 @@ public class FortranNodeFactory {
 
     public FortranNodeFactory(FortranContext context) {
         this(context, null);
+    }
+
+    public FortranNodeFactory(FortranNodeFactory factory) {
+        this(factory.context, factory.baseData);
     }
 
     public DataStore newDataStore(Class<? extends FortranNode> nodeClass) {
@@ -99,6 +105,20 @@ public class FortranNodeFactory {
         DataStore data = newDataStore(PrintStmt.class);
 
         return new PrintStmt(data, SpecsCollections.concat(format, outputItems));
+    }
+
+
+    // EXPR
+
+    public StringLiteral stringLiteral(String literal) {
+        return stringLiteral(literal, null);
+    }
+
+    public StringLiteral stringLiteral(String literal, String kindParam) {
+        DataStore data = newDataStore(StringLiteral.class);
+        data.set(Literal.SOURCE_LITERAL, literal);
+        
+        return new StringLiteral(data, Collections.emptyList());
     }
 
     // MISC

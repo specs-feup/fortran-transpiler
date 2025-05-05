@@ -4,9 +4,11 @@ import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
+import pt.up.fe.specs.util.utilities.StringLines;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static pt.up.fe.specs.fortran.ast.FortranKeyword.END;
 import static pt.up.fe.specs.fortran.ast.FortranKeyword.PROGRAM;
@@ -23,7 +25,6 @@ public class MainProgram extends ProgramUnit {
     // DATAKEYS BEGIN
 
     public final static DataKey<Optional<String>> PROGRAM_NAME = KeyFactory.optional("programName");
-
 
     // DATAKEYS END
 
@@ -43,6 +44,14 @@ public class MainProgram extends ProgramUnit {
             code.append(keyword(PROGRAM))
                     .append(" " + programName).append(ln());
         }
+
+        // Write code of the children, indented
+        var body = getChildren().stream()
+                .map(FortranNode::getCode)
+                .flatMap(s -> StringLines.getLines(s).stream())
+                .collect(Collectors.joining(ln() + tab(), tab(), ln()));
+
+        code.append(body);
 
         // Write closing
         code.append(keyword(END));

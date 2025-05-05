@@ -115,6 +115,10 @@ public abstract class FortranNode extends DataNode<FortranNode> {
         return FortranNodes.ln();
     }
 
+    protected String tab() {
+        return "   ";
+    }
+
     protected String keyword(FortranKeyword keyword) {
         return get(CONTEXT).get(FortranContext.FORTRAN_KEYWORDS).get(keyword);
     }
