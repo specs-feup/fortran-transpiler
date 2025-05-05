@@ -38,9 +38,19 @@ public class FortranContext extends ADataClass<FortranContext> {
      */
     public final static DataKey<FortranNodeFactory> FACTORY = KeyFactory.object("factory", FortranNodeFactory.class);
 
+
+    /**
+     * For returning strings with FORTRAN keywords
+     */
+    public final static DataKey<FortranKeywords> FORTRAN_KEYWORDS = KeyFactory
+            .object("fortranKeywords", FortranKeywords.class)
+            .setDefault(() -> new FortranKeywords())
+            .setCopyFunction(fk -> new FortranKeywords(fk));
+
     @Override
     public String toString() {
         return "FortranContext " + hashCode();
-
     }
+
+
 }

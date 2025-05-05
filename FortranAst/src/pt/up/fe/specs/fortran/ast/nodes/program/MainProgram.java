@@ -8,6 +8,9 @@ import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import java.util.Collection;
 import java.util.Optional;
 
+import static pt.up.fe.specs.fortran.ast.FortranKeyword.END;
+import static pt.up.fe.specs.fortran.ast.FortranKeyword.PROGRAM;
+
 public class MainProgram extends ProgramUnit {
 
     // DATAKEYS BEGIN
@@ -30,13 +33,14 @@ public class MainProgram extends ProgramUnit {
 
         // Only write header if name is present
         if (programName != null) {
-            code.append("PROGRAM " + programName).append(ln());
+            code.append(keyword(PROGRAM))
+                    .append(" " + programName).append(ln());
         }
 
         // Write closing
-        code.append("END");
+        code.append(keyword(END));
         if (programName != null) {
-            code.append(" PROGRAM ").append(programName);
+            code.append(" " + keyword(PROGRAM) + " ").append(programName);
         }
         code.append(ln());
 

@@ -18,6 +18,7 @@ import org.suikasoft.jOptions.Datakey.KeyFactory;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import org.suikasoft.jOptions.treenode.DataNode;
 import pt.up.fe.specs.fortran.ast.FortranContext;
+import pt.up.fe.specs.fortran.ast.FortranKeyword;
 import pt.up.fe.specs.fortran.ast.FortranNodes;
 import pt.up.fe.specs.util.utilities.PrintOnce;
 
@@ -112,5 +113,9 @@ public abstract class FortranNode extends DataNode<FortranNode> {
 
     protected String ln() {
         return FortranNodes.ln();
+    }
+
+    protected String keyword(FortranKeyword keyword) {
+        return get(CONTEXT).get(FortranContext.FORTRAN_KEYWORDS).get(keyword);
     }
 }
