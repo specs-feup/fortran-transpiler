@@ -1,0 +1,2 @@
+PROGRAM hello
+END PROGRAM hello
