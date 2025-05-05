@@ -16,6 +16,7 @@ package pt.up.fe.specs.fortran.ast;
 import org.suikasoft.jOptions.DataStore.ADataClass;
 import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
+import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.util.utilities.IdGenerator;
 
 /**
@@ -24,6 +25,12 @@ import pt.up.fe.specs.util.utilities.IdGenerator;
  * @author JoaoBispo
  */
 public class FortranContext extends ADataClass<FortranContext> {
+
+    /**
+     * Can be used to store arbitrary information that should be accessible through the application
+     */
+    public final static DataKey<DataStore> FORTRAN_OPTIONS = KeyFactory.object("fortranOptions", DataStore.class)
+            .setCopyFunction(dataStore -> DataStore.newInstance(dataStore.getName(), dataStore));
 
     /**
      * IDs generator
@@ -36,16 +43,33 @@ public class FortranContext extends ADataClass<FortranContext> {
     /**
      * Factory for building nodes.
      */
-    public final static DataKey<FortranNodeFactory> FACTORY = KeyFactory.object("factory", FortranNodeFactory.class);
-
+    public final static DataKey<FortranNodeFactory> FACTORY = KeyFactory
+            .object("factory", FortranNodeFactory.class)
+            .setCopyFunction(f -> new FortranNodeFactory(f));
 
     /**
      * For returning strings with FORTRAN keywords
      */
     public final static DataKey<FortranKeywords> FORTRAN_KEYWORDS = KeyFactory
             .object("fortranKeywords", FortranKeywords.class)
-            .setDefault(() -> new FortranKeywords())
             .setCopyFunction(fk -> new FortranKeywords(fk));
+
+
+    /**
+     * A DataStore with options from {@link FortranOptions}.
+     *
+     * @param fortranOptions
+     */
+    FortranContext(DataStore fortranOptions) {
+        set(FORTRAN_OPTIONS, fortranOptions);
+        set(FACTORY, new FortranNodeFactory(this));
+        set(FORTRAN_KEYWORDS, new FortranKeywords(fortranOptions.get(FortranOptions.LOWERCASE_KEYWORDS)));
+    }
+
+    FortranContext() {
+        this(DataStore.newInstance(FortranOptions.STORE_DEFINITION));
+    }
+
 
     @Override
     public String toString() {
