@@ -37,6 +37,10 @@ public class FortranNodeFactory {
     }
 
     public DataStore newDataStore(Class<? extends FortranNode> nodeClass) {
+        return newDataStore(nodeClass, null);
+    }
+
+    public DataStore newDataStore(Class<? extends FortranNode> nodeClass, String id) {
 
         DataStore data = DataStore.newInstance(StoreDefinitions.fromInterface(nodeClass), true);
 
@@ -49,7 +53,12 @@ public class FortranNodeFactory {
         data.set(FortranNode.CONTEXT, context);
 
         // Set id
-        data.set(FortranNode.ID, context.get(FortranContext.ID_GENERATOR).next("node_"));
+        if (id != null) {
+            data.set(FortranNode.ID, id);
+        } else {
+            data.set(FortranNode.ID, context.get(FortranContext.ID_GENERATOR).next("node_"));
+        }
+
 
         return data;
     }
@@ -71,8 +80,12 @@ public class FortranNodeFactory {
     }
 
     public <T extends FortranNode> T newNode(Class<T> nodeClass, Collection<? extends FortranNode> children) {
+        return newNode(nodeClass, children, null);
+    }
+
+    public <T extends FortranNode> T newNode(Class<T> nodeClass, Collection<? extends FortranNode> children, String id) {
         try {
-            DataStore data = newDataStore(nodeClass);
+            DataStore data = newDataStore(nodeClass, id);
 
             return nodeClass.getDeclaredConstructor(DataStore.class, Collection.class)
                     .newInstance(data, children);
