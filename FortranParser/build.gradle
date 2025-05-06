@@ -1,0 +1,64 @@
+plugins {
+    id 'distribution'
+}
+
+// Java project
+apply plugin: 'java'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+
+// Repositories providers
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    implementation ":FortranAst"
+    implementation ":CommonsLangPlus"
+    implementation ":jOptions"
+    implementation ":SpecsUtils"
+
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.13.1'
+}
+
+java {
+    withSourcesJar()
+}
+
+// Project sources
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+
+        resources {
+            srcDir 'resources'
+        }
+    }
+
+
+    test {
+        java {
+            srcDir 'test'
+        }
+
+        resources {
+            srcDir 'resources-test'
+        }
+    }
+
+}
+
+test {
+    useJUnitPlatform() // REQUIRED for JUnit 5
+}

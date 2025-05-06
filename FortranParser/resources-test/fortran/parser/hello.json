@@ -1,0 +1,22 @@
+{
+  "node": {
+    "id": "1",
+    "kind": "program",
+    "children": [
+      2
+    ]
+  },
+  "node": {
+    "id": "2",
+    "kind": "mainProgram"
+  },
+  "specification-part": {
+    "id": "0x61684780a300"
+  },
+  "implicit-part": {
+    "id": "0x61684780a318"
+  },
+  "execution-part": {
+    "id": "0x61684780a2e8"
+  }
+}
