@@ -1,12 +1,12 @@
 package pt.up.fe.specs.fortran.parser;
 
 import com.google.gson.stream.JsonReader;
-import pt.up.fe.specs.util.SpecsCheck;
+import org.suikasoft.GsonPlus.JsonReaderParser;
 import pt.up.fe.specs.util.SpecsLogs;
 
 import java.io.*;
 
-public class FortranJsonParser {
+public class FortranJsonParser implements JsonReaderParser {
 
 
     public FortranJsonResult parse(File file) {
@@ -21,21 +21,26 @@ public class FortranJsonParser {
         JsonReader reader = new JsonReader(input);
 
         try {
-            // Top-level object
-            reader.beginObject();
+            // Top-level array
+            reader.beginArray();
 
             while (reader.hasNext()) {
-                String name = reader.nextName();
+                reader.beginObject();
 
-                switch (name) {
+                // First element is type
+                var type = nextString(reader, "type");
+
+                switch (type) {
                     case "node":
                         parseNode(reader);
                         break;
                     default:
-                        SpecsLogs.warn("Case not defined: " + name);
+                        SpecsLogs.warn("Case not defined: " + type);
                 }
+
+                reader.endObject();
             }
-            reader.endObject();
+            reader.endArray();
             reader.close();
         } catch (IOException e) {
             throw new RuntimeException("Problem while parsing Fortran json", e);
@@ -49,50 +54,10 @@ public class FortranJsonParser {
 
         // Create node
 
-        try {
-            reader.beginObject();
+        var id = nextString(reader, "id");
+        var kind = nextString(reader, "kind");
+        var children = nextList(reader, "children", this::nextString);
 
-            // Expected id
-            String name = reader.nextName();
-            SpecsCheck.checkArgument(name.equals("id"), () -> "Expected id");
-
-            String id = reader.nextString();
-
-            // Expected kind
-            name = reader.nextName();
-            SpecsCheck.checkArgument(name.equals("kind"), () -> "Expected kind");
-
-            String kind = reader.nextString();
-
-            while (reader.hasNext()) {
-                name = reader.nextName();
-                switch (name) {
-                    case "children":
-                        reader.nextName();
-                }
-
-            }
-            reader.endObject();
-        } catch (IOException e) {
-            throw new RuntimeException("Problem while parsing object", e);
-        }
-        /*
-        reader.beginObject();
-        String name = reader.nextName();
-
-        System.out.println("NAME: " + name);
-
-         */
-/*
-                if (name.equals("name")) {
-                    System.out.println("Name: " + reader.nextString());
-                } else if (name.equals("age")) {
-                    System.out.println("Age: " + reader.nextInt());
-                } else {
-                    reader.skipValue(); // Skip values you don't care about
-                }
-
- */
 
     }
 }

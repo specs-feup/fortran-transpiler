@@ -26,6 +26,7 @@ dependencies {
     implementation ":CommonsLangPlus"
     implementation ":jOptions"
     implementation ":SpecsUtils"
+    implementation ":GsonPlus"
 
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.13.1'
 }
