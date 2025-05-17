@@ -92,6 +92,13 @@ jobs:
         env:
           GITHUB_DEPENDENCY_GRAPH_ENABLED: false
 
+      - name: Test FortranParser
+        run: |
+          cd fortran-transpiler/FortranParser
+          gradle test
+        env:
+          GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v4
         if: always()
