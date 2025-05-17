@@ -1,0 +1,44 @@
+{
+  "nodes": [
+    {
+      "id": "0x623a559e8930",
+      "type": "program",
+      "program-unit": ["0x623a55a11510"]
+    },
+    {
+      "id": "0x623a55a11510",
+      "type": "program-unit",
+      "value": "0x623a55a142b0"
+    },
+    {
+      "id": "0x623a55a142b0",
+      "type": "main-program",
+      "program-stmt": "0x623a55a143f8",
+      "specification-part": "0x623a55a14350",
+      "execution-part": "0x623a55a14338",
+      "internal-subprogram-part": "0x623a55a142f0",
+      "end-program-stmt": "0x623a55a142c0"
+    },
+    {
+      "id": "0x623a55a14350",
+      "type": "specification-part",
+      "OpenACCDeclarativeConstructs": [],
+      "OpenMPDeclarativeConstructs": [],
+      "CompilerDirectives": [],
+      "UseStmts": [],
+      "ImportStmts": [],
+      "ImplicitPart": "0x623a55a14368",
+      "DeclarationConstructs": []
+    },
+    {
+      "id": "0x623a55a14338",
+      "type": "block",
+      "ExecutionPartConstruct": ["0x623a55a14080"]
+    },
+    {
+      "id": "0x623a55a142c0",
+      "type": "end-program-stmt",
+      "name": "hello"
+    }
+  ]
+}

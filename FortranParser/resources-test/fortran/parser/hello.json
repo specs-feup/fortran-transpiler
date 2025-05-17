@@ -1,17 +1,17 @@
-[
-  {
-    "type": "node",
-    "id": "1",
-    "kind": "program",
-    "children": [
-      "2"
-    ]
-  },
-  {
-    "type": "node",
-    "id": "2",
-    "kind": "mainProgram",
-    "children": [
-    ]
-  }
-]
+{
+  "nodes": [
+    {
+      "id": "1",
+      "type": "program",
+      "children": [
+        "2"
+      ]
+    },
+    {
+      "id": "2",
+      "type": "mainProgram",
+      "children": [
+      ]
+    }
+  ]
+}

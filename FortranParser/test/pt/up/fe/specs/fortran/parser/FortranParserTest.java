@@ -57,4 +57,9 @@ public class FortranParserTest {
     void testHelloWorld() {
         test("hello.json");
     }
+
+    @Test
+    void test1() {
+        test("test1.json");
+    }
 }

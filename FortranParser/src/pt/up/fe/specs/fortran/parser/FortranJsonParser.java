@@ -14,15 +14,13 @@ public class FortranJsonParser implements JsonReaderParser {
 
     private final FortranContext context;
     private final Map<String, FortranNode> fortranNodes;
-    private final Map<String, Map<String, String>> attributes;
-    private final Map<String, List<String>> children;
+    private final Map<String, Map<String, Object>> attributes;
     private final Set<String> ids;
 
     private FortranJsonParser(DataStore fortranOptions) {
         context = new FortranContext(fortranOptions);
         this.fortranNodes = new HashMap<>();
         this.attributes = new HashMap<>();
-        this.children = new HashMap<>();
         this.ids = new HashSet<>();
     }
 
@@ -44,40 +42,49 @@ public class FortranJsonParser implements JsonReaderParser {
         JsonReader reader = new JsonReader(input);
 
         try {
-            // Top-level array
-            reader.beginArray();
+            // Top-level object
+            reader.beginObject();
 
             while (reader.hasNext()) {
-                reader.beginObject();
+                var objectsType = nextName(reader);
 
-                // First element is type
-                var type = nextString(reader, "type");
-
-                switch (type) {
-                    case "node":
-                        parseNode(reader);
+                switch (objectsType) {
+                    case "nodes":
+                        parseNodes(reader);
                         break;
                     default:
-                        SpecsLogs.warn("Case not defined: " + type);
+                        SpecsLogs.warn("Case not defined: " + objectsType);
                 }
 
-                reader.endObject();
             }
-            reader.endArray();
+            reader.endObject();
             reader.close();
         } catch (IOException e) {
             throw new RuntimeException("Problem while parsing Fortran json", e);
         }
 
-        return new FortranJsonResult(context, ids, fortranNodes, children, attributes);
+        return new FortranJsonResult(context, ids, fortranNodes, attributes);
     }
 
-    private void parseNode(JsonReader reader) {
+    private void parseNodes(JsonReader reader) {
+        try {
+            reader.beginArray();
+            while (reader.hasNext()) {
+                var nodeData = nextObject(reader);
+                processNodeData(nodeData);
+            }
+            reader.endArray();
+        } catch (IOException e) {
+            throw new RuntimeException("Problem while parsing Fortran json", e);
+        }
+    }
+
+    private void processNodeData(Map<String, Object> nodeData) {
+
 
         // Read preamble
-        var id = nextString(reader, "id");
-        var kind = nextString(reader, "kind");
-        var children = nextList(reader, "children", this::nextString);
+        var id = getString(nodeData, "id");
+        var kind = getString(nodeData, "type");
 
         // Check id
         if (ids.contains(id)) {
@@ -89,24 +96,14 @@ public class FortranJsonParser implements JsonReaderParser {
         // Get class corresponding to the kind
         var fortranClass = FlangToClass.NAME_TO_CLASS.get(kind);
 
-        // If null assume that kind is to be ignore
+        // If null assume that kind is to be ignored
         // Otherwise, create node
         if (fortranClass != null) {
             var node = context.get(FortranContext.FACTORY).newNode(fortranClass, Collections.emptyList(), id);
             fortranNodes.put(id, node);
         }
 
-        // Set children
-        if (!children.isEmpty()) {
-            this.children.put(id, children);
-        }
-
-        // Get attributes
-        var attrs = fillMap(reader);
-
-        if (!attrs.isEmpty()) {
-            attributes.put(id, attrs);
-        }
+        attributes.put(id, nodeData);
     }
 
 
