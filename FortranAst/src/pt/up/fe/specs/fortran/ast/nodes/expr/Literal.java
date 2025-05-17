@@ -10,7 +10,7 @@ import java.util.Collection;
 /**
  * R605 literal-constant
  */
-public class Literal extends Expr {
+public abstract class Literal extends Expr {
 
     // DATAKEYS BEGIN
 
