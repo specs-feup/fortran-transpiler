@@ -25,7 +25,13 @@ public interface NodeProcessor {
             attrs = getAttrs(currentId);
         }
 
-        return data().fortranNodes().get(currentId);
+        return getNode(currentId);
+    }
+
+    default FortranNode getNode(String id) {
+        var node = data().fortranNodes().get(id);
+        SpecsCheck.checkNotNull(node, () -> "Could not find a FortranNode for id '" + id + "'");
+        return node;
     }
 
     default <T> List<T> getList(Map<String, Object> attrs, String key, Function<Object, T> converter) {
