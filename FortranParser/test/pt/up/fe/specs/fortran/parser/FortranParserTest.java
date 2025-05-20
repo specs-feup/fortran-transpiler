@@ -34,7 +34,10 @@ public class FortranParserTest {
 
         // Parse
         var parseResult = FortranJsonParser.parse(new InputStreamReader(SpecsIo.resourceToStream(resourceName), StandardCharsets.UTF_8), fortranOptions);
+        var rootNode = new FortranAstBuilder(parseResult).build();
         System.out.println(parseResult);
+        System.out.println("ROOT NODE: " + rootNode.getNodeName());
+        System.out.println("CODE:\n" + rootNode.getCode());
 /*
         var code = parseResult.root().getCode();
 

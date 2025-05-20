@@ -6,6 +6,7 @@ import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import java.util.Map;
 import java.util.Set;
 
-public record FortranJsonResult(FortranContext context, Set<String> ids, Map<String, FortranNode> fortranNodes,
+public record FortranJsonResult(FortranContext context, String firstNode, Set<String> ids,
+                                Map<String, FortranNode> fortranNodes,
                                 Map<String, Map<String, Object>> attributes) {
 }

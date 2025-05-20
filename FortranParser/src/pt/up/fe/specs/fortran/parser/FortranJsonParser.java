@@ -17,11 +17,14 @@ public class FortranJsonParser implements JsonReaderParser {
     private final Map<String, Map<String, Object>> attributes;
     private final Set<String> ids;
 
+    private String firstNode;
+
     private FortranJsonParser(DataStore fortranOptions) {
         context = new FortranContext(fortranOptions);
         this.fortranNodes = new HashMap<>();
         this.attributes = new HashMap<>();
         this.ids = new HashSet<>();
+        firstNode = null;
     }
 
 
@@ -63,7 +66,7 @@ public class FortranJsonParser implements JsonReaderParser {
             throw new RuntimeException("Problem while parsing Fortran json", e);
         }
 
-        return new FortranJsonResult(context, ids, fortranNodes, attributes);
+        return new FortranJsonResult(context, firstNode, ids, fortranNodes, attributes);
     }
 
     private void parseNodes(JsonReader reader) {
@@ -92,6 +95,10 @@ public class FortranJsonParser implements JsonReaderParser {
         }
 
         ids.add(id);
+
+        if (firstNode == null) {
+            firstNode = id;
+        }
 
         // Get class corresponding to the kind
         var fortranClass = FlangToClass.NAME_TO_CLASS.get(kind);
