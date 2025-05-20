@@ -14,8 +14,9 @@ public class FortranAstBuilder {
     public FortranNode build() {
 
         // Process each node
+        var processor = new Nodes(data);
         for (var node : data.fortranNodes().values()) {
-            Nodes.process(node, data);
+            processor.process(node);
         }
 
         // Return the root node

@@ -101,7 +101,7 @@ public class FortranJsonParser implements JsonReaderParser {
         }
 
         // Get class corresponding to the kind
-        var fortranClass = FlangToClass.NAME_TO_CLASS.get(kind);
+        var fortranClass = FlangToClass.getClass(kind);
 
         // If null assume that kind is to be ignored
         // Otherwise, create node

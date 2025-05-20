@@ -4,20 +4,27 @@ import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
 import pt.up.fe.specs.fortran.ast.nodes.program.Program;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
 
-import java.util.List;
+public class Processors extends ANodeProcessor {
 
-public class Processors {
 
-    public static void program(Program program, FortranJsonResult data) {
-        var attrs = data.attributes().get(program.get(Program.ID));
-        var puId = (List<String>) attrs.get("program-unit");
+    public Processors(FortranJsonResult data) {
+        super(data);
+    }
 
-        System.out.println(data.attributes().get(puId.get(0)));
+    public void program(Program program) {
 
+        var attrs = getAttrs(program.get(Program.ID));
+
+        var children = getList(attrs, "program-unit", Object::toString).stream()
+                .map(this::getChild)
+                .toList();
+
+        program.setChildren(children);
+
+        System.out.println(children);
     }
 
 
-    public static void mainProgram(MainProgram program, FortranJsonResult data) {
-
+    public void mainProgram(MainProgram program) {
     }
 }
