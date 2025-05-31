@@ -3,22 +3,12 @@ package pt.up.fe.specs.fortran.parser;
 import pt.up.fe.specs.util.SpecsCheck;
 import pt.up.fe.specs.util.providers.StringProvider;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class FlangAttributes {
-
-    public static Map<String, FlangAttributes> convert(Map<String, Map<String, Object>> data) {
-        var newAttrs = new HashMap<String, FlangAttributes>();
-
-        for (var entry : data.entrySet()) {
-            newAttrs.put(entry.getKey(), new FlangAttributes(entry.getValue()));
-        }
-
-        return newAttrs;
-    }
 
     private final Map<String, Object> attributes;
 
@@ -36,10 +26,18 @@ public class FlangAttributes {
             return attributes;
         }
     */
-    public String getString(String key) {
+    public Optional<String> getOptionalString(String key) {
         var value = attributes.get(key);
-        SpecsCheck.checkNotNull(value, () -> "No attribute '" + key + "': " + attributes);
-        return value.toString();
+
+        if (value == null) {
+            return Optional.empty();
+        }
+        
+        return Optional.of(value.toString());
+    }
+
+    public String getString(String key) {
+        return getOptionalString(key).orElseThrow(() -> new RuntimeException("No attribute '" + key + "': " + attributes));
     }
 
     public List<String> getStringList(StringProvider key) {
@@ -55,5 +53,10 @@ public class FlangAttributes {
         var list = (List<Object>) attributes.get(key);
         SpecsCheck.checkNotNull(list, () -> "Attrs do not have a value for key '" + key + "': " + attributes);
         return list.stream().map(obj -> converter.apply(obj)).toList();
+    }
+
+    public Optional<Object> getOptional(String key) {
+        var value = attributes.get(key);
+        return Optional.ofNullable(value.toString());
     }
 }

@@ -67,7 +67,7 @@ public class FortranJsonParser implements JsonReaderParser {
             throw new RuntimeException("Problem while parsing Fortran json", e);
         }
 
-        return new FortranJsonResult(context, firstNode, ids, fortranNodes, FlangAttributes.convert(attributes));
+        return new FortranJsonResult(context, firstNode, ids, fortranNodes, FlangData.convert(attributes));
     }
 
     private void parseNodes(JsonReader reader) {

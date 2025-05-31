@@ -1,7 +1,10 @@
 package pt.up.fe.specs.fortran.parser.processors;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
-import pt.up.fe.specs.fortran.parser.*;
+import pt.up.fe.specs.fortran.parser.FlangAttributes;
+import pt.up.fe.specs.fortran.parser.FlangData;
+import pt.up.fe.specs.fortran.parser.FlangName;
+import pt.up.fe.specs.fortran.parser.FortranJsonResult;
 import pt.up.fe.specs.util.SpecsCheck;
 
 import java.util.Map;
@@ -11,7 +14,8 @@ public interface NodeProcessor {
     FortranJsonResult data();
 
     default FortranNode getChild(String id) {
-
+        return getNode(data().attributes().getChildId(id));
+        /*
         var currentId = id;
         // Get corresponding attributes
         var attrs = getAttrs(currentId);
@@ -23,6 +27,7 @@ public interface NodeProcessor {
         }
 
         return getNode(currentId);
+ */
     }
 
     default FortranNode getNode(String id) {
@@ -31,17 +36,17 @@ public interface NodeProcessor {
         return node;
     }
 
+    /*
+        default FlangAttributes getAttrs(FortranNode node) {
+            return getAttrs(node.get(FortranNode.ID));
+        }
 
-    default FlangAttributes getAttrs(FortranNode node) {
-        return getAttrs(node.get(FortranNode.ID));
-    }
-
-    default FlangAttributes getAttrs(String id) {
-        var attrs = data().attributes().get(id);
-        SpecsCheck.checkNotNull(attrs, () -> "Id '" + id + "' does not have attributes associated: " + data().attributes());
-        return attrs;
-    }
-
+        default FlangAttributes getAttrs(String id) {
+            var attrs = data().attributes().get(id);
+            SpecsCheck.checkNotNull(attrs, () -> "Id '" + id + "' does not have attributes associated: " + data().attributes());
+            return attrs;
+        }
+    */
     /*
         default String getId(Map<String, Object> attrs) {
             return getString(attrs, "id");
@@ -54,18 +59,21 @@ public interface NodeProcessor {
         return value.toString();
     }
 */
+    /*
     default String getKind(String id) {
         return FortranJsonParser.getKind(id);
     }
 
+*/
 
-    default boolean hasStmt(Map<String, Object> attrs, FlangName flangName) {
-        var stmtName = getStmtAttr(flangName);
-        return attrs.containsKey(stmtName);
+
+    default FlangData attributes() {
+        return data().attributes();
     }
 
-    default String getStmtAttr(FlangName flangName) {
-        return "Statement<" + flangName.getString() + ">";
+    default FlangAttributes attributes(FortranNode node) {
+        return data().attributes().getAttrs(node);
     }
+
 
 }

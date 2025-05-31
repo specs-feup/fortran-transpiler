@@ -12,6 +12,8 @@ public enum FlangName implements StringProvider {
     MAIN_PROGRAM,
     PROGRAM_UNIT,
     PROGRAM_STMT,
+    END_PROGRAM_STMT,
+    NAME,
     ;
 
     private static final Lazy<EnumHelper<FlangName>> HELPER = EnumHelper.newLazyHelper(FlangName.class);
@@ -35,6 +37,14 @@ public enum FlangName implements StringProvider {
      */
     public static Optional<FlangName> convertTry(String name) {
         return HELPER.get().fromNameTry(name);
+    }
+
+    public boolean isStmt() {
+        if (name().endsWith("_STMT")) {
+            return true;
+        }
+
+        return false;
     }
 
 }

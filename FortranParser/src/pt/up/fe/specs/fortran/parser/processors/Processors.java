@@ -14,7 +14,7 @@ public class Processors extends ANodeProcessor {
 
     public void program(Program program) {
 
-        var attrs = getAttrs(program);
+        var attrs = attributes(program);
         var children = attrs.getStringList(FlangName.PROGRAM_UNIT).stream()
                 .map(this::getChild)
                 .toList();
@@ -26,17 +26,16 @@ public class Processors extends ANodeProcessor {
 
 
     public void mainProgram(MainProgram mainProgram) {
-        var attrs = getAttrs(mainProgram.get(MainProgram.ID));
-/*
-        if(hasStmt(attrs, FlangName.PROGRAM_STMT)) {
-            var programName = getStringFrom(attrs, getStmtAttr(FlangName.PROGRAM_STMT) )
-        }
-*/
-        /*
-                [program-stmt] [specification-part] [execution-part]
-        [internal-subprogram-part] end-program-stmt
- */
-        // Always an end-program-stmt
+
+        var firstName = attributes().getOptionalString(mainProgram, "source", FlangName.PROGRAM_STMT, FlangName.NAME);
+        // [specification-part]
+        // [execution-part]
+        // [internal-subprogram-part]
+        var endName = attributes().getString(mainProgram, "source", FlangName.END_PROGRAM_STMT, FlangName.NAME);
+
+        var name = firstName.orElse(endName);
+
+        mainProgram.setOptional(MainProgram.PROGRAM_NAME, name);
     }
 
 }
