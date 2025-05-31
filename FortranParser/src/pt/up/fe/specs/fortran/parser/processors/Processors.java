@@ -14,8 +14,8 @@ public class Processors extends ANodeProcessor {
 
     public void program(Program program) {
 
-        var attrs = getAttrs(program.get(Program.ID));
-        var children = attrs.getList(FlangName.PROGRAM_UNIT, Object::toString).stream()
+        var attrs = getAttrs(program);
+        var children = attrs.getStringList(FlangName.PROGRAM_UNIT).stream()
                 .map(this::getChild)
                 .toList();
 

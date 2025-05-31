@@ -3,11 +3,8 @@ package pt.up.fe.specs.fortran.parser.processors;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.parser.*;
 import pt.up.fe.specs.util.SpecsCheck;
-import pt.up.fe.specs.util.providers.StringProvider;
 
-import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 public interface NodeProcessor {
 
@@ -35,17 +32,21 @@ public interface NodeProcessor {
     }
 
 
+    default FlangAttributes getAttrs(FortranNode node) {
+        return getAttrs(node.get(FortranNode.ID));
+    }
 
     default FlangAttributes getAttrs(String id) {
         var attrs = data().attributes().get(id);
         SpecsCheck.checkNotNull(attrs, () -> "Id '" + id + "' does not have attributes associated: " + data().attributes());
         return attrs;
     }
-/*
-    default String getId(Map<String, Object> attrs) {
-        return getString(attrs, "id");
-    }
-*/
+
+    /*
+        default String getId(Map<String, Object> attrs) {
+            return getString(attrs, "id");
+        }
+    */
     /*
     default String getString(Map<String, Object> attrs, String key) {
         var value = attrs.get(key);

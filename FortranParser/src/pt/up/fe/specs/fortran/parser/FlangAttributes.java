@@ -42,6 +42,11 @@ public class FlangAttributes {
         return value.toString();
     }
 
+    public List<String> getStringList(StringProvider key) {
+        return getList(key, Object::toString);
+    }
+
+
     public <T> List<T> getList(StringProvider key, Function<Object, T> converter) {
         return getList(key.getString(), converter);
     }
