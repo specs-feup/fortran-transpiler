@@ -56,6 +56,9 @@ public class FortranJsonParser implements JsonReaderParser {
                     case "nodes":
                         parseNodes(reader);
                         break;
+                    case "enums":
+                        parseEnums(reader);
+                        break;
                     default:
                         SpecsLogs.warn("Case not defined: " + objectsType);
                 }
@@ -68,6 +71,19 @@ public class FortranJsonParser implements JsonReaderParser {
         }
 
         return new FortranJsonResult(context, firstNode, ids, fortranNodes, FlangData.convert(attributes));
+    }
+
+    private void parseEnums(JsonReader reader) {
+        try {
+            reader.beginArray();
+            while (reader.hasNext()) {
+                throw new RuntimeException("Parsing of enums not yet implemented");
+            }
+            reader.endArray();
+        } catch (IOException e) {
+            throw new RuntimeException("Problem while parsing Fortran json", e);
+        }
+
     }
 
     private void parseNodes(JsonReader reader) {

@@ -117,7 +117,7 @@ public class FlangData {
                 // Update attrs to generic statement
                 currentAttrs = getAttrs(stmtId.get());
                 // Now get id of specific statement
-                var specificStmtId = currentAttrs.getString("Statement");
+                var specificStmtId = currentAttrs.getString("statement");
                 // Update attrs to specific statement
                 currentAttrs = getAttrs(specificStmtId);
                 continue;
