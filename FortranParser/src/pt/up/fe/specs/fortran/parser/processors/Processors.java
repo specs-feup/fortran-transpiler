@@ -1,5 +1,6 @@
 package pt.up.fe.specs.fortran.parser.processors;
 
+import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
 import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
 import pt.up.fe.specs.fortran.ast.nodes.program.Program;
 import pt.up.fe.specs.fortran.parser.FlangName;
@@ -13,17 +14,8 @@ public class Processors extends ANodeProcessor {
     }
 
     public void program(Program program) {
-
-        var attrs = attributes(program);
-        var children = attrs.getStringList(FlangName.PROGRAM_UNIT).stream()
-                .map(this::getChild)
-                .toList();
-
-        program.setChildren(children);
-
-        System.out.println(children);
+        program.setChildren(getChildren(program, FlangName.PROGRAM_UNIT));
     }
-
 
     public void mainProgram(MainProgram mainProgram) {
 
@@ -37,5 +29,10 @@ public class Processors extends ANodeProcessor {
 
         mainProgram.setOptional(MainProgram.PROGRAM_NAME, name);
     }
+
+    public void execution(Execution execution) {
+        execution.setChildren(getChildren(execution, FlangName.EXECUTION_PART_CONSTRUCT));
+    }
+
 
 }

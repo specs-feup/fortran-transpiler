@@ -35,8 +35,12 @@ public class FlangData {
         var attrs = getAttrs(currentId);
 
         while (!FlangToClass.isClass(getKind(currentId))) {
-            // Assumes there is a value
-            currentId = attrs.getString("value");
+
+            // Calculate key to the next level
+            var key = currentId.endsWith("-Statement") ? "statement" : "value";
+
+            var finalId = currentId;
+            currentId = attrs.getOptionalString(key).orElseThrow(() -> new RuntimeException("Could not find key '" + key + "' for id " + finalId));
             attrs = getAttrs(currentId);
         }
 
@@ -134,4 +138,12 @@ public class FlangData {
         // Return the value
         return currentAttrs.getOptional(key);
     }
+
+    public List<String> getChildrenIds(FortranNode node, FlangName attribute) {
+        return getAttrs(node).getStringList(attribute).stream()
+                .map(this::getChildId)
+                .toList();
+    }
+
+
 }

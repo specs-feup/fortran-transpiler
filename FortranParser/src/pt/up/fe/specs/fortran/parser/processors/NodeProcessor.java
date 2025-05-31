@@ -7,7 +7,7 @@ import pt.up.fe.specs.fortran.parser.FlangName;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
 import pt.up.fe.specs.util.SpecsCheck;
 
-import java.util.Map;
+import java.util.List;
 
 public interface NodeProcessor {
 
@@ -35,6 +35,14 @@ public interface NodeProcessor {
         SpecsCheck.checkNotNull(node, () -> "Could not find a FortranNode for id '" + id + "'");
         return node;
     }
+
+
+    default List<FortranNode> getChildren(FortranNode node, FlangName attribute) {
+        return attributes().getChildrenIds(node, attribute).stream()
+                .map(this::getNode)
+                .toList();
+    }
+
 
     /*
         default FlangAttributes getAttrs(FortranNode node) {
