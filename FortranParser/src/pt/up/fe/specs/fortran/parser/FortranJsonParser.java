@@ -5,6 +5,7 @@ import org.suikasoft.GsonPlus.JsonReaderParser;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.FortranContext;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
+import pt.up.fe.specs.util.SpecsCheck;
 import pt.up.fe.specs.util.SpecsLogs;
 
 import java.io.*;
@@ -43,7 +44,6 @@ public class FortranJsonParser implements JsonReaderParser {
 
     private FortranJsonResult parsePrivate(Reader input) {
         JsonReader reader = new JsonReader(input);
-        //reader.setStrictness(Strictness.LENIENT);
 
         try {
             // Top-level object
@@ -74,13 +74,6 @@ public class FortranJsonParser implements JsonReaderParser {
         try {
             reader.beginArray();
             while (reader.hasNext()) {
-/*
-                // To handle malformed json
-                if (reader.peek() == JsonToken.NULL) {
-                    reader.nextNull();
-                    break;
-                }
-*/
                 var nodeData = nextObject(reader);
                 processNodeData(nodeData);
             }
@@ -95,7 +88,6 @@ public class FortranJsonParser implements JsonReaderParser {
 
         // Read preamble
         var id = getString(nodeData, "id");
-        var kind = getString(nodeData, "type");
 
         // Check id
         if (ids.contains(id)) {
@@ -104,22 +96,41 @@ public class FortranJsonParser implements JsonReaderParser {
 
         ids.add(id);
 
+        // Assumes the first node is the root node
         if (firstNode == null) {
             firstNode = id;
         }
 
-        // Get class corresponding to the kind
-        var fortranClass = FlangToClass.getClass(kind);
+        var kind = getKind(id);
 
-        // If null assume that kind is to be ignored
+
+        // Get class corresponding to the kind
+        var fortranClassTry = FlangToClass.getClass(kind);
+
+        // If no class assume that kind is to be ignored
         // Otherwise, create node
-        if (fortranClass != null) {
+        fortranClassTry.ifPresent(fortranClass -> fortranNodes.put(id, context.get(FortranContext.FACTORY).newNode(fortranClass, Collections.emptyList(), id)));
+/*
+        if (fortranClassTry.isPresent()) {
+            var fortranClass = fortranClassTry.get();
             var node = context.get(FortranContext.FACTORY).newNode(fortranClass, Collections.emptyList(), id);
             fortranNodes.put(id, node);
         }
-
+*/
         attributes.put(id, nodeData);
     }
 
+    /**
+     * Kind is encoded in the id.
+     *
+     * @param id
+     * @return
+     */
+    public static String getKind(String id) {
+        var dashIdx = id.indexOf('-');
+        SpecsCheck.checkArgument(dashIdx != -1, () -> "Expected to finda dash (-) that signals the beginning of the node kind");
+
+        return id.substring(dashIdx + 1);
+    }
 
 }

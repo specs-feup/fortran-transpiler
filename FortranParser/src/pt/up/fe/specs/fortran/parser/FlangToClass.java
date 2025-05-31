@@ -6,22 +6,23 @@ import pt.up.fe.specs.fortran.ast.nodes.program.Program;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class FlangToClass {
 
-    private static final Map<String, Class<? extends FortranNode>> NAME_TO_CLASS = new HashMap<>();
+    private static final Map<FlangName, Class<? extends FortranNode>> NAME_TO_CLASS = new HashMap<>();
 
     static {
-        NAME_TO_CLASS.put("program", Program.class);
-        NAME_TO_CLASS.put("main-program", MainProgram.class);
+        NAME_TO_CLASS.put(FlangName.PROGRAM, Program.class);
+        NAME_TO_CLASS.put(FlangName.MAIN_PROGRAM, MainProgram.class);
     }
 
     public static boolean isClass(String type) {
-        return NAME_TO_CLASS.containsKey(type);
+        return FlangName.convertTry(type).map(NAME_TO_CLASS::containsKey).orElse(false);
     }
 
-    public static Class<? extends FortranNode> getClass(String type) {
-        return NAME_TO_CLASS.get(type);
+    public static Optional<Class<? extends FortranNode>> getClass(String type) {
+        return FlangName.convertTry(type).map(NAME_TO_CLASS::get);
     }
 
 }
