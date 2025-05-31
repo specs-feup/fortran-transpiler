@@ -43,6 +43,7 @@ public class FortranJsonParser implements JsonReaderParser {
 
     private FortranJsonResult parsePrivate(Reader input) {
         JsonReader reader = new JsonReader(input);
+        //reader.setStrictness(Strictness.LENIENT);
 
         try {
             // Top-level object
@@ -73,6 +74,13 @@ public class FortranJsonParser implements JsonReaderParser {
         try {
             reader.beginArray();
             while (reader.hasNext()) {
+/*
+                // To handle malformed json
+                if (reader.peek() == JsonToken.NULL) {
+                    reader.nextNull();
+                    break;
+                }
+*/
                 var nodeData = nextObject(reader);
                 processNodeData(nodeData);
             }
