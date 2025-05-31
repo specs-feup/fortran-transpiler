@@ -10,7 +10,9 @@ import java.util.Optional;
 public enum FlangName implements StringProvider {
     PROGRAM,
     MAIN_PROGRAM,
-    PROGRAM_UNIT;
+    PROGRAM_UNIT,
+    PROGRAM_STMT,
+    ;
 
     private static final Lazy<EnumHelper<FlangName>> HELPER = EnumHelper.newLazyHelper(FlangName.class);
 

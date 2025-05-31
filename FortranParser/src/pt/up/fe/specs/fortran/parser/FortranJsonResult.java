@@ -8,5 +8,5 @@ import java.util.Set;
 
 public record FortranJsonResult(FortranContext context, String firstNode, Set<String> ids,
                                 Map<String, FortranNode> fortranNodes,
-                                Map<String, Map<String, Object>> attributes) {
+                                Map<String, FlangAttributes> attributes) {
 }
