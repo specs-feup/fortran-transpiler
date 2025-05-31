@@ -44,7 +44,7 @@ public class FortranAstTest {
         // Compare resource contents with code, normalized
         var expectedNormalized = SpecsStrings.normalizeFileContents(SpecsIo.getResource(resourceName), true);
         var codeNormalized = SpecsStrings.normalizeFileContents(code, true);
-
+        System.out.println("CODE:\n" + code);
         assertEquals(expectedNormalized, codeNormalized, "Codes do not match.\nOriginal code:\n" + code);
     }
 

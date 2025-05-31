@@ -5,9 +5,11 @@ import org.suikasoft.jOptions.storedefinition.StoreDefinitions;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.expr.Literal;
 import pt.up.fe.specs.fortran.ast.nodes.expr.StringLiteral;
+import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
 import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
 import pt.up.fe.specs.fortran.ast.nodes.program.Program;
 import pt.up.fe.specs.fortran.ast.nodes.program.ProgramUnit;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.ExecutableStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
 import pt.up.fe.specs.fortran.ast.nodes.utils.FormatStar;
@@ -102,11 +104,19 @@ public class FortranNodeFactory {
     }
 
 
-    public MainProgram mainProgram(String programName, List<FortranNode> execution) {
+    public MainProgram mainProgram(String programName, List<ExecutableStmt> execution) {
         DataStore data = newDataStore(MainProgram.class);
         data.set(MainProgram.PROGRAM_NAME, Optional.ofNullable(programName));
 
-        return new MainProgram(data, execution);
+        var executionBlock = execution(execution);
+
+        return new MainProgram(data, List.of(executionBlock));
+    }
+
+    public Execution execution(List<ExecutableStmt> statements) {
+        DataStore data = newDataStore(Execution.class);
+
+        return new Execution(data, statements);
     }
 
     // STMT
