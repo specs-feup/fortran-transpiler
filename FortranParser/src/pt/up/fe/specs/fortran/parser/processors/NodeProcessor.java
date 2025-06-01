@@ -37,6 +37,14 @@ public interface NodeProcessor {
     }
 
 
+    default FortranNode getChild(FortranNode node, FlangName attribute) {
+        return getNode(attributes().getChildId(node, attribute));
+    }
+
+    default FortranNode getChild(FortranNode node, String attribute) {
+        return getNode(attributes().getChildId(node, attribute));
+    }
+
     default List<FortranNode> getChildren(FortranNode node, FlangName attribute) {
         return attributes().getChildrenIds(node, attribute).stream()
                 .map(this::getNode)

@@ -139,6 +139,14 @@ public class FlangData {
         return currentAttrs.getOptional(key);
     }
 
+    public String getChildId(FortranNode node, FlangName attribute) {
+        return getChildId(getAttrs(node).getString(attribute));
+    }
+
+    public String getChildId(FortranNode node, String attribute) {
+        return getChildId(getAttrs(node).getString(attribute));
+    }
+
     public List<String> getChildrenIds(FortranNode node, FlangName attribute) {
         return getAttrs(node).getStringList(attribute).stream()
                 .map(this::getChildId)

@@ -27,6 +27,8 @@ public enum FlangName implements StringProvider {
     EXPR,
     LITERAL_CONSTANT,
     CHAR_LITERAL_CONSTANT,
+    INT_LITERAL_CONSTANT,
+    STAR,
     ;
 
     private static final Lazy<EnumHelper<FlangName>> HELPER = EnumHelper.newLazyHelper(FlangName.class);

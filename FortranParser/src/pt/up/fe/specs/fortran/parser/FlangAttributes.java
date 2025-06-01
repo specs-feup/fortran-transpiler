@@ -32,8 +32,12 @@ public class FlangAttributes {
         if (value == null) {
             return Optional.empty();
         }
-        
+
         return Optional.of(value.toString());
+    }
+
+    public String getString(StringProvider key) {
+        return getString(key.getString());
     }
 
     public String getString(String key) {

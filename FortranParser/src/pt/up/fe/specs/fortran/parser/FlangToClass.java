@@ -1,10 +1,14 @@
 package pt.up.fe.specs.fortran.parser;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
+import pt.up.fe.specs.fortran.ast.nodes.expr.IntLiteral;
+import pt.up.fe.specs.fortran.ast.nodes.expr.Star;
+import pt.up.fe.specs.fortran.ast.nodes.expr.StringLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
 import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
 import pt.up.fe.specs.fortran.ast.nodes.program.Program;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
+import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +23,10 @@ public class FlangToClass {
         NAME_TO_CLASS.put(FlangName.MAIN_PROGRAM, MainProgram.class);
         NAME_TO_CLASS.put(FlangName.EXECUTION_PART, Execution.class);
         NAME_TO_CLASS.put(FlangName.PRINT_STMT, PrintStmt.class);
+        NAME_TO_CLASS.put(FlangName.CHAR_LITERAL_CONSTANT, StringLiteral.class);
+        NAME_TO_CLASS.put(FlangName.INT_LITERAL_CONSTANT, IntLiteral.class);
+        NAME_TO_CLASS.put(FlangName.FORMAT, Format.class);
+        NAME_TO_CLASS.put(FlangName.STAR, Star.class);
     }
 
     public static boolean isClass(String type) {
