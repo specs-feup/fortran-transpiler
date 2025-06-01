@@ -6,10 +6,10 @@ import pt.up.fe.specs.fortran.ast.nodes.program.Program;
 import pt.up.fe.specs.fortran.parser.FlangName;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
 
-public class Processors extends ANodeProcessor {
+public class TopProcessors extends ANodeProcessor {
 
 
-    public Processors(FortranJsonResult data) {
+    public TopProcessors(FortranJsonResult data) {
         super(data);
     }
 

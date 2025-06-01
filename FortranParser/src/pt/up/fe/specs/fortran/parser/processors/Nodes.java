@@ -15,7 +15,7 @@ public class Nodes {
     public Nodes(FortranJsonResult data) {
         this.processors = new ConsumerClassMap<>();
 
-        var p = new Processors(data);
+        var p = new TopProcessors(data);
         processors.put(Program.class, p::program);
         processors.put(MainProgram.class, p::mainProgram);
         processors.put(Execution.class, p::execution);
