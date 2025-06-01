@@ -8,9 +8,18 @@ import java.util.Collection;
 /**
  * R1215 format
  */
-public abstract class Format extends FortranNode {
+public class Format extends FortranNode {
 
     public Format(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);
+    }
+
+    public FortranNode getFormatType() {
+        return getChild(0);
+    }
+
+    @Override
+    public String getCode() {
+        return getFormatType().getCode();
     }
 }
