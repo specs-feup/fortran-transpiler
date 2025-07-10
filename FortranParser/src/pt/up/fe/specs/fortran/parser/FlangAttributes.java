@@ -70,6 +70,11 @@ public class FlangAttributes {
         return getOptionalString(key).orElseThrow(() -> new RuntimeException("No attribute '" + key + "': " + attributes));
     }
 
+    public String getString(Pattern key) {
+        return getOptionalString(key).orElseThrow(() -> new RuntimeException("No attribute that matches regex '" + key + "': " + attributes));
+    }
+
+
     public List<String> getStringList(StringProvider key) {
         return getList(key, Object::toString);
     }

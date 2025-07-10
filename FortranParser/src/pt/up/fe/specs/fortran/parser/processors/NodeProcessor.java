@@ -8,6 +8,7 @@ import pt.up.fe.specs.fortran.parser.FortranJsonResult;
 import pt.up.fe.specs.util.SpecsCheck;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public interface NodeProcessor {
 
@@ -15,19 +16,6 @@ public interface NodeProcessor {
 
     default FortranNode getChild(String id) {
         return getNode(data().attributes().getChildId(id));
-        /*
-        var currentId = id;
-        // Get corresponding attributes
-        var attrs = getAttrs(currentId);
-
-        while (!FlangToClass.isClass(getKind(currentId))) {
-            // Assumes there is a value
-            currentId = attrs.getString("value");
-            attrs = getAttrs(currentId);
-        }
-
-        return getNode(currentId);
- */
     }
 
     default FortranNode getNode(String id) {
@@ -42,6 +30,10 @@ public interface NodeProcessor {
     }
 
     default FortranNode getChild(FortranNode node, String attribute) {
+        return getNode(attributes().getChildId(node, attribute));
+    }
+
+    default FortranNode getChild(FortranNode node, Pattern attribute) {
         return getNode(attributes().getChildId(node, attribute));
     }
 

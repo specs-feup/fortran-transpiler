@@ -49,7 +49,6 @@ public class FlangData {
         while (!FlangToClass.isClass(getKind(currentId))) {
 
             // Calculate key to the next level
-            //var key = currentId.endsWith("-Statement") ? "statement" : "value";
             var key = currentId.endsWith("-Statement") ? REGEX_STMT : REGEX_VALUE;
 
             var finalId = currentId;
@@ -158,6 +157,10 @@ public class FlangData {
     }
 
     public String getChildId(FortranNode node, String attribute) {
+        return getChildId(getAttrs(node).getString(attribute));
+    }
+
+    public String getChildId(FortranNode node, Pattern attribute) {
         return getChildId(getAttrs(node).getString(attribute));
     }
 
