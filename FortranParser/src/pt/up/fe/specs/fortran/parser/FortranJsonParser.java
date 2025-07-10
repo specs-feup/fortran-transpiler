@@ -16,6 +16,7 @@ public class FortranJsonParser implements JsonReaderParser {
     private final FortranContext context;
     private final Map<String, FortranNode> fortranNodes;
     private final Map<String, Map<String, Object>> attributes;
+    private final Map<String, List<String>> enums;
     private final Set<String> ids;
 
     private String firstNode;
@@ -24,6 +25,7 @@ public class FortranJsonParser implements JsonReaderParser {
         context = new FortranContext(fortranOptions);
         this.fortranNodes = new HashMap<>();
         this.attributes = new HashMap<>();
+        this.enums = new HashMap<>();
         this.ids = new HashSet<>();
         firstNode = null;
     }
@@ -75,11 +77,13 @@ public class FortranJsonParser implements JsonReaderParser {
 
     private void parseEnums(JsonReader reader) {
         try {
-            reader.beginArray();
+            reader.beginObject();
             while (reader.hasNext()) {
-                throw new RuntimeException("Parsing of enums not yet implemented");
+                var name = nextName(reader);
+                var values = nextList(reader, this::nextString);
+                enums.put(name, values);
             }
-            reader.endArray();
+            reader.endObject();
         } catch (IOException e) {
             throw new RuntimeException("Problem while parsing Fortran json", e);
         }
