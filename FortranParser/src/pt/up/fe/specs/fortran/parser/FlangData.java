@@ -5,8 +5,20 @@ import pt.up.fe.specs.util.providers.StringProvider;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 public class FlangData {
+
+    private static final Pattern REGEX_VALUE = Pattern.compile("value(<\\w+>)?");
+    private static final Pattern REGEX_STMT = Pattern.compile("statement");
+
+    public static Pattern getRegexValue() {
+        return REGEX_VALUE;
+    }
+
+    public static Pattern getRegexStmt() {
+        return REGEX_STMT;
+    }
 
     public static FlangData convert(Map<String, Map<String, Object>> data) {
         var newAttrs = new HashMap<String, FlangAttributes>();
@@ -37,10 +49,11 @@ public class FlangData {
         while (!FlangToClass.isClass(getKind(currentId))) {
 
             // Calculate key to the next level
-            var key = currentId.endsWith("-Statement") ? "statement" : "value";
+            var key = currentId.endsWith("-Statement") ? REGEX_STMT : REGEX_VALUE;
 
             var finalId = currentId;
-            currentId = attrs.getOptionalString(key).orElseThrow(() -> new RuntimeException("Could not find key '" + key + "' for id " + finalId));
+            var keys = attrs.getKeys();
+            currentId = attrs.getOptionalString(key).orElseThrow(() -> new RuntimeException("Could not find key '" + key + "' for id " + finalId + ": " + keys));
             attrs = getAttrs(currentId);
         }
 
@@ -144,6 +157,10 @@ public class FlangData {
     }
 
     public String getChildId(FortranNode node, String attribute) {
+        return getChildId(getAttrs(node).getString(attribute));
+    }
+
+    public String getChildId(FortranNode node, Pattern attribute) {
         return getChildId(getAttrs(node).getString(attribute));
     }
 
