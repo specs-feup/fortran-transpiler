@@ -51,15 +51,15 @@ public class FortranAstTest {
     @Test
     void testMainProgram() {
         // Build AST
-        var program = factory.program(List.of(factory.mainProgram("hello", List.of())));
+        var program = factory.fortranFile(List.of(factory.mainProgram("hello", List.of())));
         test("mainProgram.f90", program);
     }
 
     @Test
     void testHelloWorld() {
         // Build AST
-        var print = factory.printStmt(factory.formatStar(), factory.stringLiteral("Hello, World!"));
-        var program = factory.program(List.of(factory.mainProgram("hello", List.of(print))));
+        var print = factory.printStmt(factory.format(factory.star()), factory.stringLiteral("Hello, World!"));
+        var program = factory.fortranFile(List.of(factory.mainProgram("hello", List.of(print))));
         test("hello.f90", program);
     }
 

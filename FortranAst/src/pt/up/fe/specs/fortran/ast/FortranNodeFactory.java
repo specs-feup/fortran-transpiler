@@ -6,12 +6,13 @@ import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.expr.Literal;
 import pt.up.fe.specs.fortran.ast.nodes.expr.StringLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
+import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
 import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
-import pt.up.fe.specs.fortran.ast.nodes.program.Program;
 import pt.up.fe.specs.fortran.ast.nodes.program.ProgramUnit;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.ExecutableStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
+import pt.up.fe.specs.fortran.ast.nodes.utils.Star;
 import pt.up.fe.specs.util.SpecsCollections;
 
 import java.util.Collection;
@@ -97,9 +98,9 @@ public class FortranNodeFactory {
 
     // PROGRAM
 
-    public Program program(List<ProgramUnit> units) {
-        DataStore data = newDataStore(Program.class);
-        return new Program(data, units);
+    public FortranFile fortranFile(List<ProgramUnit> units) {
+        DataStore data = newDataStore(FortranFile.class);
+        return new FortranFile(data, units);
     }
 
 
@@ -144,5 +145,21 @@ public class FortranNodeFactory {
         return new StringLiteral(data, Collections.emptyList());
     }
 
+    // UTIL
+
+    public Format format(FortranNode formatType) {
+        // Check if node is of allowed type
+        if (!(formatType instanceof Star)) {
+            throw new RuntimeException("Unsupported type for Format child: " + formatType.getClass());
+        }
+
+        DataStore data = newDataStore(Format.class);
+        return new Format(data, List.of(formatType));
+    }
+
+    public Star star() {
+        DataStore data = newDataStore(Star.class);
+        return new Star(data, Collections.emptyList());
+    }
 
 }

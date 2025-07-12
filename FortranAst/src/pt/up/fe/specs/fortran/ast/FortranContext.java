@@ -19,6 +19,9 @@ import org.suikasoft.jOptions.Datakey.KeyFactory;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.util.utilities.IdGenerator;
 
+import java.io.File;
+import java.util.Optional;
+
 /**
  * Represents global information about the program and common utilities.
  *
@@ -53,6 +56,12 @@ public class FortranContext extends ADataClass<FortranContext> {
     public final static DataKey<FortranKeywords> FORTRAN_KEYWORDS = KeyFactory
             .object("fortranKeywords", FortranKeywords.class)
             .setCopyFunction(fk -> new FortranKeywords(fk));
+
+    /**
+     * For returning strings with FORTRAN keywords
+     */
+    public final static DataKey<Optional<File>> LAST_PARSED_FILE = KeyFactory
+            .optional("lastParsedFile");
 
 
     /**
