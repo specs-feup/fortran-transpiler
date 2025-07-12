@@ -12,7 +12,6 @@ import pt.up.fe.specs.fortran.ast.nodes.program.ProgramUnit;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.ExecutableStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
-import pt.up.fe.specs.fortran.ast.nodes.utils.FormatStar;
 import pt.up.fe.specs.util.SpecsCollections;
 
 import java.util.Collection;
@@ -145,10 +144,5 @@ public class FortranNodeFactory {
         return new StringLiteral(data, Collections.emptyList());
     }
 
-    // MISC
 
-    public FormatStar formatStar() {
-        DataStore data = newDataStore(FormatStar.class);
-        return new FormatStar(data, Collections.emptyList());
-    }
 }
