@@ -4,8 +4,8 @@ import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.expr.IntLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.expr.StringLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
+import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
 import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
-import pt.up.fe.specs.fortran.ast.nodes.program.Program;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Star;
@@ -20,7 +20,7 @@ public class Nodes {
         this.processors = new ConsumerClassMap<>();
 
         var p = new ProgramProcessors(data);
-        processors.put(Program.class, p::program);
+        processors.put(FortranFile.class, p::program);
         processors.put(MainProgram.class, p::mainProgram);
         processors.put(Execution.class, p::execution);
 

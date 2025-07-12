@@ -3,6 +3,9 @@ package pt.up.fe.specs.fortran.parser;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.parser.processors.Nodes;
 
+/**
+ * Builds a Fortran AST based on the processed data.
+ */
 public class FortranAstBuilder {
 
     private final FortranJsonResult data;

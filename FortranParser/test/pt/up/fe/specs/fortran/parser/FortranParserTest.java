@@ -3,13 +3,16 @@ package pt.up.fe.specs.fortran.parser;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.suikasoft.jOptions.Interfaces.DataStore;
+import pt.up.fe.specs.fortran.ast.FortranContext;
 import pt.up.fe.specs.fortran.ast.FortranOptions;
 import pt.up.fe.specs.util.SpecsIo;
+import pt.up.fe.specs.util.SpecsStrings;
 import pt.up.fe.specs.util.SpecsSystem;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class FortranParserTest {
@@ -33,16 +36,18 @@ public class FortranParserTest {
         }
 
         // Parse
-        var parseResult = FortranJsonParser.parse(new InputStreamReader(SpecsIo.resourceToStream(resourceName), StandardCharsets.UTF_8), fortranOptions);
+        var context = new FortranContext(fortranOptions);
+        var parseResult = FortranJsonParser.parse(new InputStreamReader(SpecsIo.resourceToStream(resourceName), StandardCharsets.UTF_8), context);
         var rootNode = new FortranAstBuilder(parseResult).build();
         System.out.println(parseResult);
         System.out.println("AST: " + rootNode.toTree());
         System.out.println("CODE:\n" + rootNode.getCode());
-/*
-        var code = parseResult.root().getCode();
+
+        //var code = parseResult.root().getCode();
+        var code = rootNode.getCode();
 
         // Get expected output resource
-        var expectedResourceName = BASE_RESOURCE + SpecsIo.removeExtension(resource) + ".f90";
+        var expectedResourceName = BASE_RESOURCE + SpecsIo.removeExtension(resource) + ".expected.f90";
         if (!SpecsIo.hasResource(resourceName)) {
             fail("Could not find expected output resource '" + expectedResourceName + "'. Expected contents:\n" + code);
         }
@@ -53,7 +58,7 @@ public class FortranParserTest {
 
         assertEquals(expectedNormalized, codeNormalized, "Codes do not match.\nOriginal code:\n" + code);
 
- */
+
     }
 
     @Test

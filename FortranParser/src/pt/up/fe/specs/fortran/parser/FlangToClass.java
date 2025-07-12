@@ -4,8 +4,8 @@ import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.expr.IntLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.expr.StringLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
+import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
 import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
-import pt.up.fe.specs.fortran.ast.nodes.program.Program;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Star;
@@ -19,7 +19,7 @@ public class FlangToClass {
     private static final Map<FlangName, Class<? extends FortranNode>> NAME_TO_CLASS = new HashMap<>();
 
     static {
-        NAME_TO_CLASS.put(FlangName.PROGRAM, Program.class);
+        NAME_TO_CLASS.put(FlangName.PROGRAM, FortranFile.class);
         NAME_TO_CLASS.put(FlangName.MAIN_PROGRAM, MainProgram.class);
         NAME_TO_CLASS.put(FlangName.EXECUTION_PART, Execution.class);
         NAME_TO_CLASS.put(FlangName.PRINT_STMT, PrintStmt.class);

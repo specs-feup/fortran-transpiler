@@ -2,7 +2,6 @@ package pt.up.fe.specs.fortran.parser;
 
 import com.google.gson.stream.JsonReader;
 import org.suikasoft.GsonPlus.JsonReaderParser;
-import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.FortranContext;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.util.SpecsCheck;
@@ -21,8 +20,8 @@ public class FortranJsonParser implements JsonReaderParser {
 
     private String firstNode;
 
-    private FortranJsonParser(DataStore fortranOptions) {
-        context = new FortranContext(fortranOptions);
+    private FortranJsonParser(FortranContext context) {
+        this.context = context;
         this.fortranNodes = new HashMap<>();
         this.attributes = new HashMap<>();
         this.enums = new HashMap<>();
@@ -31,16 +30,17 @@ public class FortranJsonParser implements JsonReaderParser {
     }
 
 
-    public static FortranJsonResult parse(File file, DataStore fortranOptions) {
+    public static FortranJsonResult parse(File file, FortranContext context) {
         try {
-            return parse(new FileReader(file), fortranOptions);
+            context.set(FortranContext.LAST_PARSED_FILE, Optional.of(file));
+            return parse(new FileReader(file), context);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Could not read file '" + file + "'", e);
         }
     }
 
-    public static FortranJsonResult parse(Reader input, DataStore fortranOptions) {
-        var parser = new FortranJsonParser(fortranOptions);
+    public static FortranJsonResult parse(Reader input, FortranContext context) {
+        var parser = new FortranJsonParser(context);
         return parser.parsePrivate(input);
     }
 

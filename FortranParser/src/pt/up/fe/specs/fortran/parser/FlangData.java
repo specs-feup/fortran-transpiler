@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 public class FlangData {
 
+    /// STATIC
+
     private static final Pattern REGEX_VALUE = Pattern.compile("value(<\\w+>)?");
     private static final Pattern REGEX_STMT = Pattern.compile("statement");
 
@@ -29,6 +31,8 @@ public class FlangData {
 
         return new FlangData(newAttrs);
     }
+
+    /// INSTANCE
 
     private final Map<String, FlangAttributes> attributes;
 

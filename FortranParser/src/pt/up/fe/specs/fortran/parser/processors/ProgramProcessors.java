@@ -1,12 +1,13 @@
 package pt.up.fe.specs.fortran.parser.processors;
 
+import pt.up.fe.specs.fortran.ast.FortranContext;
+import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
+import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
 import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
-import pt.up.fe.specs.fortran.ast.nodes.program.Program;
-import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
-import pt.up.fe.specs.fortran.ast.nodes.utils.Star;
 import pt.up.fe.specs.fortran.parser.FlangName;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
+import pt.up.fe.specs.util.SpecsIo;
 
 public class ProgramProcessors extends ANodeProcessor {
 
@@ -15,8 +16,19 @@ public class ProgramProcessors extends ANodeProcessor {
         super(data);
     }
 
-    public void program(Program program) {
-        program.setChildren(getChildren(program, FlangName.PROGRAM_UNIT));
+    public void program(FortranFile fortranFile) {
+        fortranFile.setChildren(getChildren(fortranFile, FlangName.PROGRAM_UNIT));
+
+        var lastParsedFile = fortranFile.get(FortranNode.CONTEXT).get(FortranContext.LAST_PARSED_FILE).orElse(null);
+        if (lastParsedFile != null) {
+            var fileName = lastParsedFile.getName();
+            if (fileName.endsWith(".json")) {
+                fileName = SpecsIo.removeExtension(fileName) + ".f90";
+            }
+
+            fortranFile.set(FortranFile.FILE_NAME, fileName);
+            fortranFile.set(FortranFile.FOLDER_NAME, lastParsedFile.getParent());
+        }
     }
 
     public void mainProgram(MainProgram mainProgram) {
