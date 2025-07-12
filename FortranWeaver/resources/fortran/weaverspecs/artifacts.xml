@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<artifacts>
+
+
+    <!-- Global Joinpoint -->
+    <!-- These properties are shared by all joinpoints -->
+    <global>
+        <attribute name="root" type="program"
+                   tooltip="Returns the 'program' join point"/>
+        <attribute name="parent" type="joinpoint"
+                   tooltip="Returns the parent node in the AST, or undefined if it is the root node"/>
+        <attribute name="code" type="String" tooltip="String with the code represented by this node"/>
+    </global>
+
+    <!-- PROGRAM -->
+    <artifact class="program">
+    </artifact>
+
+
+    <!-- FILE -->
+    <artifact class="file" default="name">
+        <attribute name="name" type="String" tooltip="the name of the file"/>
+    </artifact>
+
+    <!-- STATEMENT -->
+    <artifact class="statement">
+        <attribute name="isFirst" type="Boolean"/>
+        <attribute name="isLast" type="Boolean"/>
+    </artifact>
+
+
+</artifacts>

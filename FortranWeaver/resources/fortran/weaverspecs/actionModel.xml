@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<actions>
+
+    <!-- GENERIC ACTIONS FOR ALL JOINPOINTS -->
+
+    <!-- Replaces the current node with the given node -->
+    <action name="replaceWith" return="joinpoint" tooltip="Replaces this node with the given node">
+        <parameter name="node" type="joinpoint"/>
+    </action>
+
+    <!-- PROGRAM -->
+
+
+    <!-- FILE -->
+
+
+</actions>
