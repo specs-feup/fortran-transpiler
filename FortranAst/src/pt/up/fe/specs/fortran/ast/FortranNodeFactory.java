@@ -5,10 +5,7 @@ import org.suikasoft.jOptions.storedefinition.StoreDefinitions;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.expr.Literal;
 import pt.up.fe.specs.fortran.ast.nodes.expr.StringLiteral;
-import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
-import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
-import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
-import pt.up.fe.specs.fortran.ast.nodes.program.ProgramUnit;
+import pt.up.fe.specs.fortran.ast.nodes.program.*;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.ExecutableStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
@@ -97,6 +94,11 @@ public class FortranNodeFactory {
     }
 
     // PROGRAM
+
+    public Application application(List<FortranFile> files) {
+        DataStore data = newDataStore(Application.class);
+        return new Application(data, files);
+    }
 
     public FortranFile fortranFile(List<ProgramUnit> units) {
         DataStore data = newDataStore(FortranFile.class);
