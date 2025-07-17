@@ -8,18 +8,15 @@ import org.lara.interpreter.weaver.utils.SourcesGatherer;
 import org.lara.language.specification.dsl.LanguageSpecification;
 import org.suikasoft.jOptions.DataStore.SimpleDataStore;
 import org.suikasoft.jOptions.Interfaces.DataStore;
-import pt.up.fe.specs.fortran.ast.FortranContext;
 import pt.up.fe.specs.fortran.ast.FortranOptions;
 import pt.up.fe.specs.fortran.ast.nodes.program.Application;
 import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
-import pt.up.fe.specs.fortran.parser.FortranAstBuilder;
-import pt.up.fe.specs.fortran.parser.FortranJsonParser;
+import pt.up.fe.specs.fortran.parser.ApplicationParser;
 import pt.up.fe.specs.fortran.weaver.abstracts.weaver.AFortranWeaver;
 import pt.up.fe.specs.util.SpecsIo;
 import pt.up.fe.specs.util.SpecsLogs;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -69,31 +66,14 @@ public class FortranWeaver extends AFortranWeaver {
 
         this.allSourceFiles = SourcesGatherer.build(sources, List.of("json", "f90")).getSourceFiles();
 
-        // TODO: This should be extracted to its own class, probably in FortranParser?
-        // Generate a FortranFile for each source file
-        var fortranFiles = new ArrayList<FortranFile>();
         // TODO: Options should come from the weaver datakeys
         var fortranOptions = DataStore.newInstance(FortranOptions.STORE_DEFINITION);
-        var context = new FortranContext(fortranOptions);
-
-        //System.out.println("SOURCE FILES: " + allSourceFiles);
-        for (var sourceFile : allSourceFiles.keySet()) {
-            var parseResult = FortranJsonParser.parse(sourceFile, context);
-            var rootNode = new FortranAstBuilder(parseResult).build();
-
-            if (!(rootNode instanceof FortranFile fortranFile)) {
-                SpecsLogs.info("Expected a " + FortranFile.class + " instance, got " + rootNode.getClass() + ". Ignoring file " + sourceFile);
-                continue;
-            }
-
-            //System.out.println("Adding file '" + sourceFile.getAbsolutePath() + "'");
-            fortranFiles.add(fortranFile);
-        }
 
         // Create root node
-        this.currentRoot = context.get(FortranContext.FACTORY).application(fortranFiles);
+        this.currentRoot = new ApplicationParser(fortranOptions).parse(allSourceFiles);
 
         return true;
+
     }
 
     /**
