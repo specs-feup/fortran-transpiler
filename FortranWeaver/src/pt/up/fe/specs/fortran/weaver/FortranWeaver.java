@@ -99,7 +99,16 @@ public class FortranWeaver extends AFortranWeaver {
 
         // Write output files
         for (var file : currentRoot.getFiles()) {
-            var outputFile = new File(currentOutputDir, file.get(FortranFile.FILE_NAME));
+            // Get relative path
+            var filename = file.get(FortranFile.FILE_NAME);
+            filename = SpecsIo.getExtension(filename).equals("json") ? SpecsIo.removeExtension(filename) + ".f90" : filename;
+            var folder = new File(file.get(FortranFile.FOLDER_NAME));
+            var inputSourcePath = new File(file.get(FortranFile.INPUT_SOURCE_PATH));
+
+
+            var baseOutputFile = inputSourcePath.isFile() ? filename : SpecsIo.getRelativePath(folder, inputSourcePath) + "/" + filename;
+
+            var outputFile = new File(currentOutputDir, baseOutputFile);
             SpecsLogs.info("Writing file '" + outputFile.getAbsolutePath() + "'");
             SpecsIo.write(outputFile, file.getCode());
         }
