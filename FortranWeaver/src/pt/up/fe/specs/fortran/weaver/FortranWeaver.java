@@ -21,6 +21,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Weaver Implementation for FortranWeaver<br>
@@ -37,7 +38,7 @@ public class FortranWeaver extends AFortranWeaver {
     private File currentOutputDir;
     private DataStore currentArgs;
 
-    private List<File> allSourceFiles;
+    private Map<File, File> allSourceFiles;
     private Application currentRoot;
 
     public FortranWeaver() {
@@ -45,7 +46,7 @@ public class FortranWeaver extends AFortranWeaver {
         this.currentOutputDir = new File(DEFAULT_OUTPUT_DIR);
         this.currentArgs = new SimpleDataStore(getStoreDefinition());
 
-        this.allSourceFiles = Collections.emptyList();
+        this.allSourceFiles = Collections.emptyMap();
         this.currentRoot = null;
     }
 
@@ -65,20 +66,17 @@ public class FortranWeaver extends AFortranWeaver {
         //this.currentOutputDir = outputDir;
         this.currentArgs = args;
 
-        // TODO: Create a mapping between original source and a given source file,
-        // in order to be able to replicate source structure in the output folder
+        this.allSourceFiles = SourcesGatherer.build(sources, List.of("json", "f90")).getSourceFiles();
 
-        this.allSourceFiles = getAllSourceFiles();
-
-        // TODO: This shoudl be extracted to its own class, probably in FortranParser?
+        // TODO: This should be extracted to its own class, probably in FortranParser?
         // Generate a FortranFile for each source file
         var fortranFiles = new ArrayList<FortranFile>();
         // TODO: Options should come from the weaver datakeys
         var fortranOptions = DataStore.newInstance(FortranOptions.STORE_DEFINITION);
         var context = new FortranContext(fortranOptions);
 
-        System.out.println("SOURCE FILES: " + allSourceFiles);
-        for (var sourceFile : allSourceFiles) {
+        //System.out.println("SOURCE FILES: " + allSourceFiles);
+        for (var sourceFile : allSourceFiles.keySet()) {
             var parseResult = FortranJsonParser.parse(sourceFile, context);
             var rootNode = new FortranAstBuilder(parseResult).build();
 
@@ -87,7 +85,7 @@ public class FortranWeaver extends AFortranWeaver {
                 continue;
             }
 
-            System.out.println("Adding file '" + sourceFile.getAbsolutePath() + "'");
+            //System.out.println("Adding file '" + sourceFile.getAbsolutePath() + "'");
             fortranFiles.add(fortranFile);
         }
 
@@ -95,40 +93,6 @@ public class FortranWeaver extends AFortranWeaver {
         this.currentRoot = context.get(FortranContext.FACTORY).application(fortranFiles);
 
         return true;
-    }
-
-    private List<File> getAllSourceFiles() {
-        var allSources = new ArrayList<File>();
-
-        for (var source : currentSources) {
-            addSource(source, allSources);
-        }
-
-        return allSources;
-    }
-
-    private void addSource(File source, ArrayList<File> allSources) {
-        // Base case
-        if (source.isFile()) {
-            var extension = SpecsIo.getExtension(source);
-
-            if (!extension.equals("json")) {
-                SpecsLogs.info("Ignoring file '" + source + "', currently only supporting .json extension");
-                return;
-            }
-
-            allSources.add(source);
-            return;
-        }
-
-        if (source.isDirectory()) {
-            for (var childSource : SpecsIo.getFilesRecursive(source, List.of("json", "f90"))) {
-                addSource(childSource, allSources);
-            }
-            return;
-        }
-
-        SpecsLogs.info("Ignoring source: " + source);
     }
 
     /**
