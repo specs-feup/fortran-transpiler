@@ -31,3 +31,6 @@ gradle/
 build/
 gradlew
 gradlew.bat
+
+# Weaver
+*/weaver_output/**

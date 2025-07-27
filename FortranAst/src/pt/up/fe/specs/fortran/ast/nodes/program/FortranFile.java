@@ -26,6 +26,13 @@ public class FortranFile extends FortranNode {
      */
     public static final DataKey<String> FOLDER_NAME = KeyFactory.string("folderName").setDefault(() -> "./");
 
+    /**
+     * The original source path that originated this file. If this source file was explicitly specified, returns the path to the source; if this source file was specified as being part of a source folder, returns the name of that folder.
+     * <p>
+     * For instance, if the path of the file is ./folder1/folder2/file.f90, and the input source path was ./folder1, this method returns ./folder1.
+     */
+    public static final DataKey<String> INPUT_SOURCE_PATH = KeyFactory.string("inputSourcePath");
+
     public FortranFile(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);
     }
