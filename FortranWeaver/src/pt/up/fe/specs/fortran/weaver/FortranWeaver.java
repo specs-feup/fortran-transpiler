@@ -30,7 +30,7 @@ import java.util.Map;
  */
 public class FortranWeaver extends AFortranWeaver {
 
-    private final static String DEFAULT_OUTPUT_DIR = "weaver_output";
+    private final static String DEFAULT_OUTPUT_DIR = "woven_code";
 
     private List<File> currentSources;
     private File currentOutputDir;
