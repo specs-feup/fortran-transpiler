@@ -1,6 +1,6 @@
 {
-  "name": "@specs-feup/fortran-transpiler",
-  "version": "1.0.0",
+  "name": "@specs-feup/metafor",
+  "version": "0.0.1",
   "description": "A Fortran source-to-source compiler written in Typescript",
   "type": "module",
   "files": [
@@ -20,7 +20,7 @@
     "typedoc.config.js"
   ],
   "bin": {
-    "clava": "./code/index.js"
+    "metafor": "./code/index.js"
   },
   "scripts": {
     "run": "node ./code/index.js",
