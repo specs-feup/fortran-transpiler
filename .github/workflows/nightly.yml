@@ -48,6 +48,10 @@ jobs:
           gradle-version: current
           dependency-graph: generate-and-submit
 
+      - name: Setup Flag 20
+        run: |
+          sudo apt install flang-20          
+
       - name: Checkout Fortran Transpiler
         uses: actions/checkout@v4
         with:
