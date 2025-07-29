@@ -59,7 +59,8 @@ public class FortranNativeParser {
 
         // Check if Linux
         if (!SpecsSystem.isLinux()) {
-            throw new RuntimeException("Fortran input files only supported in Linux operating system");
+            //SpecsLogs.info("Fortran input files only supported in Linux operating system, detected " + System.getProperty("os.name"));
+            throw new RuntimeException("Fortran input files only supported in Linux operating system, detected " + System.getProperty("os.name"));
         }
 
         // Check if flang-20 is available
