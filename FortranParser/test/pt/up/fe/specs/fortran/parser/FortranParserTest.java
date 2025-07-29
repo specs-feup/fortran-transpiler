@@ -17,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class FortranParserTest {
 
+    private static final DataStore DEFAULT_OPTIONS = DataStore.newInstance(FortranOptions.STORE_DEFINITION);
+
     @BeforeAll
     static void setupOnce() {
         SpecsSystem.programStandardInit();
@@ -64,6 +66,22 @@ public class FortranParserTest {
     @Test
     void testHelloWorld() {
         test("hello.json");
+    }
+
+    @Test
+    void testNativeParser() {
+        var context = new FortranContext(DEFAULT_OPTIONS);
+        var parser = new FortranNativeParser(context);
+
+        parser.parse(SpecsIo.toInputStream("""
+                program hello
+                    ! This is a comment line; it is ignored by the compiler
+                    print *, 'Hello, World!'
+                    ! print 100, 'Hello, World!', 2
+                    ! 100 FORMAT(A, I3)
+                    PRINT '(A, F6.3)', 'Value = ', 3
+                end program hello                
+                                """));
     }
 
 
