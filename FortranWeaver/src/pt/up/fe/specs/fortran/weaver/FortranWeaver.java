@@ -64,7 +64,7 @@ public class FortranWeaver extends AFortranWeaver {
         //this.currentOutputDir = outputDir;
         this.currentArgs = args;
 
-        this.allSourceFiles = SourcesGatherer.build(sources, List.of("json", "f90")).getSourceFiles();
+        this.allSourceFiles = SourcesGatherer.build(sources, List.of("json", "f90", "f", "for")).getSourceFiles();
 
         // TODO: Options should come from the weaver datakeys
         var fortranOptions = DataStore.newInstance(FortranOptions.STORE_DEFINITION);

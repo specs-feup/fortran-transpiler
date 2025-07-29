@@ -33,13 +33,14 @@ public class ApplicationParser {
 
 
         var context = new FortranContext(fortranOptions);
+        var parser = new FortranParser(context);
 
         //System.out.println("SOURCE FILES: " + allSourceFiles);
         for (var sourceFileMapping : sourceFiles.entrySet()) {
             var sourceFile = sourceFileMapping.getKey();
             var inputSourcePath = sourceFileMapping.getValue();
 
-            var parseResult = FortranJsonParser.parse(sourceFile, context);
+            var parseResult = parser.parse(sourceFile);
             var rootNode = new FortranAstBuilder(parseResult).build();
 
             if (!(rootNode instanceof FortranFile fortranFile)) {

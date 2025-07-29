@@ -17,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class FortranParserTest {
 
+    private static final DataStore DEFAULT_OPTIONS = DataStore.newInstance(FortranOptions.STORE_DEFINITION);
+
     @BeforeAll
     static void setupOnce() {
         SpecsSystem.programStandardInit();
@@ -39,9 +41,9 @@ public class FortranParserTest {
         var context = new FortranContext(fortranOptions);
         var parseResult = FortranJsonParser.parse(new InputStreamReader(SpecsIo.resourceToStream(resourceName), StandardCharsets.UTF_8), context);
         var rootNode = new FortranAstBuilder(parseResult).build();
-        System.out.println(parseResult);
-        System.out.println("AST: " + rootNode.toTree());
-        System.out.println("CODE:\n" + rootNode.getCode());
+        //System.out.println(parseResult);
+        //System.out.println("AST: " + rootNode.toTree());
+        //System.out.println("CODE:\n" + rootNode.getCode());
 
         //var code = parseResult.root().getCode();
         var code = rootNode.getCode();
@@ -64,6 +66,24 @@ public class FortranParserTest {
     @Test
     void testHelloWorld() {
         test("hello.json");
+    }
+
+    // GitHub actions do not support yet Ubuntu ^25, which has flang-20
+    // Disabling test until then
+    //@Test
+    void testNativeParser() {
+        var context = new FortranContext(DEFAULT_OPTIONS);
+        var parser = new FortranNativeParser(context);
+
+        parser.parse(SpecsIo.toInputStream("""
+                program hello
+                    ! This is a comment line; it is ignored by the compiler
+                    print *, 'Hello, World!'
+                    ! print 100, 'Hello, World!', 2
+                    ! 100 FORMAT(A, I3)
+                    PRINT '(A, F6.3)', 'Value = ', 3
+                end program hello                
+                                """));
     }
 
 
