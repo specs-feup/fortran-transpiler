@@ -41,9 +41,9 @@ public class FortranParserTest {
         var context = new FortranContext(fortranOptions);
         var parseResult = FortranJsonParser.parse(new InputStreamReader(SpecsIo.resourceToStream(resourceName), StandardCharsets.UTF_8), context);
         var rootNode = new FortranAstBuilder(parseResult).build();
-        System.out.println(parseResult);
-        System.out.println("AST: " + rootNode.toTree());
-        System.out.println("CODE:\n" + rootNode.getCode());
+        //System.out.println(parseResult);
+        //System.out.println("AST: " + rootNode.toTree());
+        //System.out.println("CODE:\n" + rootNode.getCode());
 
         //var code = parseResult.root().getCode();
         var code = rootNode.getCode();
@@ -68,7 +68,9 @@ public class FortranParserTest {
         test("hello.json");
     }
 
-    @Test
+    // GitHub actions do not support yet Ubuntu ^25, which has flang-20
+    // Disabling test until then
+    //@Test
     void testNativeParser() {
         var context = new FortranContext(DEFAULT_OPTIONS);
         var parser = new FortranNativeParser(context);
