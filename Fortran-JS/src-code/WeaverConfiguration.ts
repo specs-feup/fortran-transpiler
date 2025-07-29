@@ -3,7 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 export const weaverConfig: WeaverConfiguration = {
-  weaverName: "fortran-transpiler",
+  weaverName: "metafor",
   weaverPrettyName: "Fortran Transpiler",
   weaverFileName: "@specs-feup/lara/code/Weaver.js",
   jarPath: path.join(
@@ -12,7 +12,7 @@ export const weaverConfig: WeaverConfiguration = {
   ),
   javaWeaverQualifiedName: "pt.up.fe.specs.fortran.weaver.FortranWeaver",
   importForSideEffects: [
-    "@specs-feup/clava/api/Joinpoints.js",
-    "@specs-feup/clava/code/sideEffects.js",
+    "@specs-feup/metafor/api/Joinpoints.js",
+    "@specs-feup/metafor/code/sideEffects.js",
   ],
 };
