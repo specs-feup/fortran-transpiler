@@ -1,4 +1,5 @@
-src/**/abstracts/
+src/**/abstracts/*
+!src/**/abstracts/AFortranWeaverJoinPoint.java
 src/**/exceptions/FortranWeaverException.java
 src/**/enums/
 *.dotty
