@@ -4,3 +4,5 @@ src/**/exceptions/FortranWeaverException.java
 src/**/enums/
 *.dotty
 FortranWeaver.json
+FortranWeaver.png
+FortranWeaver.svg

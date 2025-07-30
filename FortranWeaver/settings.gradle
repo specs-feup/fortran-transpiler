@@ -11,5 +11,5 @@ includeBuild("../../lara-framework/LaraUtils")
 includeBuild("../../lara-framework/WeaverGenerator")
 includeBuild("../../lara-framework/WeaverInterface")
 
-includeBuild("../../fortran-transpiler/FortranAst")
-includeBuild("../../fortran-transpiler/FortranParser")
+includeBuild("../../metafor/FortranAst")
+includeBuild("../../metafor/FortranParser")

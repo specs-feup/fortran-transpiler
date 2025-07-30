@@ -1,6 +1,5 @@
 package pt.up.fe.specs.fortran.weaver.abstracts;
 
-import org.lara.interpreter.weaver.interf.SelectOp;
 import pt.up.fe.specs.fortran.weaver.FortranJoinpoints;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AJoinPoint;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AProgram;
@@ -23,14 +22,6 @@ public abstract class AFortranWeaverJoinPoint extends AJoinPoint {
     @Override
     public boolean compareNodes(AJoinPoint aJoinPoint) {
         return this.getNode().equals(aJoinPoint.getNode());
-    }
-
-    /**
-     * Generic select function, used by the default select implementations.
-     */
-    @Override
-    public <T extends AJoinPoint> List<? extends T> select(Class<T> joinPointClass, SelectOp op) {
-        throw new RuntimeException("Generic select function not implemented yet. Implement it in order to use the default implementations of select");
     }
 
     @Override

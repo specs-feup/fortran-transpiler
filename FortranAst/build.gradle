@@ -1,13 +1,13 @@
 plugins {
     id 'distribution'
+    id 'java' // Java project
 }
 
-// Java project
-apply plugin: 'java'
-
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+
+    withSourcesJar()
 }
 
 
@@ -23,20 +23,9 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 
-//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.12.2'
-//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.12.2'
-
     implementation ':GsonPlus'
     implementation ':jOptions'
     implementation ':SpecsUtils'
-
-//	implementation group: 'com.google.guava', name: 'guava', version: '19.0'	
-//	implementation group: 'com.google.code.gson', name: 'gson', version: '2.4'	
-
-}
-
-java {
-    withSourcesJar()
 }
 
 // Project sources

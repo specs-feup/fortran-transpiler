@@ -82,7 +82,7 @@ public class FortranWeaver extends AFortranWeaver {
      * @return an instance of the join point root/program
      */
     @Override
-    public JoinPoint select() {
+    public JoinPoint getRootJp() {
         return FortranJoinpoints.create(currentRoot);
     }
 

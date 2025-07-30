@@ -1,18 +1,14 @@
 plugins {
     id 'distribution'
+    id 'java' // Java project
 }
-
-// Java project
-apply plugin: 'java'
-
-// Executable
-apply plugin: 'application'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
-}
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 
+    withSourcesJar()
+}
 
 // Repositories providers
 repositories {
