@@ -22,7 +22,6 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 
     implementation ":FortranAst"
-    implementation ":CommonsLangPlus"
     implementation ":jOptions"
     implementation ":SpecsUtils"
     implementation ":GsonPlus"

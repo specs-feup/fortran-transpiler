@@ -37,9 +37,6 @@ dependencies {
     implementation ":FortranAst"
     implementation ":FortranParser"
 
-
-    //implementation group: 'com.google.code.gson', name: 'gson', version: '2.13.1'
-
     weaverGeneratorRuntime ":WeaverGenerator"
 }
 
