@@ -46,12 +46,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: current
-          dependency-graph: generate-and-submit
-
-      # Not available yet in latest ubuntu  
-      #- name: Setup Flag 20
-      #  run: |
-      #    sudo apt install flang-20          
+          dependency-graph: generate-and-submit   
 
       - name: Checkout Fortran Transpiler
         uses: actions/checkout@v4
@@ -100,7 +95,7 @@ jobs:
       - name: Install flang-20
         run: |
           cd flang-dumper/scripts
-          ./install-dependencies.sh
+          sudo ./install-dependencies.sh
  
           
       - name: Test FortranAst
