@@ -68,9 +68,7 @@ public class FortranParserTest {
         test("hello.json");
     }
 
-    // GitHub actions do not support yet Ubuntu ^25, which has flang-20
-    // Disabling test until then
-    //@Test
+    @Test
     void testNativeParser() {
         var context = new FortranContext(DEFAULT_OPTIONS);
         var parser = new FortranNativeParser(context);
