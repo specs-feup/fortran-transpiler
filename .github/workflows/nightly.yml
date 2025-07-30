@@ -46,12 +46,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: current
-          dependency-graph: generate-and-submit
-
-      # Not available yet in latest ubuntu  
-      #- name: Setup Flag 20
-      #  run: |
-      #    sudo apt install flang-20          
+          dependency-graph: generate-and-submit   
 
       - name: Checkout Fortran Transpiler
         uses: actions/checkout@v4
@@ -88,8 +83,8 @@ jobs:
           path: specs-java-libs
           # This is causing problems in PRs, for now it will always be the default branch
           #ref: ${{ steps.Branch-specs-java-libs.outputs.value == '1' && env.BRANCH_NAME || env.DEFAULT_BRANCH }}
-
-     - name: Checkout flang dumper, to install flang-20
+    
+      - name: Checkout flang dumper, to install flang-20
         uses: actions/checkout@v4
         with:
           repository: specs-feup/flang-dumper
@@ -97,10 +92,10 @@ jobs:
           ref: main
 
 
-     - name: Install flang-20
+      - name: Install flang-20
         run: |
           cd flang-dumper/scripts
-          ./install-dependencies.sh
+          sudo ./install-dependencies.sh
  
           
       - name: Test FortranAst
