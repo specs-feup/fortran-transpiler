@@ -1,5 +1,6 @@
 plugins {
     id 'distribution'
+    id 'application' // Executable
     id 'java' // Java project
 }
 
