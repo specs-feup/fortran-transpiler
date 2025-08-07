@@ -14,8 +14,9 @@ import java.util.Optional;
 
 public class FortranNativeParser {
 
-    private static final String ROOT_URL = "https://specs.fe.up.pt/resources/fortran/";
-    private static final WebResourceProvider LINUX_DUMPER = WebResourceProvider.newInstance(ROOT_URL, "DumpASTPlugin.so", "v1.0.0");
+    private static final WebResourceProvider LINUX_DUMPER =
+            WebResourceProvider.newInstance("https://github.com/specs-feup/flang-dumper/releases/download/plugin_dump_ast_v1.0.0/",
+                    "DumpASTPlugin.so", "v1.0.0");
 
     private static final Lazy<File> FLANG_DUMPER = Lazy.newInstance(FortranNativeParser::prepareDumper);
     private static final Lazy<File> TEMP_FOLDER = Lazy.newInstance(() -> SpecsIo.getTempFolder("metafor"));

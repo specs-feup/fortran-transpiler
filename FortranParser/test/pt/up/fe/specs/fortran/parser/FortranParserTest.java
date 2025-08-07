@@ -11,6 +11,7 @@ import pt.up.fe.specs.util.SpecsSystem;
 
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -26,11 +27,23 @@ public class FortranParserTest {
 
     private static final String BASE_RESOURCE = "fortran/parser/";
 
-    private static void test(String resource) {
-        test(resource, DataStore.newInstance(FortranOptions.STORE_DEFINITION));
+    private static void testNative(String resource) {
+        testNative(resource, DataStore.newInstance(FortranOptions.STORE_DEFINITION));
     }
 
-    private static void test(String resource, DataStore fortranOptions) {
+    private static void testNative(String resource, DataStore fortranOptions) {
+        test(resource, (r, c) -> new FortranNativeParser(c).parse(SpecsIo.resourceToStream(r)), fortranOptions);
+    }
+
+    private static void testJson(String resource) {
+        testJson(resource, DataStore.newInstance(FortranOptions.STORE_DEFINITION));
+    }
+
+    private static void testJson(String resource, DataStore fortranOptions) {
+        test(resource, (r, c) -> FortranJsonParser.parse(new InputStreamReader(SpecsIo.resourceToStream(r), StandardCharsets.UTF_8), c), fortranOptions);
+    }
+
+    private static void test(String resource, BiFunction<String, FortranContext, FortranJsonResult> parser, DataStore fortranOptions) {
         // Read json resource
         var resourceName = BASE_RESOURCE + resource;
         if (!SpecsIo.hasResource(resourceName)) {
@@ -39,13 +52,12 @@ public class FortranParserTest {
 
         // Parse
         var context = new FortranContext(fortranOptions);
-        var parseResult = FortranJsonParser.parse(new InputStreamReader(SpecsIo.resourceToStream(resourceName), StandardCharsets.UTF_8), context);
+        var parseResult = parser.apply(resourceName, context);
         var rootNode = new FortranAstBuilder(parseResult).build();
         //System.out.println(parseResult);
         //System.out.println("AST: " + rootNode.toTree());
         //System.out.println("CODE:\n" + rootNode.getCode());
 
-        //var code = parseResult.root().getCode();
         var code = rootNode.getCode();
 
         // Get expected output resource
@@ -65,23 +77,12 @@ public class FortranParserTest {
 
     @Test
     void testHelloWorld() {
-        test("hello.json");
+        testJson("hello.json");
     }
 
     @Test
     void testNativeParser() {
-        var context = new FortranContext(DEFAULT_OPTIONS);
-        var parser = new FortranNativeParser(context);
-
-        parser.parse(SpecsIo.toInputStream("""
-                program hello
-                    ! This is a comment line; it is ignored by the compiler
-                    print *, 'Hello, World!'
-                    ! print 100, 'Hello, World!', 2
-                    ! 100 FORMAT(A, I3)
-                    PRINT '(A, F6.3)', 'Value = ', 3
-                end program hello                
-                                """));
+        testNative("hello.f90");
     }
 
 
