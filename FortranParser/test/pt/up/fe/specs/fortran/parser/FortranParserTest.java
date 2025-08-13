@@ -3,8 +3,8 @@ package pt.up.fe.specs.fortran.parser;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.suikasoft.jOptions.Interfaces.DataStore;
+import pt.up.fe.specs.fortran.ast.FortranAstOptions;
 import pt.up.fe.specs.fortran.ast.FortranContext;
-import pt.up.fe.specs.fortran.ast.FortranOptions;
 import pt.up.fe.specs.util.SpecsIo;
 import pt.up.fe.specs.util.SpecsStrings;
 import pt.up.fe.specs.util.SpecsSystem;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class FortranParserTest {
 
-    private static final DataStore DEFAULT_OPTIONS = DataStore.newInstance(FortranOptions.STORE_DEFINITION);
+    private static final DataStore DEFAULT_OPTIONS = DataStore.newInstance(FortranAstOptions.STORE_DEFINITION);
 
     @BeforeAll
     static void setupOnce() {
@@ -28,7 +28,7 @@ public class FortranParserTest {
     private static final String BASE_RESOURCE = "fortran/parser/";
 
     private static void testNative(String resource) {
-        testNative(resource, DataStore.newInstance(FortranOptions.STORE_DEFINITION));
+        testNative(resource, DataStore.newInstance(FortranAstOptions.STORE_DEFINITION));
     }
 
     private static void testNative(String resource, DataStore fortranOptions) {
@@ -36,7 +36,7 @@ public class FortranParserTest {
     }
 
     private static void testJson(String resource) {
-        testJson(resource, DataStore.newInstance(FortranOptions.STORE_DEFINITION));
+        testJson(resource, DataStore.newInstance(FortranAstOptions.STORE_DEFINITION));
     }
 
     private static void testJson(String resource, DataStore fortranOptions) {
