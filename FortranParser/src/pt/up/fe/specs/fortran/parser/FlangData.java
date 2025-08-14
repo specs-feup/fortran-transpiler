@@ -44,21 +44,37 @@ public class FlangData {
         return attributes.get(id);
     }
 
+    /**
+     * If the id represents a node that is supported to be a base class of another node, returns the id of the
+     * corresponding "derived" node.
+     *
+     * @param id
+     * @return
+     */
+    public Optional<String> getDerivedId(String id) {
+
+        // If there is already a concrete FortranAst class for this id, there is no derivation
+        if (FlangToClass.isClass(getKind(id))) {
+            return Optional.empty();
+        }
+
+        // Calculate key to the next level
+        var key = id.endsWith("-Statement") ? REGEX_STMT : REGEX_VALUE;
+        var attrs = getAttrs(id);
+        var keys = attrs.getKeys();
+        var derivedId = attrs.getOptionalString(key).orElseThrow(() -> new RuntimeException("Could not find key '" + key + "' for id " + id + ": " + keys));
+
+        return Optional.of(derivedId);
+    }
+
     public String getChildId(String id) {
 
         var currentId = id;
-        // Get corresponding attributes
-        var attrs = getAttrs(currentId);
 
-        while (!FlangToClass.isClass(getKind(currentId))) {
-
-            // Calculate key to the next level
-            var key = currentId.endsWith("-Statement") ? REGEX_STMT : REGEX_VALUE;
-
-            var finalId = currentId;
-            var keys = attrs.getKeys();
-            currentId = attrs.getOptionalString(key).orElseThrow(() -> new RuntimeException("Could not find key '" + key + "' for id " + finalId + ": " + keys));
-            attrs = getAttrs(currentId);
+        var derivedId = getDerivedId(currentId).orElse(null);
+        while (derivedId != null) {
+            currentId = derivedId;
+            derivedId = getDerivedId(currentId).orElse(null);
         }
 
         return currentId;
