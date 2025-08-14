@@ -9,6 +9,7 @@ import pt.up.fe.specs.fortran.ast.nodes.program.*;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.ExecutableStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
+import pt.up.fe.specs.fortran.ast.nodes.utils.Label;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Star;
 import pt.up.fe.specs.util.SpecsCollections;
 
@@ -162,6 +163,15 @@ public class FortranNodeFactory {
     public Star star() {
         DataStore data = newDataStore(Star.class);
         return new Star(data, Collections.emptyList());
+    }
+
+    public Label label(int value) {
+        DataStore data = newDataStore(Label.class);
+        var label = new Label(data, Collections.emptyList());
+
+        label.set(Label.VALUE, value);
+
+        return label;
     }
 
 }
