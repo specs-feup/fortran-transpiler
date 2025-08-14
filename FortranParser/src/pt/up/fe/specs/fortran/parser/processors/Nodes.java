@@ -12,6 +12,9 @@ import pt.up.fe.specs.fortran.ast.nodes.utils.Star;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
 import pt.up.fe.specs.util.classmap.ConsumerClassMap;
 
+/**
+ * Maps node classes to processors for each class, which will populate each FortranAst node.
+ */
 public class Nodes {
 
     private final ConsumerClassMap<FortranNode> processors;
