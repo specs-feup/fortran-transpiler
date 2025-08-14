@@ -49,9 +49,10 @@ public class FlangData {
      * corresponding "derived" node.
      *
      * @param id
+     * @param isNode true if this id must correspond from a base or derived class (instead of a data class, such as Name)
      * @return
      */
-    public Optional<String> getDerivedId(String id) {
+    public Optional<String> getDerivedId(String id, boolean isNode) {
 
         // If there is already a concrete FortranAst class for this id, there is no derivation
         if (FlangToClass.isClass(getKind(id))) {
@@ -62,19 +63,25 @@ public class FlangData {
         var key = id.endsWith("-Statement") ? REGEX_STMT : REGEX_VALUE;
         var attrs = getAttrs(id);
         var keys = attrs.getKeys();
-        var derivedId = attrs.getOptionalString(key).orElseThrow(() -> new RuntimeException("Could not find key '" + key + "' for id " + id + ": " + keys));
 
-        return Optional.of(derivedId);
+        var idTry = attrs.getOptionalString(key);
+
+        if (isNode) {
+            var derivedId = idTry.orElseThrow(() -> new RuntimeException("Could not find key '" + key + "' for id " + id + ": " + keys));
+            return Optional.of(derivedId);
+        }
+
+        return idTry;
     }
 
     public String getChildId(String id) {
 
         var currentId = id;
 
-        var derivedId = getDerivedId(currentId).orElse(null);
+        var derivedId = getDerivedId(currentId, true).orElse(null);
         while (derivedId != null) {
             currentId = derivedId;
-            derivedId = getDerivedId(currentId).orElse(null);
+            derivedId = getDerivedId(currentId, true).orElse(null);
         }
 
         return currentId;
