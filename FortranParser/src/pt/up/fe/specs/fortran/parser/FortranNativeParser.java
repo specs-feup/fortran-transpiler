@@ -53,11 +53,17 @@ public class FortranNativeParser {
         //var flangExecution = SpecsSystem.runProcess(command, TEMP_FOLDER.get(), true, false);
         var flangExecution = SpecsSystem.runProcess(command, TEMP_FOLDER.get(), outputProcessor, stderrProcessor);
 
+
         if (flangExecution.getReturnValue() != 0) {
             throw new RuntimeException("Problems executing flang: " + flangExecution.getStdErr());
         }
 
+        if (flangExecution.getOutputException().isPresent()) {
+            throw new RuntimeException(flangExecution.getOutputException().get());
+        }
+
         return flangExecution.getStdOut();
+        //return FortranJsonParser.parse(new StringReader(flangExecution.getOutput()), context);
     }
 
     private FortranJsonResult parseStream(InputStream stream, File jsonOutput) {
@@ -70,7 +76,6 @@ public class FortranNativeParser {
 
         SpecsIo.write(jsonOutput, json);
         SpecsLogs.info("Wrote JSON output at '" + jsonOutput.getAbsolutePath() + "'");
-
         return FortranJsonParser.parse(new StringReader(json), context);
     }
 
