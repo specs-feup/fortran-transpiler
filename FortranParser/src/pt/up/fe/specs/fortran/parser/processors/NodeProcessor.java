@@ -33,6 +33,10 @@ public interface NodeProcessor {
         return getNode(attributes().getChildId(node, attribute));
     }
 
+    default String getChildId(FortranNode node, Pattern attribute) {
+        return attributes().getChildId(node, attribute);
+    }
+
     default FortranNode getChild(FortranNode node, Pattern attribute) {
         return getNode(attributes().getChildId(node, attribute));
     }
