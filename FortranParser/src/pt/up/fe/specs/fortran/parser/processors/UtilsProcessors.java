@@ -1,5 +1,7 @@
 package pt.up.fe.specs.fortran.parser.processors;
 
+import pt.up.fe.specs.fortran.ast.FortranContext;
+import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Star;
 import pt.up.fe.specs.fortran.parser.FlangData;
@@ -13,7 +15,16 @@ public class UtilsProcessors extends ANodeProcessor {
     }
 
     public void format(Format format) {
-        format.addChild(getChild(format, FlangData.getRegexValue()));
+
+        var childId = getChildId(format, FlangData.getRegexValue());
+
+        if (data().attributes().isIdInteger(childId)) {
+            format.addChild(format.get(FortranNode.CONTEXT).get(FortranContext.FACTORY).label(Integer.parseInt(childId)));
+            return;
+        }
+
+
+        format.addChild(getChild(childId));
     }
 
     public void star(Star star) {
