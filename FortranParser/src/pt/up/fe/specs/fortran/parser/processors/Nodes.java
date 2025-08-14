@@ -6,6 +6,7 @@ import pt.up.fe.specs.fortran.ast.nodes.expr.StringLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
 import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
 import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.FormatStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Star;
@@ -29,6 +30,7 @@ public class Nodes {
 
         var s = new StmtProcessors(data);
         processors.put(PrintStmt.class, s::printStmt);
+        processors.put(FormatStmt.class, s::formatStmt);
 
         var e = new ExprProcessors(data);
         processors.put(StringLiteral.class, e::stringLiteral);
