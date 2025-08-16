@@ -87,8 +87,8 @@ task generateWeaver(type: JavaExec) {
             "-o", "./src",
             "-p", "pt.up.fe.specs.fortran.weaver",
             "-n", "pt.up.fe.specs.fortran.ast.nodes.FortranNode",
-            "-j",
-            "-d",
+            "-e",
+            "-j"
     ]
 }
 
