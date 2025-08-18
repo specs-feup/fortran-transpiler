@@ -1,5 +1,7 @@
 package pt.up.fe.specs.fortran.parser.processors;
 
+import pt.up.fe.specs.fortran.ast.FortranContext;
+import pt.up.fe.specs.fortran.ast.FortranNodeFactory;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.parser.FlangAttributes;
 import pt.up.fe.specs.fortran.parser.FlangData;
@@ -13,6 +15,10 @@ import java.util.regex.Pattern;
 public interface NodeProcessor {
 
     FortranJsonResult data();
+
+    default FortranNodeFactory factory() {
+        return data().context().get(FortranContext.FACTORY);
+    }
 
     default FortranNode getChild(String id) {
         return getNode(data().attributes().getChildId(id));

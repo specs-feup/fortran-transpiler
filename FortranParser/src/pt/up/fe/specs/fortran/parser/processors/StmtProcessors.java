@@ -7,8 +7,6 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
 import pt.up.fe.specs.fortran.parser.FlangName;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
 
-import java.util.Optional;
-
 public class StmtProcessors extends ANodeProcessor {
 
 
@@ -20,7 +18,9 @@ public class StmtProcessors extends ANodeProcessor {
         executableStmt.set(ExecutableStmt.SOURCE, attributes(executableStmt).getString("source"));
 
         var label = attributes(executableStmt).getString("label");
-        executableStmt.set(ExecutableStmt.LABEL, Optional.ofNullable(label.equals("null") ? null : Integer.valueOf(label)));
+        if (!label.equals("null")) {
+            executableStmt.addChild(0, factory().labelDecl(Integer.valueOf(label)));
+        }
     }
 
 
@@ -38,7 +38,7 @@ public class StmtProcessors extends ANodeProcessor {
     public void formatStmt(FormatStmt formatStmt) {
         executableStmt(formatStmt);
 
-        
+
     }
 
 

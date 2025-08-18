@@ -42,7 +42,7 @@ public record FortranJsonResult(FortranContext context, String firstNode, Set<St
 
             var baseId = derivedToBase.get(nodeId);
             while (baseId != null) {
-                SpecsLogs.info("Merging " + baseId + " attrs into " + nodeId);
+                //SpecsLogs.info("Merging " + baseId + " attrs into " + nodeId);
                 nodeAttrs.merge(attributes.get(baseId));
                 baseId = derivedToBase.get(baseId);
             }
