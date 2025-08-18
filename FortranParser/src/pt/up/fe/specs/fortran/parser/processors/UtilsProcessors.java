@@ -18,8 +18,9 @@ public class UtilsProcessors extends ANodeProcessor {
 
         if (data().attributes().isIdInteger(childId)) {
             // Create placeholder LabelDecl
-            var labelDecl = factory().labelDecl(Integer.parseInt(childId));
-            format.addChild(factory().labelRef(labelDecl));
+            var labelRef = factory().labelRef(factory().labelDecl(Integer.parseInt(childId)));
+            format.addChild(labelRef);
+            data().processorData().addLabelRef(labelRef);
             return;
         }
 

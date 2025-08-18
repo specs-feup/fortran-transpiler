@@ -19,7 +19,9 @@ public class StmtProcessors extends ANodeProcessor {
 
         var label = attributes(executableStmt).getString("label");
         if (!label.equals("null")) {
-            executableStmt.addChild(0, factory().labelDecl(Integer.valueOf(label)));
+            var labelDecl = factory().labelDecl(Integer.valueOf(label));
+            data().processorData().addLabelDecl(labelDecl);
+            executableStmt.addChild(0, labelDecl);
         }
     }
 
