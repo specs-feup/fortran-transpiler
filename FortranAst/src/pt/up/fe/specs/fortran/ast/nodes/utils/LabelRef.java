@@ -26,8 +26,13 @@ public class LabelRef extends FortranNode {
         super(data, children);
     }
 
+    public Integer getLabel() {
+        return get(LABEL_DECL).get(LabelDecl.LABEL);
+    }
+
+
     @Override
     public String getCode() {
-        return get(LABEL_DECL).get(LabelDecl.LABEL).toString();
+        return getLabel().toString();
     }
 }
