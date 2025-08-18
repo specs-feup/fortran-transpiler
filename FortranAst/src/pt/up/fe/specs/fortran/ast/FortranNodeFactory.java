@@ -3,14 +3,16 @@ package pt.up.fe.specs.fortran.ast;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import org.suikasoft.jOptions.storedefinition.StoreDefinitions;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
+import pt.up.fe.specs.fortran.ast.nodes.decl.LabelDecl;
 import pt.up.fe.specs.fortran.ast.nodes.expr.Literal;
 import pt.up.fe.specs.fortran.ast.nodes.expr.StringLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.program.*;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.ExecutableStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
-import pt.up.fe.specs.fortran.ast.nodes.utils.Label;
+import pt.up.fe.specs.fortran.ast.nodes.utils.LabelRef;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Star;
+import pt.up.fe.specs.util.SpecsCheck;
 import pt.up.fe.specs.util.SpecsCollections;
 
 import java.util.Collection;
@@ -134,6 +136,15 @@ public class FortranNodeFactory {
         return new PrintStmt(data, SpecsCollections.concat(format, outputItems));
     }
 
+    // DECL
+    public LabelDecl labelDecl(int label) {
+        SpecsCheck.checkArgument(label >= 1 && label <= 99999, () -> "Expected label to be between 1 and 99999, is " + label);
+
+        DataStore data = newDataStore(LabelDecl.class);
+        data.set(LabelDecl.LABEL, label);
+
+        return new LabelDecl(data, Collections.emptyList());
+    }
 
     // EXPR
 
@@ -165,13 +176,12 @@ public class FortranNodeFactory {
         return new Star(data, Collections.emptyList());
     }
 
-    public Label label(int value) {
-        DataStore data = newDataStore(Label.class);
-        var label = new Label(data, Collections.emptyList());
+    public LabelRef labelRef(LabelDecl labelDecl) {
+        DataStore data = newDataStore(LabelRef.class);
 
-        label.set(Label.VALUE, value);
+        data.set(LabelRef.LABEL_DECL, labelDecl);
 
-        return label;
+        return new LabelRef(data, Collections.emptyList());
     }
 
 }
