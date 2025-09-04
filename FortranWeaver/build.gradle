@@ -76,19 +76,19 @@ test {
 
 
 // Run the weaver generator
-task generateWeaver(type: JavaExec) {
+tasks.register('generateWeaver', JavaExec) {
     group = "Execution"
     description = "Generates the Weaver Abstracts"
     classpath = configurations.weaverGeneratorRuntime
     mainClass = 'org.lara.interpreter.weaver.generator.commandline.WeaverGenerator'
     args = [
-            "-w", "FortranWeaver",
-            "-x", "./resources/fortran/weaverspecs",
-            "-o", "./src",
-            "-p", "pt.up.fe.specs.fortran.weaver",
-            "-n", "pt.up.fe.specs.fortran.ast.nodes.FortranNode",
-            "-e",
-            "-j"
+        "-w", "FortranWeaver",
+        "-x", "./resources/fortran/weaverspecs",
+        "-o", "./src",
+        "-p", "pt.up.fe.specs.fortran.weaver",
+        "-n", "pt.up.fe.specs.fortran.ast.nodes.FortranNode",
+        "-e",
+        "-j"
     ]
 }
 
