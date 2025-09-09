@@ -1,10 +1,10 @@
 package pt.up.fe.specs.fortran.parser;
 
-import pt.up.fe.specs.util.SpecsCheck;
 import pt.up.fe.specs.util.providers.StringProvider;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -86,7 +86,7 @@ public class FlangAttributes {
 
     public <T> List<T> getList(String key, Function<Object, T> converter) {
         var list = (List<Object>) attributes.get(key);
-        SpecsCheck.checkNotNull(list, () -> "Attrs do not have a value for key '" + key + "': " + attributes);
+        Objects.requireNonNull(list, () -> "Attrs do not have a value for key '" + key + "': " + attributes);
         return list.stream().map(obj -> converter.apply(obj)).toList();
     }
 

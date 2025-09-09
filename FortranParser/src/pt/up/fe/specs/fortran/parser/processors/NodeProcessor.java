@@ -5,9 +5,9 @@ import pt.up.fe.specs.fortran.parser.FlangAttributes;
 import pt.up.fe.specs.fortran.parser.FlangData;
 import pt.up.fe.specs.fortran.parser.FlangName;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
-import pt.up.fe.specs.util.SpecsCheck;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public interface NodeProcessor {
@@ -20,7 +20,7 @@ public interface NodeProcessor {
 
     default FortranNode getNode(String id) {
         var node = data().fortranNodes().get(id);
-        SpecsCheck.checkNotNull(node, () -> "Could not find a FortranNode for id '" + id + "'");
+        Objects.requireNonNull(node, () -> "Could not find a FortranNode for id '" + id + "'");
         return node;
     }
 
@@ -51,7 +51,7 @@ public interface NodeProcessor {
 
         default FlangAttributes getAttrs(String id) {
             var attrs = data().attributes().get(id);
-            SpecsCheck.checkNotNull(attrs, () -> "Id '" + id + "' does not have attributes associated: " + data().attributes());
+            Objects.requireNonNull(attrs, () -> "Id '" + id + "' does not have attributes associated: " + data().attributes());
             return attrs;
         }
     */
@@ -63,7 +63,7 @@ public interface NodeProcessor {
     /*
     default String getString(Map<String, Object> attrs, String key) {
         var value = attrs.get(key);
-        SpecsCheck.checkNotNull(value, () -> "No attribute '" + key + "': " + attrs);
+        Objects.requireNonNull(value, () -> "No attribute '" + key + "': " + attrs);
         return value.toString();
     }
 */
