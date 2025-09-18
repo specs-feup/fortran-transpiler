@@ -1,15 +1,17 @@
 rootProject.name = 'FortranWeaver'
 
+def specsJavaLibsRoot = System.getenv('SPECS_JAVA_LIBS_HOME') ?: '../../specs-java-libs'
+def laraFrameworkRoot = System.getenv('LARA_FRAMEWORK_HOME') ?: '../../lara-framework'
 
-includeBuild("../../specs-java-libs/jOptions")
-includeBuild("../../specs-java-libs/SpecsUtils")
-includeBuild("../../specs-java-libs/GsonPlus")
+includeBuild("${specsJavaLibsRoot}/jOptions")
+includeBuild("${specsJavaLibsRoot}/SpecsUtils")
+includeBuild("${specsJavaLibsRoot}/GsonPlus")
 
-includeBuild("../../lara-framework/LanguageSpecification")
-includeBuild("../../lara-framework/LARAI")
-includeBuild("../../lara-framework/LaraUtils")
-includeBuild("../../lara-framework/WeaverGenerator")
-includeBuild("../../lara-framework/WeaverInterface")
+includeBuild("${laraFrameworkRoot}/LanguageSpecification")
+includeBuild("${laraFrameworkRoot}/LARAI")
+includeBuild("${laraFrameworkRoot}/LaraUtils")
+includeBuild("${laraFrameworkRoot}/WeaverGenerator")
+includeBuild("${laraFrameworkRoot}/WeaverInterface")
 
-includeBuild("../../metafor/FortranAst")
-includeBuild("../../metafor/FortranParser")
+includeBuild("../FortranAst")
+includeBuild("../FortranParser")
