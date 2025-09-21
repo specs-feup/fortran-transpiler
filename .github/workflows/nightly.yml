@@ -98,21 +98,21 @@ jobs:
       - name: Test FortranAst
         run: |
           cd metafor/FortranAst
-          gradle test
+          gradle build
         env:
           GITHUB_DEPENDENCY_GRAPH_ENABLED: false
 
       - name: Test FortranParser
         run: |
           cd metafor/FortranParser
-          gradle test
+          gradle build
         env:
           GITHUB_DEPENDENCY_GRAPH_ENABLED: false
 
       - name: Test Metafor
         run: |
           cd metafor/FortranWeaver
-          gradle test
+          gradle build installDist
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v4
