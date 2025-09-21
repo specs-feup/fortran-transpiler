@@ -1,7 +1,7 @@
 plugins {
     id 'distribution'
-    id 'application' // Executable
-    id 'java' // Java project
+    id 'application'
+    id 'java'
 }
 
 java {
@@ -21,10 +21,8 @@ configurations {
 }
 
 dependencies {
-
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.10.0'
+    testRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.10.0'
 
     implementation ":jOptions"
     implementation ":SpecsUtils"
@@ -41,39 +39,30 @@ dependencies {
     weaverGeneratorRuntime ":WeaverGenerator"
 }
 
-java {
-    withSourcesJar()
-}
-
 // Project sources
 sourceSets {
     main {
         java {
             srcDir 'src'
         }
-
         resources {
             srcDir 'resources'
         }
     }
 
-
     test {
         java {
             srcDir 'test'
         }
-
         resources {
             srcDir 'resources-test'
         }
     }
-
 }
 
 test {
-    useJUnitPlatform() // REQUIRED for JUnit 5
+    useJUnitPlatform()
 }
-
 
 // Run the weaver generator
 tasks.register('generateWeaver', JavaExec) {

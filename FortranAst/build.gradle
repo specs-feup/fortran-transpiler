@@ -1,6 +1,6 @@
 plugins {
     id 'distribution'
-    id 'java' // Java project
+    id 'java'
 }
 
 java {
@@ -10,18 +10,14 @@ java {
     withSourcesJar()
 }
 
-
 // Repositories providers
 repositories {
     mavenCentral()
 }
 
 dependencies {
-
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-
-    testImplementation 'org.junit.jupiter:junit-jupiter-api'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.10.0'
+    testRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-launcher', version: '1.10.0'
 
     implementation ':GsonPlus'
     implementation ':jOptions'
@@ -34,7 +30,6 @@ sourceSets {
         java {
             srcDir 'src'
         }
-
         resources {
             srcDir 'resources'
         }
@@ -44,15 +39,12 @@ sourceSets {
         java {
             srcDir 'test'
         }
-
         resources {
             srcDir 'resources-test'
         }
-
     }
-
 }
 
 test {
-    useJUnitPlatform() // REQUIRED for JUnit 5
+    useJUnitPlatform()
 }
