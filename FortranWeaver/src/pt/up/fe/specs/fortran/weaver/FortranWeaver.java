@@ -4,11 +4,12 @@ import org.lara.interpreter.weaver.interf.AGear;
 import org.lara.interpreter.weaver.interf.JoinPoint;
 import org.lara.interpreter.weaver.interf.WeaverEngine;
 import org.lara.interpreter.weaver.options.WeaverOption;
+import org.lara.interpreter.weaver.options.WeaverOptionUtils;
 import org.lara.interpreter.weaver.utils.SourcesGatherer;
 import org.lara.language.specification.dsl.LanguageSpecification;
 import org.suikasoft.jOptions.DataStore.SimpleDataStore;
 import org.suikasoft.jOptions.Interfaces.DataStore;
-import pt.up.fe.specs.fortran.ast.FortranOptions;
+import pt.up.fe.specs.fortran.ast.FortranAstOptions;
 import pt.up.fe.specs.fortran.ast.nodes.program.Application;
 import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
 import pt.up.fe.specs.fortran.parser.ApplicationParser;
@@ -66,8 +67,7 @@ public class FortranWeaver extends AFortranWeaver {
 
         this.allSourceFiles = SourcesGatherer.build(sources, List.of("json", "f90", "f", "for")).getSourceFiles();
 
-        // TODO: Options should come from the weaver datakeys
-        var fortranOptions = DataStore.newInstance(FortranOptions.STORE_DEFINITION);
+        var fortranOptions = args;
 
         // Create root node
         this.currentRoot = new ApplicationParser(fortranOptions).parse(allSourceFiles);
@@ -135,7 +135,7 @@ public class FortranWeaver extends AFortranWeaver {
      */
     @Override
     public List<WeaverOption> getOptions() {
-        return List.of(); //i.e., no additional options
+        return WeaverOptionUtils.toWeaverOption(FortranAstOptions.STORE_DEFINITION);
     }
 
     /**

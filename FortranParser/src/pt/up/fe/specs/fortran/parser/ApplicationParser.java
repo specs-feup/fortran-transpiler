@@ -50,7 +50,7 @@ public class ApplicationParser {
 
             // Annotate file note
             fortranFile.set(FortranFile.FILE_NAME, sourceFile.getName());
-            fortranFile.set(FortranFile.FOLDER_NAME, sourceFile.getParentFile().getAbsolutePath());
+            fortranFile.set(FortranFile.FOLDER_NAME, sourceFile.getAbsoluteFile().getParent());
             fortranFile.set(FortranFile.INPUT_SOURCE_PATH, inputSourcePath.getAbsolutePath());
 
             fortranFiles.add(fortranFile);

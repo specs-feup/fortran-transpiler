@@ -1,8 +1,12 @@
 package pt.up.fe.specs.fortran.parser.processors;
 
+import pt.up.fe.specs.fortran.ast.nodes.stmt.ActionStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.ExecutableStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
 import pt.up.fe.specs.fortran.parser.FlangName;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
+
+import java.util.Optional;
 
 public class StmtProcessors extends ANodeProcessor {
 
@@ -12,8 +16,20 @@ public class StmtProcessors extends ANodeProcessor {
     }
 
     public void printStmt(PrintStmt printStmt) {
+        actionStmt(printStmt);
         printStmt.addChild(getChild(printStmt, FlangName.FORMAT));
         printStmt.addChildren(getChildren(printStmt, FlangName.OUTPUT_ITEM));
+    }
+
+    private void actionStmt(ActionStmt actionStmt) {
+        executableStmt(actionStmt);
+    }
+
+    private void executableStmt(ExecutableStmt executableStmt) {
+        executableStmt.set(ExecutableStmt.SOURCE, attributes(executableStmt).getString("source"));
+
+        var label = attributes(executableStmt).getString("label");
+        executableStmt.set(ExecutableStmt.LABEL, Optional.ofNullable(label.equals("null") ? null : Integer.valueOf(label)));
     }
 
 

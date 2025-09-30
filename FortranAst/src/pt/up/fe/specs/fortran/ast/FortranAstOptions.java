@@ -6,7 +6,7 @@ import org.suikasoft.jOptions.storedefinition.StoreDefinition;
 import org.suikasoft.jOptions.storedefinition.StoreDefinitionBuilder;
 import org.suikasoft.jOptions.storedefinition.StoreDefinitionProvider;
 
-public interface FortranOptions extends StoreDefinitionProvider {
+public interface FortranAstOptions extends StoreDefinitionProvider {
 
     DataKey<Boolean> LOWERCASE_KEYWORDS = KeyFactory.bool("lowercaseKeywords")
             .setLabel("Generates keywords in lower-case");
