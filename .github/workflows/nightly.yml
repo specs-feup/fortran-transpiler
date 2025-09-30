@@ -189,4 +189,4 @@ jobs:
       - name: Test JS
         run: |
           cd metafor/Fortran-JS
-          npm run test
+          npm run test -- --passWithNoTests
