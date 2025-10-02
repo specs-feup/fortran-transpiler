@@ -85,5 +85,15 @@ public class FortranParserTest {
         testNative("hello.f90");
     }
 
+    @Test
+    void testDeclarationNative() {
+        testNative("declaration.f90");
+    }
+
+
+    @Test
+    void testDeclaration() {
+        testJson("declaration.json");
+    }
 
 }
