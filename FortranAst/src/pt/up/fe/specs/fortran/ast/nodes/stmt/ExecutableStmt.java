@@ -13,7 +13,7 @@ import java.util.Optional;
 /**
  * R514 executable-construct
  */
-public abstract class ExecutableStmt extends FortranNode {
+public abstract class ExecutableStmt extends Stmt {
 
     // DATAKEYS BEGIN
 
