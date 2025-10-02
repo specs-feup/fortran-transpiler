@@ -46,7 +46,9 @@ public class ProgramProcessors extends ANodeProcessor {
     }
 
     public void execution(Execution execution) {
-        execution.setChildren(getChildren(execution, FlangName.EXECUTION_PART_CONSTRUCT));
+        if (attributes(execution).has(FlangName.EXECUTION_PART_CONSTRUCT)) {
+            execution.setChildren(getChildren(execution, FlangName.EXECUTION_PART_CONSTRUCT));
+        }
     }
 
 
