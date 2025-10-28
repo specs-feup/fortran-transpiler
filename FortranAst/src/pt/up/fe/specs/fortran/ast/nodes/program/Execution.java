@@ -16,20 +16,21 @@ import java.util.List;
  * <p>
  * Contains statements to execute
  */
-public class Execution extends FortranNode {
+public class Execution extends StmtBlock {
 
     public Execution(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);
     }
 
-    public List<ExecutableStmt> getStatements() {
+    public List<ExecutableStmt> getExecutableStatements() {
         return getChildren(ExecutableStmt.class);
     }
+
 
     @Override
     public String getCode() {
         var code = new StringBuilder();
-        for (var stmt : getStatements()) {
+        for (var stmt : getExecutableStatements()) {
 
             System.out.println("LABEL: " + stmt.getLabel());
             stmt.getLabel().ifPresent(label -> code.append(label.get(LabelDecl.LABEL) + " "));
