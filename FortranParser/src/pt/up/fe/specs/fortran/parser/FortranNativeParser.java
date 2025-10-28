@@ -19,7 +19,7 @@ import java.util.function.Function;
 
 public class FortranNativeParser {
 
-    private static final boolean SAVE_JSON = false;
+    private static final boolean SAVE_JSON = true;
 
     private static final WebResourceProvider LINUX_DUMPER =
             WebResourceProvider.newInstance("https://github.com/specs-feup/flang-dumper/releases/download/plugin_dump_ast_v1.0.1/",

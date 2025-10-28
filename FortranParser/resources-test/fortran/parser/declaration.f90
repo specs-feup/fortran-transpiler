@@ -1,6 +1,9 @@
 PROGRAM declaration
 
-    integer :: a
+    integer :: a, b = 1;
+    
+    !integer i;
+    ! i = 1
 
     ! a = 5
 

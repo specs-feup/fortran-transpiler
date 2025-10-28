@@ -1,9 +1,6 @@
 package pt.up.fe.specs.fortran.parser.processors;
 
-import pt.up.fe.specs.fortran.ast.nodes.stmt.ActionStmt;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.ExecutableStmt;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.FormatStmt;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.*;
 import pt.up.fe.specs.fortran.parser.FlangName;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
 
@@ -39,8 +36,16 @@ public class StmtProcessors extends ANodeProcessor {
 
     public void formatStmt(FormatStmt formatStmt) {
         executableStmt(formatStmt);
+    }
 
+    public void typeDeclarationStmt(TypeDeclarationStmt typeDeclarationStmt) {
+        var entityDecls = getChildren(typeDeclarationStmt, FlangName.ENTITY_DECL);
 
+        var type = getChild(typeDeclarationStmt, FlangName.DECLARATION_TYPE_SPEC);
+
+        entityDecls.stream().forEach(entityDecl -> entityDecl.addChild(0, type));
+        
+        typeDeclarationStmt.setChildren(entityDecls);
     }
 
 

@@ -49,6 +49,11 @@ public class ProgramProcessors extends ANodeProcessor {
 
     public void specification(Specification specification) {
 
+        if (attributes(specification).has(FlangName.DECLARATION_CONSTRUCT)) {
+            specification.setChildren(getChildren(specification, FlangName.DECLARATION_CONSTRUCT));
+        }
+
+
     }
 
     public void execution(Execution execution) {

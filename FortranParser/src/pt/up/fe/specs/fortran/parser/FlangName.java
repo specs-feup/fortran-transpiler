@@ -12,11 +12,17 @@ public enum FlangName implements StringProvider {
     MAIN_PROGRAM,
     PROGRAM_UNIT,
     SPECIFICATION_PART,
+    DECLARATION_CONSTRUCT,
     IMPLICIT_PART,
     EXECUTION_PART,
     BLOCK,
     EXECUTION_PART_CONSTRUCT,
     EXECUTABLE_CONSTRUCT,
+
+    /// DECLs
+    ENTITY_DECL,
+
+    /// STMTs
     PROGRAM_STMT,
     END_PROGRAM_STMT,
     ACTION_STMT,
@@ -25,12 +31,22 @@ public enum FlangName implements StringProvider {
     NAME,
     FORMAT,
     OUTPUT_ITEM,
+    TYPE_DECLARATION_STMT,
+
+
+    /// EXPRs
     EXPR,
     LITERAL_CONSTANT,
     CHAR_LITERAL_CONSTANT,
     INT_LITERAL_CONSTANT,
     STAR,
-    ;
+
+    /// TYPEs
+    DECLARATION_TYPE_SPEC,
+    INTEGER_TYPE_SPEC,
+
+    // OTHER
+    INITIALIZATION;
 
     private static final Lazy<EnumHelper<FlangName>> HELPER = EnumHelper.newLazyHelper(FlangName.class);
 
