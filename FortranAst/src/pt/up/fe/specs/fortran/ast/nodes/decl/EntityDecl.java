@@ -4,6 +4,7 @@ import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
+import pt.up.fe.specs.fortran.ast.nodes.type.FortranType;
 
 import java.util.Collection;
 
@@ -24,4 +25,14 @@ public class EntityDecl extends FortranDecl {
     }
 
 
+    public FortranType getType() {
+        return getChild(FortranType.class, 0);
+    }
+
+    @Override
+    public String getCode() {
+        // TODO: Add initialization when supported
+
+        return get(NAME);
+    }
 }
