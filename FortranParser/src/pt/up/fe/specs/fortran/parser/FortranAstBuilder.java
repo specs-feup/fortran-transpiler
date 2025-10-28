@@ -9,11 +9,14 @@ import pt.up.fe.specs.util.SpecsCheck;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Builds a Fortran AST based on the processed data.
  */
 public class FortranAstBuilder {
+
+    private static final String UNUSED_LABEL = "unused_label";
 
     private final FortranJsonResult data;
 
@@ -56,13 +59,21 @@ public class FortranAstBuilder {
         // Create LabelDecl map, based on the execution block each label is
         Map<String, LabelDecl> labelDecls = new HashMap<>();
         for (var labelDecl : data.processorData().getLabelDecls()) {
-            var id = getLabelDeclId(getProgramUnitId(labelDecl), labelDecl.get(LabelDecl.LABEL));
+            // Refs that are not used do not have LabelDecl in the code
+            // TODO: Check if this is the correct way of handling this
+            var prefix = getProgramUnitIdTry(labelDecl).orElse(UNUSED_LABEL);
+
+            var id = getLabelDeclId(prefix, labelDecl.get(LabelDecl.LABEL));
             labelDecls.put(id, labelDecl);
         }
 
         // For each LabelRef, replace with corresponding LabelDecl
         for (var labelRef : data.processorData().getLabelRefs()) {
-            var id = getLabelDeclId(getProgramUnitId(labelRef), labelRef.getLabel());
+            // Refs that are not used do not have LabelDecl in the code
+            // TODO: Check if this is the correct way of handling this
+            var prefix = getProgramUnitIdTry(labelRef).orElse(UNUSED_LABEL);
+
+            var id = getLabelDeclId(prefix, labelRef.getLabel());
             var labelDecl = labelDecls.get(id);
             SpecsCheck.checkNotNull(labelDecl, () -> "Expected to find a LabelDecl for '" + id + "', but none was found: " + labelDecls);
             labelRef.set(LabelRef.LABEL_DECL, labelDecl);
@@ -73,8 +84,12 @@ public class FortranAstBuilder {
         return programUnitId + "#" + labelId.toString();
     }
 
+    private Optional<String> getProgramUnitIdTry(FortranNode node) {
+        return node.getAncestorTry(ProgramUnit.class).map(programUnit -> programUnit.get(FortranNode.ID));
+    }
+
     private String getProgramUnitId(FortranNode node) {
-        return node.getAncestor(ProgramUnit.class).get(FortranNode.ID);
+        return getProgramUnitIdTry(node).orElseThrow(() -> new RuntimeException("Node without ProgramUnit, probably is not in tree: " + node));
     }
 
 
