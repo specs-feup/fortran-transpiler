@@ -134,6 +134,6 @@ public class FlangAttributes {
     }
 
     public boolean has(FlangName key) {
-        return getKeys().contains(key);
+        return getKeys().contains(key.getString());
     }
 }
