@@ -6,6 +6,7 @@ import pt.up.fe.specs.fortran.ast.nodes.expr.StringLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
 import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
 import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
+import pt.up.fe.specs.fortran.ast.nodes.program.Specification;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.FormatStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
@@ -22,6 +23,7 @@ public class FlangToClass {
     static {
         NAME_TO_CLASS.put(FlangName.PROGRAM, FortranFile.class);
         NAME_TO_CLASS.put(FlangName.MAIN_PROGRAM, MainProgram.class);
+        NAME_TO_CLASS.put(FlangName.SPECIFICATION_PART, Specification.class);
         NAME_TO_CLASS.put(FlangName.EXECUTION_PART, Execution.class);
         NAME_TO_CLASS.put(FlangName.PRINT_STMT, PrintStmt.class);
         NAME_TO_CLASS.put(FlangName.FORMAT_STMT, FormatStmt.class);

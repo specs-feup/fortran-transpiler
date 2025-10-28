@@ -6,12 +6,14 @@ import pt.up.fe.specs.fortran.ast.nodes.expr.StringLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
 import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
 import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
+import pt.up.fe.specs.fortran.ast.nodes.program.Specification;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.FormatStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Star;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
 import pt.up.fe.specs.util.classmap.ConsumerClassMap;
+import pt.up.fe.specs.util.exceptions.NotImplementedException;
 
 /**
  * Maps node classes to processors for each class, which will populate each FortranAst node.
@@ -26,6 +28,7 @@ public class Nodes {
         var p = new ProgramProcessors(data);
         processors.put(FortranFile.class, p::program);
         processors.put(MainProgram.class, p::mainProgram);
+        processors.put(Specification.class, p::specification);
         processors.put(Execution.class, p::execution);
 
         var s = new StmtProcessors(data);
@@ -43,7 +46,12 @@ public class Nodes {
     }
 
     public void process(FortranNode node) {
-        processors.accept(node);
+        try {
+            processors.accept(node);
+        } catch (NotImplementedException e) {
+            throw new RuntimeException("Could not find a processor for node of class '" + node.getClass() + "', please add a mapping in class " + Nodes.class + ".");
+        }
+
     }
 
 }
