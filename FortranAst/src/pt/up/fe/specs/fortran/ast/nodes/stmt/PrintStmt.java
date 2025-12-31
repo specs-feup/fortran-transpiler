@@ -4,6 +4,7 @@ import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.FortranKeyword;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
+import pt.up.fe.specs.util.SpecsCheck;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,11 +20,13 @@ public class PrintStmt extends ActionStmt {
     }
 
     public Format getFormat() {
-        return getChild(Format.class, 0);
+        return getChild(Format.class);
     }
 
     public List<FortranNode> getOutputItems() {
-        return getChildren().subList(1, getNumChildren());
+        var formatIndex = getChildIndex(Format.class);
+        SpecsCheck.checkArgument(formatIndex >= 0, () -> "Could not find a child of type " + Format.class);
+        return getChildren().subList(formatIndex + 1, getNumChildren());
     }
 
     @Override

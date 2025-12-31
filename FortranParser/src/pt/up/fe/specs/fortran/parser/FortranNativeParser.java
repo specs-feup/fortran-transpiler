@@ -19,11 +19,11 @@ import java.util.function.Function;
 
 public class FortranNativeParser {
 
-    private static final boolean SAVE_JSON = false;
+    private static final boolean SAVE_JSON = true;
 
     private static final WebResourceProvider LINUX_DUMPER =
-            WebResourceProvider.newInstance("https://github.com/specs-feup/flang-dumper/releases/download/plugin_dump_ast_v1.0.0/",
-                    "DumpASTPlugin.so", "v1.0.0");
+            WebResourceProvider.newInstance("https://github.com/specs-feup/flang-dumper/releases/download/plugin_dump_ast_v1.0.1/",
+                    "DumpASTPlugin.so", "v1.0.1");
 
     private static final Lazy<File> FLANG_DUMPER = Lazy.newInstance(FortranNativeParser::prepareDumper);
     private static final Lazy<File> TEMP_FOLDER = Lazy.newInstance(() -> SpecsIo.getTempFolder("metafor"));
@@ -53,11 +53,17 @@ public class FortranNativeParser {
         //var flangExecution = SpecsSystem.runProcess(command, TEMP_FOLDER.get(), true, false);
         var flangExecution = SpecsSystem.runProcess(command, TEMP_FOLDER.get(), outputProcessor, stderrProcessor);
 
+
         if (flangExecution.getReturnValue() != 0) {
             throw new RuntimeException("Problems executing flang: " + flangExecution.getStdErr());
         }
 
+        if (flangExecution.getOutputException().isPresent()) {
+            throw new RuntimeException(flangExecution.getOutputException().get());
+        }
+
         return flangExecution.getStdOut();
+        //return FortranJsonParser.parse(new StringReader(flangExecution.getOutput()), context);
     }
 
     private FortranJsonResult parseStream(InputStream stream, File jsonOutput) {
@@ -70,7 +76,6 @@ public class FortranNativeParser {
 
         SpecsIo.write(jsonOutput, json);
         SpecsLogs.info("Wrote JSON output at '" + jsonOutput.getAbsolutePath() + "'");
-
         return FortranJsonParser.parse(new StringReader(json), context);
     }
 

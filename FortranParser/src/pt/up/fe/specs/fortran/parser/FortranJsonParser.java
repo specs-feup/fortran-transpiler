@@ -146,11 +146,19 @@ public class FortranJsonParser implements JsonReaderParser {
      * @param id
      * @return
      */
-    public static String getKind(String id) {
+    public static String getKind(String id, boolean strict) {
         var dashIdx = id.indexOf('-');
-        SpecsCheck.checkArgument(dashIdx != -1, () -> "Expected to finda dash (-) that signals the beginning of the node kind");
+        if (!strict && dashIdx != -1) {
+            return null;
+        }
+        
+        SpecsCheck.checkArgument(dashIdx != -1, () -> "Expected to find a dash (-) that signals the beginning of the node kind: " + id);
 
         return id.substring(dashIdx + 1);
+    }
+
+    public static String getKind(String id) {
+        return getKind(id, true);
     }
 
 }

@@ -53,6 +53,7 @@ public class ApplicationParser {
             fortranFile.set(FortranFile.FOLDER_NAME, sourceFile.getAbsoluteFile().getParent());
             fortranFile.set(FortranFile.INPUT_SOURCE_PATH, inputSourcePath.getAbsolutePath());
 
+
             fortranFiles.add(fortranFile);
         }
 

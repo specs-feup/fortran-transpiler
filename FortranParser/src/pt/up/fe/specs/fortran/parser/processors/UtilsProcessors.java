@@ -13,7 +13,18 @@ public class UtilsProcessors extends ANodeProcessor {
     }
 
     public void format(Format format) {
-        format.addChild(getChild(format, FlangData.getRegexValue()));
+
+        var childId = getChildId(format, FlangData.getRegexValue());
+
+        if (data().attributes().isIdInteger(childId)) {
+            // Create placeholder LabelDecl
+            var labelRef = factory().labelRef(factory().labelDecl(Integer.parseInt(childId)));
+            format.addChild(labelRef);
+            data().processorData().addLabelRef(labelRef);
+            return;
+        }
+
+        format.addChild(getChild(childId));
     }
 
     public void star(Star star) {
