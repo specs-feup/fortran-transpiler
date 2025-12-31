@@ -3,8 +3,8 @@ package pt.up.fe.specs.fortran.ast.nodes.expr;
 import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
 import org.suikasoft.jOptions.Interfaces.DataStore;
+import pt.up.fe.specs.fortran.ast.FortranAstOptions;
 import pt.up.fe.specs.fortran.ast.FortranContext;
-import pt.up.fe.specs.fortran.ast.FortranOptions;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 
 import java.util.Collection;
@@ -31,7 +31,7 @@ public class StringLiteral extends Literal {
 
     @Override
     public String getCode() {
-        char delimiter = get(CONTEXT).get(FortranContext.FORTRAN_OPTIONS).get(FortranOptions.SINGLE_QUOTE_STRINGS) ?
+        char delimiter = get(CONTEXT).get(FortranContext.FORTRAN_OPTIONS).get(FortranAstOptions.SINGLE_QUOTE_STRINGS) ?
                 '\'' : '"';
 
         var code = new StringBuilder();

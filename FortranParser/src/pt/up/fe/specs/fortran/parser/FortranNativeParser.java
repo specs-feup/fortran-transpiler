@@ -2,17 +2,24 @@ package pt.up.fe.specs.fortran.parser;
 
 import pt.up.fe.specs.fortran.ast.FortranContext;
 import pt.up.fe.specs.util.SpecsIo;
+import pt.up.fe.specs.util.SpecsLogs;
 import pt.up.fe.specs.util.SpecsSystem;
 import pt.up.fe.specs.util.lazy.Lazy;
 import pt.up.fe.specs.util.providers.WebResourceProvider;
+import pt.up.fe.specs.util.system.OutputType;
+import pt.up.fe.specs.util.system.StreamToString;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class FortranNativeParser {
+
+    private static final boolean SAVE_JSON = false;
 
     private static final WebResourceProvider LINUX_DUMPER =
             WebResourceProvider.newInstance("https://github.com/specs-feup/flang-dumper/releases/download/plugin_dump_ast_v1.0.0/",
@@ -36,13 +43,35 @@ public class FortranNativeParser {
 
         // Execute flang to obtain json
         var command = List.of("flang-20", "-fc1", "-load", plugin.getAbsolutePath(), "-plugin", "dump-ast", file.getAbsolutePath());
-        var flangExecution = SpecsSystem.runProcess(command, TEMP_FOLDER.get(), true, false);
+
+        var jsonFile = SAVE_JSON ? new File(file.getAbsoluteFile().getParentFile(), file.getName() + ".json") : null;
+
+        // Use runProcess that uses outputProcessor, to process json as a stream
+        Function<InputStream, FortranJsonResult> outputProcessor = (stdout) -> parseStream(stdout, jsonFile);
+        Function<InputStream, String> stderrProcessor = new StreamToString(false, true, OutputType.StdErr);
+
+        //var flangExecution = SpecsSystem.runProcess(command, TEMP_FOLDER.get(), true, false);
+        var flangExecution = SpecsSystem.runProcess(command, TEMP_FOLDER.get(), outputProcessor, stderrProcessor);
 
         if (flangExecution.getReturnValue() != 0) {
-            throw new RuntimeException("Problems executing flang: " + flangExecution.getOutput());
+            throw new RuntimeException("Problems executing flang: " + flangExecution.getStdErr());
         }
 
-        return FortranJsonParser.parse(new StringReader(flangExecution.getStdOut()), context);
+        return flangExecution.getStdOut();
+    }
+
+    private FortranJsonResult parseStream(InputStream stream, File jsonOutput) {
+        if (jsonOutput == null) {
+            return FortranJsonParser.parse(new InputStreamReader(stream), context);
+        }
+
+        // Read the stream to a string first
+        var json = SpecsIo.read(stream);
+
+        SpecsIo.write(jsonOutput, json);
+        SpecsLogs.info("Wrote JSON output at '" + jsonOutput.getAbsolutePath() + "'");
+
+        return FortranJsonParser.parse(new StringReader(json), context);
     }
 
     public FortranJsonResult parse(InputStream input) {

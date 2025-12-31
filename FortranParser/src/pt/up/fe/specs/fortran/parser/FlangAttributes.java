@@ -1,6 +1,8 @@
 package pt.up.fe.specs.fortran.parser;
 
 import pt.up.fe.specs.util.SpecsCheck;
+import pt.up.fe.specs.util.SpecsCollections;
+import pt.up.fe.specs.util.SpecsLogs;
 import pt.up.fe.specs.util.providers.StringProvider;
 
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 
 public class FlangAttributes {
+
+    private static final Set<String> EXPECTED_COMMON_KEYS = Set.of("id", "value");
 
     private final Map<String, Object> attributes;
 
@@ -93,5 +97,39 @@ public class FlangAttributes {
     public Optional<Object> getOptional(String key) {
         var value = attributes.get(key);
         return Optional.ofNullable(value.toString());
+    }
+
+    /**
+     * Adds the given attributes to the current attributes, without overwritting existing attributes.
+     *
+     * @param givenAttributes
+     */
+    public void merge(FlangAttributes givenAttributes) {
+        var currentKeys = this.attributes.keySet();
+        var mergingKeys = givenAttributes.attributes.keySet();
+
+        // Check intersection of keys
+        var intersection = SpecsCollections.intersection(currentKeys, mergingKeys);
+        // Remove expected common keys
+        intersection.removeAll(EXPECTED_COMMON_KEYS);
+        // Warn if not empty
+        if (!intersection.isEmpty()) {
+            SpecsLogs.info("There are unexpected common keys while merging attributes: " + intersection);
+        }
+
+        // Add non-existing keys from given attributes
+        for (var key : mergingKeys) {
+
+            // Do not merge these keys
+            if (EXPECTED_COMMON_KEYS.contains(key)) {
+                continue;
+            }
+
+            if (attributes.containsKey(key)) {
+                continue;
+            }
+
+            attributes.put(key, givenAttributes.attributes.get(key));
+        }
     }
 }

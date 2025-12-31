@@ -65,18 +65,18 @@ public class FortranContext extends ADataClass<FortranContext> {
 
 
     /**
-     * A DataStore with options from {@link FortranOptions}.
+     * A DataStore with options from {@link FortranAstOptions}.
      *
      * @param fortranOptions
      */
     public FortranContext(DataStore fortranOptions) {
         set(FORTRAN_OPTIONS, fortranOptions);
         set(FACTORY, new FortranNodeFactory(this));
-        set(FORTRAN_KEYWORDS, new FortranKeywords(fortranOptions.get(FortranOptions.LOWERCASE_KEYWORDS)));
+        set(FORTRAN_KEYWORDS, new FortranKeywords(fortranOptions.get(FortranAstOptions.LOWERCASE_KEYWORDS)));
     }
 
     public FortranContext() {
-        this(DataStore.newInstance(FortranOptions.STORE_DEFINITION));
+        this(DataStore.newInstance(FortranAstOptions.STORE_DEFINITION));
     }
 
 
