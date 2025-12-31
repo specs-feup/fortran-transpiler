@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.FortranAstOptions;
 import pt.up.fe.specs.fortran.ast.FortranContext;
+import pt.up.fe.specs.lang.SpecsPlatforms;
 import pt.up.fe.specs.util.SpecsIo;
 import pt.up.fe.specs.util.SpecsStrings;
 import pt.up.fe.specs.util.SpecsSystem;
@@ -82,12 +83,17 @@ public class FortranParserTest {
 
     @Test
     void testNativeParser() {
-        testNative("hello.f90");
+        if (SpecsPlatforms.isLinux()) {
+            testNative("hello.f90");
+        }
+
     }
 
     @Test
     void testDeclarationNative() {
-        testNative("declaration.f90");
+        if (SpecsPlatforms.isLinux()) {
+            testNative("declaration.f90");
+        }
     }
 
 
