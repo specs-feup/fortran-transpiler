@@ -4,6 +4,7 @@ import org.lara.interpreter.weaver.interf.JoinPoint;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.utils.Position;
 import pt.up.fe.specs.fortran.weaver.FortranJoinpoints;
+import pt.up.fe.specs.fortran.weaver.FortranWeaver;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AJoinPoint;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AProgram;
 import pt.up.fe.specs.util.SpecsLogs;
@@ -23,6 +24,20 @@ import java.util.stream.Stream;
 public abstract class AFortranWeaverJoinPoint extends AJoinPoint {
 
     /**
+     * 
+     */
+    public AFortranWeaverJoinPoint(FortranWeaver weaver){
+        super(weaver);
+    }
+    /**
+     * Returns the Weaving Engine this join point pertains to.
+     */
+    @Override
+    public FortranWeaver getWeaverEngine() {
+        return (FortranWeaver) super.getWeaverEngine();
+    }
+
+    /**
      * Compares the two join points based on their node reference of the used compiler/parsing tool.<br>
      * This is the default implementation for comparing two join points. <br>
      * <b>Note for developers:</b> A weaver may override this implementation in the editable abstract join point, so
@@ -40,7 +55,7 @@ public abstract class AFortranWeaverJoinPoint extends AJoinPoint {
 
     @Override
     public AJoinPoint getParentImpl() {
-        return FortranJoinpoints.create(getNode().getParent());
+        return FortranJoinpoints.create(getNode().getParent(), getWeaverEngine());
     }
 
     @Override
