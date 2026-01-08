@@ -23,16 +23,16 @@ import pt.up.fe.specs.fortran.weaver.joinpoints.FProgram;
 import pt.up.fe.specs.fortran.weaver.joinpoints.GenericFortranJoinpoint;
 import pt.up.fe.specs.util.SpecsCollections;
 import pt.up.fe.specs.util.SpecsLogs;
-import pt.up.fe.specs.util.classmap.FunctionClassMap;
+import pt.up.fe.specs.util.classmap.BiFunctionClassMap;
 
 import java.util.List;
 
 public class FortranJoinpoints {
 
-    private static final FunctionClassMap<FortranNode, AFortranWeaverJoinPoint> JOINPOINT_FACTORY;
+    private static final BiFunctionClassMap<FortranNode, FortranWeaver, AFortranWeaverJoinPoint> JOINPOINT_FACTORY;
 
     static {
-        JOINPOINT_FACTORY = new FunctionClassMap<>();
+        JOINPOINT_FACTORY = new BiFunctionClassMap<>();
 
         JOINPOINT_FACTORY.put(Application.class, FProgram::new);
         JOINPOINT_FACTORY.put(FortranFile.class, FFile::new);
@@ -40,31 +40,31 @@ public class FortranJoinpoints {
     }
 
 
-    private static AFortranWeaverJoinPoint defaultFactory(FortranNode node) {
+    private static AFortranWeaverJoinPoint defaultFactory(FortranNode node, FortranWeaver weaver) {
         SpecsLogs.warn("Factory not defined for nodes of class '" + node.getClass().getSimpleName() + "'");
-        return new GenericFortranJoinpoint(node);
+        return new GenericFortranJoinpoint(node, weaver);
     }
 
-    public static AFortranWeaverJoinPoint create(FortranNode node) {
+    public static AFortranWeaverJoinPoint create(FortranNode node, FortranWeaver weaver) {
         if (node == null) {
             SpecsLogs.debug("CxxJoinpoints: tried to create join point from null node, returning undefined");
             return null;
         }
 
-        return JOINPOINT_FACTORY.apply(node);
+        return JOINPOINT_FACTORY.apply(node, weaver);
     }
 
-    public static <T extends AJoinPoint> T create(FortranNode node, Class<T> targetClass) {
+    public static <T extends AJoinPoint> T create(FortranNode node, FortranWeaver weaver, Class<T> targetClass) {
         if (targetClass == null) {
             throw new RuntimeException("Check if you meant to call 'create' with a single argument");
         }
 
-        return targetClass.cast(create(node));
+        return targetClass.cast(create(node, weaver));
     }
 
-    public static <T extends AJoinPoint> T[] create(List<? extends FortranNode> nodes, Class<T> targetClass) {
+    public static <T extends AJoinPoint> T[] create(List<? extends FortranNode> nodes, FortranWeaver weaver, Class<T> targetClass) {
         return nodes.stream()
-                .map(node -> create(node, targetClass))
+                .map(node -> create(node, weaver, targetClass))
                 .toArray(size -> SpecsCollections.newArray(targetClass, size));
     }
 }
