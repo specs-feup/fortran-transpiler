@@ -32,7 +32,7 @@ import java.util.Map;
  */
 public class FortranWeaver extends AFortranWeaver {
 
-    private final static String DEFAULT_OUTPUT_DIR = "woven_code";
+    private final static String WOVEN_CODE_DIR = "woven_code";
 
     private List<File> currentSources;
     private DataStore currentArgs;
@@ -94,8 +94,10 @@ public class FortranWeaver extends AFortranWeaver {
     @Override
     public boolean close() {
 
-        var outputFolder = currentArgs.hasValue(LaraiKeys.OUTPUT_FOLDER) ? currentArgs.get(LaraiKeys.OUTPUT_FOLDER) :
-                new File(DEFAULT_OUTPUT_DIR);
+        var baseOutputFolder = currentArgs.hasValue(LaraiKeys.OUTPUT_FOLDER) ? currentArgs.get(LaraiKeys.OUTPUT_FOLDER) :
+                new File("./");
+
+        var outputFolder = new File(baseOutputFolder, WOVEN_CODE_DIR);
 
         // Make sure output folder exists
         SpecsIo.mkdir(outputFolder);
