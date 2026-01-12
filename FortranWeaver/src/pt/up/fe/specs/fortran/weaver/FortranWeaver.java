@@ -1,5 +1,6 @@
 package pt.up.fe.specs.fortran.weaver;
 
+import org.lara.interpreter.joptions.config.interpreter.LaraiKeys;
 import org.lara.interpreter.weaver.interf.AGear;
 import org.lara.interpreter.weaver.interf.JoinPoint;
 import org.lara.interpreter.weaver.interf.WeaverEngine;
@@ -34,7 +35,6 @@ public class FortranWeaver extends AFortranWeaver {
     private final static String DEFAULT_OUTPUT_DIR = "woven_code";
 
     private List<File> currentSources;
-    private File currentOutputDir;
     private DataStore currentArgs;
 
     private Map<File, File> allSourceFiles;
@@ -42,7 +42,6 @@ public class FortranWeaver extends AFortranWeaver {
 
     public FortranWeaver() {
         this.currentSources = Collections.emptyList();
-        this.currentOutputDir = new File(DEFAULT_OUTPUT_DIR);
         this.currentArgs = new SimpleDataStore(getStoreDefinition());
 
         this.allSourceFiles = Collections.emptyMap();
@@ -62,6 +61,7 @@ public class FortranWeaver extends AFortranWeaver {
 
         // Set fields
         this.currentSources = sources;
+
         //this.currentOutputDir = outputDir;
         this.currentArgs = args;
 
@@ -94,8 +94,11 @@ public class FortranWeaver extends AFortranWeaver {
     @Override
     public boolean close() {
 
+        var outputFolder = currentArgs.hasValue(LaraiKeys.OUTPUT_FOLDER) ? currentArgs.get(LaraiKeys.OUTPUT_FOLDER) :
+                new File(DEFAULT_OUTPUT_DIR);
+
         // Make sure output folder exists
-        SpecsIo.mkdir(currentOutputDir);
+        SpecsIo.mkdir(outputFolder);
 
         // Write output files
         for (var file : currentRoot.getFiles()) {
@@ -108,12 +111,12 @@ public class FortranWeaver extends AFortranWeaver {
 
             var baseOutputFile = inputSourcePath.isFile() ? filename : SpecsIo.getRelativePath(folder, inputSourcePath) + "/" + filename;
 
-            var outputFile = new File(currentOutputDir, baseOutputFile);
+            var outputFile = new File(outputFolder, baseOutputFile);
             SpecsLogs.info("Writing file '" + outputFile.getAbsolutePath() + "'");
             SpecsIo.write(outputFile, file.getCode());
         }
 
-        SpecsLogs.info("Output files written to folder " + currentOutputDir.getAbsolutePath());
+        SpecsLogs.info("Output files written to folder " + outputFolder.getAbsolutePath());
 
         return true;
     }
