@@ -2,7 +2,6 @@ package pt.up.fe.specs.fortran.parser;
 
 import pt.up.fe.specs.fortran.ast.FortranContext;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
-import pt.up.fe.specs.util.SpecsLogs;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +41,7 @@ public record FortranJsonResult(FortranContext context, String firstNode, Set<St
 
             var baseId = derivedToBase.get(nodeId);
             while (baseId != null) {
-                SpecsLogs.info("Merging " + baseId + " attrs into " + nodeId);
+                //SpecsLogs.info("Merging " + baseId + " attrs into " + nodeId);
                 nodeAttrs.merge(attributes.get(baseId));
                 baseId = derivedToBase.get(baseId);
             }
