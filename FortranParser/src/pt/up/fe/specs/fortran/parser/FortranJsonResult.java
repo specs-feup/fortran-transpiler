@@ -2,6 +2,7 @@ package pt.up.fe.specs.fortran.parser;
 
 import pt.up.fe.specs.fortran.ast.FortranContext;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
+import pt.up.fe.specs.fortran.parser.processors.ProcessorData;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,16 +10,22 @@ import java.util.Set;
 
 public record FortranJsonResult(FortranContext context, String firstNode, Set<String> ids,
                                 Map<String, FortranNode> fortranNodes,
-                                FlangData attributes) {
+                                FlangData attributes, ProcessorData processorData) {
 
-    public FortranJsonResult(FortranContext context, String firstNode, Set<String> ids, Map<String, FortranNode> fortranNodes, FlangData attributes) {
+    public FortranJsonResult(FortranContext context, String firstNode, Set<String> ids, Map<String, FortranNode> fortranNodes, FlangData attributes, ProcessorData processorData) {
         this.context = context;
         this.firstNode = firstNode;
         this.ids = ids;
         this.fortranNodes = fortranNodes;
         this.attributes = attributes;
+        // This object will contain data obtained during processing of nodes
+        this.processorData = new ProcessorData();
 
         postProcess();
+    }
+
+    public FortranJsonResult(FortranContext context, String firstNode, Set<String> ids, Map<String, FortranNode> fortranNodes, FlangData attributes) {
+        this(context, firstNode, ids, fortranNodes, attributes, new ProcessorData());
     }
 
     private void postProcess() {

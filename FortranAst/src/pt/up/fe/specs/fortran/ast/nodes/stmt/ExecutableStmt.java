@@ -4,6 +4,8 @@ import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
+import pt.up.fe.specs.fortran.ast.nodes.decl.LabelDecl;
+import pt.up.fe.specs.util.SpecsCollections;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -11,7 +13,7 @@ import java.util.Optional;
 /**
  * R514 executable-construct
  */
-public abstract class ExecutableStmt extends FortranNode {
+public abstract class ExecutableStmt extends Stmt {
 
     // DATAKEYS BEGIN
 
@@ -20,15 +22,15 @@ public abstract class ExecutableStmt extends FortranNode {
      */
     public final static DataKey<String> SOURCE = KeyFactory.string("source");
 
-    /**
-     * An integer, from 1 to 99999, representing the possible label of the statement.
-     */
-    public final static DataKey<Optional<Integer>> LABEL = KeyFactory.optional("label");
-
 
     // DATAKEYS END
 
     public ExecutableStmt(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);
+    }
+
+    public Optional<LabelDecl> getLabel() {
+        var labelDecls = getChildrenOf(LabelDecl.class);
+        return SpecsCollections.toOptional(labelDecls);
     }
 }

@@ -44,6 +44,11 @@ public class FlangData {
         return attributes.get(id);
     }
 
+    public boolean isIdInteger(String id) {
+        return Character.isDigit(id.charAt(id.length() - 1));
+    }
+
+
     /**
      * If the id represents a node that is supported to be a base class of another node, returns the id of the
      * corresponding "derived" node.
@@ -53,6 +58,12 @@ public class FlangData {
      * @return
      */
     public Optional<String> getDerivedId(String id, boolean isNode) {
+        // Check if id is an integer
+        if (isIdInteger(id)) {
+            //System.out.println("Ignoring " + id);
+            return Optional.empty();
+        }
+
 
         // If there is already a concrete FortranAst class for this id, there is no derivation
         if (FlangToClass.isClass(getKind(id))) {
@@ -67,7 +78,8 @@ public class FlangData {
         var idTry = attrs.getOptionalString(key);
 
         if (isNode) {
-            var derivedId = idTry.orElseThrow(() -> new RuntimeException("Could not find key '" + key + "' for id " + id + ": " + keys));
+            var derivedId = idTry.orElseThrow(() -> new RuntimeException("Could not find key '" + key + "' for id " + id + ", which has the following keys: " + keys +
+                    "\n -> this can mean that this is a concrete FortranAst node that does not exist yet. Create the node in FortranAst project, and an entry in enum FlangName corresponding to the Flang node, and then add the mapping in the class FlangToClass. Finally, add a processor for the node in the class Nodes."));
             return Optional.of(derivedId);
         }
 
@@ -118,16 +130,12 @@ public class FlangData {
         return getAttrs(node).getList(key, converter);
     }
 
+
     public String getKind(String id) {
         return FortranJsonParser.getKind(id);
     }
 
-    /*
-        public boolean hasStmt(Map<String, Object> attrs, FlangName flangName) {
-            var stmtName = getStmtAttr(flangName);
-            return attrs.containsKey(stmtName);
-        }
-    */
+
     public String getStmtAttr(FlangName flangName) {
         return "Statement<" + flangName.getString() + ">";
     }

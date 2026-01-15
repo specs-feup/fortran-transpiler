@@ -2,10 +2,11 @@ package pt.up.fe.specs.fortran.ast.nodes.program;
 
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
-import pt.up.fe.specs.util.utilities.StringLines;
+import pt.up.fe.specs.fortran.ast.nodes.decl.LabelDecl;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.ExecutableStmt;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.List;
 
 
 /**
@@ -15,20 +16,27 @@ import java.util.stream.Collectors;
  * <p>
  * Contains statements to execute
  */
-public class Execution extends FortranNode {
+public class Execution extends StmtBlock {
 
     public Execution(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);
     }
 
+    public List<ExecutableStmt> getExecutableStatements() {
+        return getChildren(ExecutableStmt.class);
+    }
+
+
     @Override
     public String getCode() {
+        var code = new StringBuilder();
+        for (var stmt : getExecutableStatements()) {
 
-        var body = getChildren().stream()
-                .map(FortranNode::getCode)
-                .flatMap(s -> StringLines.getLines(s).stream())
-                .collect(Collectors.joining(ln()));
+            System.out.println("LABEL: " + stmt.getLabel());
+            stmt.getLabel().ifPresent(label -> code.append(label.get(LabelDecl.LABEL) + " "));
 
-        return body;
+            code.append(stmt.getCode()).append(ln());
+        }
+        return code.toString();
     }
 }
