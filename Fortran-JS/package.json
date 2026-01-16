@@ -54,7 +54,7 @@
   },
   "homepage": "https://github.com/specs-feup/fortran-transpiler#readme",
   "dependencies": {
-    "@specs-feup/lara": "^3.5.0"
+    "@specs-feup/lara": "~3.5.0"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
