@@ -1,12 +1,17 @@
 package pt.up.fe.specs.fortran.parser;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
+import pt.up.fe.specs.fortran.ast.nodes.decl.EntityDecl;
 import pt.up.fe.specs.fortran.ast.nodes.expr.IntLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.expr.StringLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
 import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
 import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
+import pt.up.fe.specs.fortran.ast.nodes.program.Specification;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.FormatStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.PrintStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.TypeDeclarationStmt;
+import pt.up.fe.specs.fortran.ast.nodes.type.IntegerType;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Star;
 
@@ -21,12 +26,26 @@ public class FlangToClass {
     static {
         NAME_TO_CLASS.put(FlangName.PROGRAM, FortranFile.class);
         NAME_TO_CLASS.put(FlangName.MAIN_PROGRAM, MainProgram.class);
+        NAME_TO_CLASS.put(FlangName.SPECIFICATION_PART, Specification.class);
         NAME_TO_CLASS.put(FlangName.EXECUTION_PART, Execution.class);
+
+        /// DECLs
+        NAME_TO_CLASS.put(FlangName.ENTITY_DECL, EntityDecl.class);
+
+        /// STMTs
         NAME_TO_CLASS.put(FlangName.PRINT_STMT, PrintStmt.class);
+        NAME_TO_CLASS.put(FlangName.FORMAT_STMT, FormatStmt.class);
+        NAME_TO_CLASS.put(FlangName.TYPE_DECLARATION_STMT, TypeDeclarationStmt.class);
+
+        /// EXPRs
         NAME_TO_CLASS.put(FlangName.CHAR_LITERAL_CONSTANT, StringLiteral.class);
         NAME_TO_CLASS.put(FlangName.INT_LITERAL_CONSTANT, IntLiteral.class);
         NAME_TO_CLASS.put(FlangName.FORMAT, Format.class);
         NAME_TO_CLASS.put(FlangName.STAR, Star.class);
+
+        /// TYPEs
+        NAME_TO_CLASS.put(FlangName.INTEGER_TYPE_SPEC, IntegerType.class);
+
     }
 
     public static boolean isClass(String type) {

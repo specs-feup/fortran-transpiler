@@ -38,8 +38,10 @@ public class IntLiteral extends Literal {
 
         // Get kind param prefix
         var prefix = get(KIND_PARAM).map(p -> p + "_").orElse("");
+        code.append(prefix);
 
+        code.append(getLiteral());
 
-        return prefix + getLiteral();
+        return code.toString();
     }
 }

@@ -4,8 +4,6 @@ import pt.up.fe.specs.fortran.weaver.FortranJoinpoints;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AJoinPoint;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AProgram;
 
-import java.util.List;
-
 /**
  * Abstract class which can be edited by the developer. This class will not be overwritten.
  *
@@ -37,5 +35,10 @@ public abstract class AFortranWeaverJoinPoint extends AJoinPoint {
     @Override
     public AProgram getRootImpl() {
         return (AProgram) getWeaverEngine().getRootJp();
+    }
+
+    @Override
+    public AJoinPoint[] getChildrenArrayImpl() {
+        return FortranJoinpoints.create(getNode().getChildren(), AJoinPoint.class);
     }
 }

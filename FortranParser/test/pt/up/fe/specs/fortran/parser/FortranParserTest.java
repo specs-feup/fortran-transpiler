@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.FortranAstOptions;
 import pt.up.fe.specs.fortran.ast.FortranContext;
+import pt.up.fe.specs.lang.SpecsPlatforms;
 import pt.up.fe.specs.util.SpecsIo;
 import pt.up.fe.specs.util.SpecsStrings;
 import pt.up.fe.specs.util.SpecsSystem;
@@ -55,7 +56,7 @@ public class FortranParserTest {
         var parseResult = parser.apply(resourceName, context);
         var rootNode = new FortranAstBuilder(parseResult).build();
         //System.out.println(parseResult);
-        //System.out.println("AST: " + rootNode.toTree());
+        System.out.println("AST: " + rootNode.toTree());
         //System.out.println("CODE:\n" + rootNode.getCode());
 
         var code = rootNode.getCode();
@@ -82,8 +83,23 @@ public class FortranParserTest {
 
     @Test
     void testNativeParser() {
-        testNative("hello.f90");
+        if (SpecsPlatforms.isLinux()) {
+            testNative("hello.f90");
+        }
+
     }
 
+    @Test
+    void testDeclarationNative() {
+        if (SpecsPlatforms.isLinux()) {
+            testNative("declaration.f90");
+        }
+    }
+
+
+    @Test
+    void testDeclaration() {
+        testJson("declaration.json");
+    }
 
 }

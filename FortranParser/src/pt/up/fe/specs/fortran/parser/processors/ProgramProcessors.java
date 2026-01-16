@@ -5,6 +5,7 @@ import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
 import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
 import pt.up.fe.specs.fortran.ast.nodes.program.MainProgram;
+import pt.up.fe.specs.fortran.ast.nodes.program.Specification;
 import pt.up.fe.specs.fortran.parser.FlangName;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
 import pt.up.fe.specs.util.SpecsIo;
@@ -35,6 +36,7 @@ public class ProgramProcessors extends ANodeProcessor {
 
         var firstName = attributes().getOptionalString(mainProgram, "source", FlangName.PROGRAM_STMT, FlangName.NAME);
         // [specification-part]
+        mainProgram.addChild(getChild(mainProgram, FlangName.SPECIFICATION_PART));
         // [execution-part]
         mainProgram.addChild(getChild(mainProgram, FlangName.EXECUTION_PART));
         // [internal-subprogram-part]
@@ -45,8 +47,19 @@ public class ProgramProcessors extends ANodeProcessor {
         mainProgram.setOptional(MainProgram.PROGRAM_NAME, name);
     }
 
+    public void specification(Specification specification) {
+
+        if (attributes(specification).has(FlangName.DECLARATION_CONSTRUCT)) {
+            specification.setChildren(getChildren(specification, FlangName.DECLARATION_CONSTRUCT));
+        }
+
+
+    }
+
     public void execution(Execution execution) {
-        execution.setChildren(getChildren(execution, FlangName.EXECUTION_PART_CONSTRUCT));
+        if (attributes(execution).has(FlangName.EXECUTION_PART_CONSTRUCT)) {
+            execution.setChildren(getChildren(execution, FlangName.EXECUTION_PART_CONSTRUCT));
+        }
     }
 
 

@@ -45,13 +45,7 @@ public class MainProgram extends ProgramUnit {
                     .append(" " + programName).append(ln());
         }
 
-        // Write code of the children, indented
-        var body = getChildren().stream()
-                .map(FortranNode::getCode)
-                .flatMap(s -> StringLines.getLines(s).stream())
-                .collect(Collectors.joining(ln() + tab(), tab(), ln()));
-
-        code.append(body);
+        code.append(getBodyCode());
 
         // Write closing
         code.append(keyword(END));
