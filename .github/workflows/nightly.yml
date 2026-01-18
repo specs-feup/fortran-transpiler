@@ -73,14 +73,14 @@ jobs:
         with:
           repository: specs-feup/lara-framework
           path: lara-framework
-          ref: ${{ steps.Branch-lara-framework.outputs.value == '1' && env.BRANCH_NAME || env.DEFAULT_BRANCH }}
+          ref: ${{ steps.Branch-lara-framework.outputs.value == '1' && env.BRANCH_NAME || 'master' }}
 
       - name: Checkout specs-java-libs
         uses: actions/checkout@v4
         with:
           repository: specs-feup/specs-java-libs
           path: specs-java-libs
-          ref: ${{ steps.Branch-specs-java-libs.outputs.value == '1' && env.BRANCH_NAME || env.DEFAULT_BRANCH }}
+          ref: ${{ steps.Branch-specs-java-libs.outputs.value == '1' && env.BRANCH_NAME || 'master' }}
 
       - name: Checkout flang dumper, to install flang-20
         uses: actions/checkout@v4
