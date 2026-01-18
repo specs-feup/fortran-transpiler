@@ -65,7 +65,7 @@ public abstract class AFortranWeaverJoinPoint extends AJoinPoint {
 
     @Override
     public AJoinPoint[] getChildrenArrayImpl() {
-        return FortranJoinpoints.create(getNode().getChildren(), AJoinPoint.class);
+        return FortranJoinpoints.create(getNode().getChildren(), getWeaverEngine(), AJoinPoint.class);
     }
 
     @Override
