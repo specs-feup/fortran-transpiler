@@ -8,15 +8,17 @@
  * <p>
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations under the License. under the License.
+ * specific language governing permissions and limitations under the License.
  */
 
 package pt.up.fe.specs.fortran.weaver;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.program.Application;
+import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
 import pt.up.fe.specs.fortran.weaver.abstracts.AFortranWeaverJoinPoint;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AJoinPoint;
+import pt.up.fe.specs.fortran.weaver.joinpoints.FFile;
 import pt.up.fe.specs.fortran.weaver.joinpoints.FProgram;
 import pt.up.fe.specs.fortran.weaver.joinpoints.GenericFortranJoinpoint;
 import pt.up.fe.specs.util.SpecsCollections;
@@ -33,6 +35,7 @@ public class FortranJoinpoints {
         JOINPOINT_FACTORY = new FunctionClassMap<>();
 
         JOINPOINT_FACTORY.put(Application.class, FProgram::new);
+        JOINPOINT_FACTORY.put(FortranFile.class, FFile::new);
         JOINPOINT_FACTORY.put(FortranNode.class, FortranJoinpoints::defaultFactory);
     }
 

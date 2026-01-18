@@ -7,11 +7,10 @@ name: nightly
 
 on:
   push:
-  pull_request:
 
-  # Daily at midnight
+  # Every Monday at 09h00
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 9 * * 1'
 
 permissions:
   checks: write
@@ -22,7 +21,7 @@ env:
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
   # Setting default branch to staging assuming PRs will be done against the staging versions of the repository
   # main versions will just receive what comes from the staging
-  DEFAULT_BRANCH: ${{ github.event.pull_request.base.ref || 'staging' }}
+  DEFAULT_BRANCH: ${{ github.base_ref || 'staging' }}
   #SPECS_JAVA_LIBS_BRANCH: ${{ 'master' }}
   #LARA_FRAMEWORK_BRANCH: ${{ github.head_ref || github.ref_name }}
 
@@ -46,12 +45,12 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: current
-          dependency-graph: generate-and-submit   
+          dependency-graph: generate-and-submit
 
-      - name: Checkout Fortran Transpiler
+      - name: Checkout Metafor
         uses: actions/checkout@v4
         with:
-          path: fortran-transpiler
+          path: metafor
 
       - name: Check if branch exists on lara-framework
         id: Branch-lara-framework
@@ -81,9 +80,8 @@ jobs:
         with:
           repository: specs-feup/specs-java-libs
           path: specs-java-libs
-          # This is causing problems in PRs, for now it will always be the default branch
-          #ref: ${{ steps.Branch-specs-java-libs.outputs.value == '1' && env.BRANCH_NAME || env.DEFAULT_BRANCH }}
-    
+          ref: ${{ steps.Branch-specs-java-libs.outputs.value == '1' && env.BRANCH_NAME || env.DEFAULT_BRANCH }}
+
       - name: Checkout flang dumper, to install flang-20
         uses: actions/checkout@v4
         with:
@@ -91,34 +89,31 @@ jobs:
           path: flang-dumper
           ref: main
 
-
       - name: Install flang-20
         run: |
           cd flang-dumper/scripts
           sudo ./install-dependencies.sh
- 
-          
+
+
       - name: Test FortranAst
         run: |
-          cd fortran-transpiler/FortranAst
-          gradle test
+          cd metafor/FortranAst
+          gradle build
         env:
           GITHUB_DEPENDENCY_GRAPH_ENABLED: false
 
       - name: Test FortranParser
         run: |
-          cd fortran-transpiler/FortranParser
-          gradle test
+          cd metafor/FortranParser
+          gradle build
         env:
           GITHUB_DEPENDENCY_GRAPH_ENABLED: false
-      
-      - name: Test FortranWeaver
+
+      - name: Test Metafor
         run: |
-          cd fortran-transpiler/FortranWeaver
-          gradle test
-        env:
-          GITHUB_DEPENDENCY_GRAPH_ENABLED: false
-          
+          cd metafor/FortranWeaver
+          gradle build installDist
+
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v4
         if: always()
@@ -126,5 +121,72 @@ jobs:
             report_paths: './**/build/test-results/test/TEST-*.xml'
             summary: true
 
+      - name: Upload Metafor artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-binaries
+          path: metafor/FortranWeaver/build/install/FortranWeaver
 
 
+  build-js:
+    name: Build JS
+    needs: build-java
+    strategy:
+      fail-fast: false
+      matrix:
+        #node-version: ['latest', '22.x', '20.x']
+        node-version: ['22.x', '20.x']
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org/'
+
+      - name: Checkout Metafor
+        uses: actions/checkout@v4
+        with:
+          path: metafor
+
+      - name: Checkout lara-framework
+        uses: actions/checkout@v4
+        with:
+          repository: specs-feup/lara-framework
+          path: lara-framework
+          ref: ${{ needs.build-java.outputs.branch-exists-lara-framework == '1' && env.BRANCH_NAME || env.DEFAULT_BRANCH }}
+
+      - name: Setup js workspace
+        run: |
+          echo '{ "name": "SPeCS Workspace", "type": "module", "workspaces": [ "metafor/Fortran-JS", "lara-framework/Lara-JS" ] }' > package.json
+          npm install
+
+      - name: Build Lara-JS
+        run: |
+          cd lara-framework/Lara-JS
+          npm run build
+
+      - name: Build Metafor
+        run: |
+          cd metafor/Fortran-JS
+          npm run build
+
+      - name: Pull java-binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: java-binaries
+          path: metafor/Fortran-JS/java-binaries
+
+      - name: Test JS
+        run: |
+          cd metafor/Fortran-JS
+          npm run test -- --passWithNoTests

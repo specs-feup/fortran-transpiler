@@ -20,7 +20,7 @@ public class PrintStmt extends ActionStmt {
     }
 
     public Format getFormat() {
-        return getChild(Format.class);
+        return getChildOf(Format.class).orElseThrow();
     }
 
     public List<FortranNode> getOutputItems() {
