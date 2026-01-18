@@ -9,6 +9,15 @@
 			"children": [
 					{
 						"type": "attribute",
+						"tooltip": "Returns an array with the children of the node, ignoring null nodes",
+						"children": [
+									{
+										"type": "joinpoint[]",
+										"name": "children"
+									}]
+					},
+					{
+						"type": "attribute",
 						"tooltip": "String with the code represented by this node",
 						"children": [
 									{
@@ -58,11 +67,29 @@
 			"children": [
 					{
 						"type": "attribute",
+						"tooltip": "the name of the folder",
+						"children": [
+									{
+										"type": "String",
+										"name": "foldername"
+									}]
+					},
+					{
+						"type": "attribute",
 						"tooltip": "the name of the file",
 						"children": [
 									{
 										"type": "String",
 										"name": "name"
+									}]
+					},
+					{
+						"type": "attribute",
+						"tooltip": "Returns an array with the children of the node, ignoring null nodes",
+						"children": [
+									{
+										"type": "joinpoint[]",
+										"name": "children"
 									}]
 					},
 					{
@@ -113,6 +140,15 @@
 			"extends": "joinpoint"		,
 			"tooltip": "Represents the complete program and is the top-most join point in the hierarchy",
 			"children": [
+					{
+						"type": "attribute",
+						"tooltip": "Returns an array with the children of the node, ignoring null nodes",
+						"children": [
+									{
+										"type": "joinpoint[]",
+										"name": "children"
+									}]
+					},
 					{
 						"type": "attribute",
 						"tooltip": "String with the code represented by this node",
@@ -175,6 +211,15 @@
 									{
 										"type": "Boolean",
 										"name": "isLast"
+									}]
+					},
+					{
+						"type": "attribute",
+						"tooltip": "Returns an array with the children of the node, ignoring null nodes",
+						"children": [
+									{
+										"type": "joinpoint[]",
+										"name": "children"
 									}]
 					},
 					{
