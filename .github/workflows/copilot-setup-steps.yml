@@ -97,7 +97,7 @@ jobs:
 
       - name: Echo checks
         run: |
-          echo "Clava branch: ${{ env.BRANCH_NAME }}"
+          echo "Weaver branch: ${{ env.BRANCH_NAME }}"
           echo "PR target branch (if any): ${{ github.base_ref }}"
           echo "Lara framework ref: ${{ steps.repo-refs.outputs.lara_ref }}"
           echo "Lara framework default: ${{ steps.repo-refs.outputs.lara_default }}"
