@@ -49,4 +49,10 @@ public class StmtProcessors extends ANodeProcessor {
     }
 
 
+    public void assignmentStmt(AssignmentStmt assignmentStmt) {
+        var dataRef = getChild(assignmentStmt, FlangName.VARIABLE);
+        var expression = getChild(assignmentStmt, FlangName.EXPR);
+        assignmentStmt.addChild(dataRef);
+        assignmentStmt.addChild(expression);
+    }
 }
