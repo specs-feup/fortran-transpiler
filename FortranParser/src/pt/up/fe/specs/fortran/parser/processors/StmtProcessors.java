@@ -44,15 +44,15 @@ public class StmtProcessors extends ANodeProcessor {
         var type = getChild(typeDeclarationStmt, FlangName.DECLARATION_TYPE_SPEC);
 
         entityDecls.stream().forEach(entityDecl -> entityDecl.addChild(0, type));
-        
+
         typeDeclarationStmt.setChildren(entityDecls);
     }
 
 
     public void assignmentStmt(AssignmentStmt assignmentStmt) {
-        var dataRef = getChild(assignmentStmt, FlangName.VARIABLE);
+        var variable = getChild(assignmentStmt, FlangName.VARIABLE);
         var expression = getChild(assignmentStmt, FlangName.EXPR);
-        assignmentStmt.addChild(dataRef);
+        assignmentStmt.addChild(variable);
         assignmentStmt.addChild(expression);
     }
 }
