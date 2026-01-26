@@ -103,7 +103,7 @@ public class FortranNativeParser {
 
 
         // Resolve filename (taking into account versioning)
-        var resourceWithVersion = LINUX_DUMPER.createResourceVersion("_" + LINUX_DUMPER.getVersion());
+        var resourceWithVersion = LINUX_DUMPER.createResourceVersion("_" + LINUX_DUMPER.version());
         var pluginFile = new File(TEMP_FOLDER.get(), resourceWithVersion.getFilename());
 
 
