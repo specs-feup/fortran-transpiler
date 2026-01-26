@@ -3,7 +3,7 @@ package pt.up.fe.specs.fortran.ast.nodes.stmt;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.expr.Expr;
-import pt.up.fe.specs.fortran.ast.nodes.variable.DataRef;
+import pt.up.fe.specs.fortran.ast.nodes.variable.Variable;
 
 import java.util.Collection;
 
@@ -12,12 +12,12 @@ public class AssignmentStmt extends ActionStmt {
         super(data, children);
     }
 
-    private DataRef getDataRef() {
-        return getChild(DataRef.class);
+    public Variable getVariable() {
+        return getChild(Variable.class, 0);
     }
 
-    private Expr getExpression() {
-        return getChild(Expr.class);
+    public Expr getExpression() {
+        return getChild(Expr.class, 1);
     }
 
     @Override
@@ -25,8 +25,8 @@ public class AssignmentStmt extends ActionStmt {
         // a = 1;
         var code = new StringBuilder();
 
-        var dataRef = getDataRef();
-        code.append(dataRef.getCode());
+        var variable = getVariable();
+        code.append(variable.getCode());
 
         var expression = getExpression();
         code.append(expression.getCode());
