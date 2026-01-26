@@ -24,8 +24,6 @@ public class DataRef extends Designator {
 
     @Override
     public String getCode() {
-
-        return get(NAME) +
-                " = ";
+        return get(NAME);
     }
 }
