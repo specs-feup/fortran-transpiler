@@ -3,7 +3,6 @@ package pt.up.fe.specs.fortran.weaver;
 import org.lara.interpreter.joptions.config.interpreter.LaraiKeys;
 import org.lara.interpreter.weaver.interf.AGear;
 import org.lara.interpreter.weaver.interf.JoinPoint;
-import org.lara.interpreter.weaver.interf.WeaverEngine;
 import org.lara.interpreter.weaver.options.WeaverOption;
 import org.lara.interpreter.weaver.options.WeaverOptionUtils;
 import org.lara.interpreter.weaver.utils.SourcesGatherer;
@@ -83,7 +82,7 @@ public class FortranWeaver extends AFortranWeaver {
      */
     @Override
     public JoinPoint getRootJp() {
-        return FortranJoinpoints.create(currentRoot);
+        return FortranJoinpoints.create(currentRoot, this);
     }
 
     /**
@@ -141,13 +140,6 @@ public class FortranWeaver extends AFortranWeaver {
     @Override
     public List<WeaverOption> getOptions() {
         return WeaverOptionUtils.toWeaverOption(FortranAstOptions.STORE_DEFINITION);
-    }
-
-    /**
-     * Returns thread-local instance of weaver engine.
-     */
-    public static FortranWeaver getFortranWeaver() {
-        return (FortranWeaver) WeaverEngine.getThreadLocalWeaver();
     }
 
     /**

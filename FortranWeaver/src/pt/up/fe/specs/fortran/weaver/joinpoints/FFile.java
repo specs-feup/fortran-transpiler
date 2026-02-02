@@ -2,13 +2,15 @@ package pt.up.fe.specs.fortran.weaver.joinpoints;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
+import pt.up.fe.specs.fortran.weaver.FortranWeaver;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AFile;
 
 public class FFile extends AFile {
 
     private final FortranFile file;
 
-    public FFile(FortranFile file) {
+    public FFile(FortranFile file, FortranWeaver weaver) {
+        super(weaver);
         this.file = file;
     }
 
