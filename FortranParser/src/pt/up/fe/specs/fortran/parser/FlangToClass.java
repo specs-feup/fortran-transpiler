@@ -52,7 +52,15 @@ public class FlangToClass {
         NAME_TO_CLASS.put(FlangName.FORMAT, Format.class);
         NAME_TO_CLASS.put(FlangName.STAR, Star.class);
         NAME_TO_CLASS.put(FlangName.ADD, BinaryOperator.class);
-        NAME_TO_CLASS.put(FlangName.SUB, BinaryOperator.class);
+        NAME_TO_CLASS.put(FlangName.SUBTRACT, BinaryOperator.class);
+        NAME_TO_CLASS.put(FlangName.MULTIPLY, BinaryOperator.class);
+        NAME_TO_CLASS.put(FlangName.DIVIDE, BinaryOperator.class);
+        NAME_TO_CLASS.put(FlangName.EQ, BinaryOperator.class);
+        NAME_TO_CLASS.put(FlangName.NE, BinaryOperator.class);
+        NAME_TO_CLASS.put(FlangName.LT, BinaryOperator.class);
+        NAME_TO_CLASS.put(FlangName.LE, BinaryOperator.class);
+        NAME_TO_CLASS.put(FlangName.GT, BinaryOperator.class);
+        NAME_TO_CLASS.put(FlangName.GE, BinaryOperator.class);
 
         /// TYPEs
         NAME_TO_CLASS.put(FlangName.INTEGER_TYPE_SPEC, IntegerType.class);

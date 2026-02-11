@@ -4,23 +4,47 @@ import pt.up.fe.specs.util.providers.StringProvider;
 
 public enum BinaryOperatorKind implements StringProvider {
     Add,
-    Sub,
-    Mul,
-    Div;
+    Subtract,
+    Multiply,
+    Divide,
+    LT,
+    LE,
+    GT,
+    GE,
+    EQ,
+    NE;
 
     public String getOpString() {
         switch (this) {
             case Add -> {
                 return "+";
             }
-            case Sub -> {
+            case Subtract -> {
                 return "-";
             }
-            case Mul -> {
+            case Multiply -> {
                 return "*";
             }
-            case Div -> {
+            case Divide -> {
                 return "/";
+            }
+            case EQ -> {
+                return "==";
+            }
+            case NE -> {
+                return "/=";
+            }
+            case GE -> {
+                return ">=";
+            }
+            case GT -> {
+                return ">";
+            }
+            case LE -> {
+                return "<=";
+            }
+            case LT -> {
+                return "<";
             }
             default -> {
                 return "<UNDEFINED_BINARY_OP_STRING:" + this + ">";
