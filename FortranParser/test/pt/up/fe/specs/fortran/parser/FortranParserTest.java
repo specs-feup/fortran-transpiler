@@ -107,4 +107,9 @@ public class FortranParserTest {
         testJson("logical_expression.json");
     }
 
+    @Test
+    void testParenExpr() {
+        testJson("parenexpr.json");
+    }
+
 }

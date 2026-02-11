@@ -2,7 +2,9 @@ package pt.up.fe.specs.fortran.parser.processors;
 
 import pt.up.fe.specs.fortran.ast.nodes.expr.IntLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.expr.LogicalLiteral;
+import pt.up.fe.specs.fortran.ast.nodes.expr.ParenExpr;
 import pt.up.fe.specs.fortran.ast.nodes.expr.StringLiteral;
+import pt.up.fe.specs.fortran.parser.FlangName;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
 
 public class ExprProcessors extends ANodeProcessor {
@@ -22,6 +24,10 @@ public class ExprProcessors extends ANodeProcessor {
 
     public void logicalLiteral(LogicalLiteral logicalLiteral) {
         logicalLiteral.set(StringLiteral.SOURCE_LITERAL, attributes().getString(logicalLiteral, "bool"));
+    }
+
+    public void parenExpr(ParenExpr parenExpr) {
+        parenExpr.addChild(getChild(parenExpr, FlangName.EXPR));
     }
 
 }
