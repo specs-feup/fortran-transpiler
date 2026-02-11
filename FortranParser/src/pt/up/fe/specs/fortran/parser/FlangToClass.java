@@ -52,6 +52,7 @@ public class FlangToClass {
         NAME_TO_CLASS.put(FlangName.FORMAT, Format.class);
         NAME_TO_CLASS.put(FlangName.STAR, Star.class);
         NAME_TO_CLASS.put(FlangName.ADD, BinaryOperator.class);
+        NAME_TO_CLASS.put(FlangName.SUB, BinaryOperator.class);
 
         /// TYPEs
         NAME_TO_CLASS.put(FlangName.INTEGER_TYPE_SPEC, IntegerType.class);

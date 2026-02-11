@@ -4,6 +4,7 @@ import pt.up.fe.specs.fortran.ast.nodes.expr.BinaryOperator;
 import pt.up.fe.specs.fortran.ast.nodes.expr.IntLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.expr.LogicalLiteral;
 import pt.up.fe.specs.fortran.ast.nodes.expr.StringLiteral;
+import pt.up.fe.specs.fortran.ast.nodes.expr.enums.BinaryOperatorKind;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
 
 public class ExprProcessors extends ANodeProcessor {
@@ -28,6 +29,10 @@ public class ExprProcessors extends ANodeProcessor {
     public void binaryOperator(BinaryOperator binaryOperator) {
         binaryOperator.addChild(getChild(binaryOperator, "left"));
         binaryOperator.addChild(getChild(binaryOperator, "right"));
+
+        String opName = binaryOperator.getData().get("id").toString().split("-")[1];
+
+        binaryOperator.set(BinaryOperator.OP, BinaryOperatorKind.valueOf(opName));
     }
 
 }
