@@ -50,12 +50,12 @@ public enum FlangName implements StringProvider {
     SUBTRACT,
     MULTIPLY,
     DIVIDE,
-    EQ,
-    NE,
-    LT,
-    LE,
-    GT,
-    GE,
+    EQ("EQ"),
+    NE("NE"),
+    LT("LT"),
+    LE("LE"),
+    GT("GT"),
+    GE("GE"),
 
 
     /// TYPEs
@@ -72,6 +72,10 @@ public enum FlangName implements StringProvider {
 
     FlangName() {
         this.string = SpecsStrings.toCamelCase(name());
+    }
+
+    FlangName(String string) {
+        this.string = string;
     }
 
     @Override
