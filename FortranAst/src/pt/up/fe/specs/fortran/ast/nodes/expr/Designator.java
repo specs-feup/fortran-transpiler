@@ -1,8 +1,7 @@
-package pt.up.fe.specs.fortran.ast.nodes.variable;
+package pt.up.fe.specs.fortran.ast.nodes.expr;
 
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
-import pt.up.fe.specs.fortran.ast.nodes.expr.Expr;
 
 import java.util.Collection;
 

@@ -16,8 +16,6 @@ import pt.up.fe.specs.fortran.ast.nodes.type.LogicalType;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Format;
 import pt.up.fe.specs.fortran.ast.nodes.utils.Star;
 import pt.up.fe.specs.fortran.ast.nodes.variable.DataRef;
-import pt.up.fe.specs.fortran.ast.nodes.variable.Designator;
-import pt.up.fe.specs.fortran.ast.nodes.variable.Variable;
 
 import java.util.HashMap;
 import java.util.Map;
