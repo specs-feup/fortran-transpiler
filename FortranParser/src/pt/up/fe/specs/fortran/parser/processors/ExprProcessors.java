@@ -30,7 +30,7 @@ public class ExprProcessors extends ANodeProcessor {
         binaryOperator.addChild(getChild(binaryOperator, "left"));
         binaryOperator.addChild(getChild(binaryOperator, "right"));
 
-        String opName = binaryOperator.getData().get("id").toString().split("-")[1];
+        String opName = attributes().getString(binaryOperator, "op");
 
         binaryOperator.set(BinaryOperator.OP, BinaryOperatorKind.valueOf(opName));
     }
