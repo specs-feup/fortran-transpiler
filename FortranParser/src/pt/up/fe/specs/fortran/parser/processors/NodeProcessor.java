@@ -30,7 +30,6 @@ public interface NodeProcessor {
         return node;
     }
 
-
     default FortranNode getChild(FortranNode node, FlangName name) {
         return getChild(node, name.getString());
     }

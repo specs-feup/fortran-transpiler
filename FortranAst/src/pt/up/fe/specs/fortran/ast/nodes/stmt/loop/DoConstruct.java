@@ -7,7 +7,7 @@ import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.decl.LabelDecl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.LoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.enums.DoKind;
-import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
+import pt.up.fe.specs.fortran.ast.nodes.program.ExecBlock;
 import pt.up.fe.specs.fortran.ast.nodes.program.construct.ExecConstruct;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.ContinueStmt;
 
@@ -26,8 +26,8 @@ public class DoConstruct extends ExecConstruct {
         return getChild(DoStmt.class);
     }
 
-    public Execution getBody() {
-        return getChild(Execution.class);
+    public ExecBlock getBody() {
+        return getChild(ExecBlock.class);
     }
 
     public EndDoStmt getEndDoStmt() {

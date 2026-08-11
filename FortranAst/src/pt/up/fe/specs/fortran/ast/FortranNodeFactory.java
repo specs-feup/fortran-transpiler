@@ -22,14 +22,14 @@ import pt.up.fe.specs.fortran.ast.nodes.omp.clause.OmpReductionClause;
 import pt.up.fe.specs.fortran.ast.nodes.omp.enums.OmpClauseKind;
 import pt.up.fe.specs.fortran.ast.nodes.omp.enums.OmpDirectiveKind;
 import pt.up.fe.specs.fortran.ast.nodes.program.*;
-import pt.up.fe.specs.fortran.ast.nodes.program.construct.DeclStmtAdapter;
-import pt.up.fe.specs.fortran.ast.nodes.program.construct.SpecDirectiveAdapter;
-import pt.up.fe.specs.fortran.ast.nodes.program.construct.SpecStmtAdapter;
+import pt.up.fe.specs.fortran.ast.nodes.program.construct.*;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.EndProgramStmt;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.ProgramStmt;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.MainProgram;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.ProgramUnit;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.*;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.IDEStmtImplicitAdapter;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.ISStmtImplicitAdapter;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.DoConstruct;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.DoStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.EndDoStmt;
@@ -139,7 +139,7 @@ public class FortranNodeFactory {
         stmt.set(Stmt.LEADING_COMMENTS, List.of());
     }
 
-    public MainProgram mainProgram(String programName, List<FortranNode> execution) {
+    public MainProgram mainProgram(String programName, List<ExecPartConstruct> execution) {
         DataStore data = newDataStore(MainProgram.class);
 
         var programStmt = newNode(ProgramStmt.class, Collections.emptyList());
@@ -155,10 +155,17 @@ public class FortranNodeFactory {
         return new MainProgram(data, List.of(programStmt, specificationBlock, executionBlock, endProgramStmt));
     }
 
-    public Execution execution(List<FortranNode> statements) {
-        DataStore data = newDataStore(Execution.class);
+    public Execution execution(List<ExecPartConstruct> constructs) {
+        SpecsCheck.checkArgument(
+                constructs.isEmpty() || !(constructs.get(constructs.size() - 1) instanceof ExecConstruct),
+                () -> "The last construct of Execution must be of type ExecConstruct"
+        );
 
-        return new Execution(data, statements);
+        return newNode(Execution.class, constructs);
+    }
+
+    public ExecBlock execBlock(List<ExecPartConstruct> constructs) {
+        return newNode(ExecBlock.class, constructs);
     }
 
     // STMT
@@ -383,11 +390,47 @@ public class FortranNodeFactory {
         return newNode(DeclStmtAdapter.class, List.of(declStmt));
     }
 
+    public IDEStmtDeclAdapter ideStmtDeclAdapter(IDEStmt ideStmt) {
+        return newNode(IDEStmtDeclAdapter.class, List.of(ideStmt));
+    }
+
     public SpecStmtAdapter specStmtAdapter(SpecStmt specStmt) {
         return newNode(SpecStmtAdapter.class, List.of(specStmt));
     }
 
-    public SpecDirectiveAdapter specDirectiveAdapter(CompilerDirective compilerDirective) {
-        return newNode(SpecDirectiveAdapter.class, List.of(compilerDirective));
+    public DirectiveSpecAdapter directiveSpecAdapter(CompilerDirective compilerDirective) {
+        return newNode(DirectiveSpecAdapter.class, List.of(compilerDirective));
+    }
+
+    public ISStmtSpecAdapter isStmtSpecAdapter(ISStmt isStmt) {
+        return newNode(ISStmtSpecAdapter.class, List.of(isStmt));
+    }
+
+    private <T extends Stmt> T withInfoOf(T dest, Stmt source) {
+        dest.set(Stmt.LEADING_COMMENTS, source.getLeadingComments());
+        dest.set(Stmt.TRAILING_COMMENT, source.getTrailingComment());
+        source.getLabel().ifPresent(label -> dest.addChild(0, label));
+
+        return dest;
+    }
+
+    public IDEStmtImplicitAdapter ideStmtImplicitAdapter(IDEStmt ideStmt) {
+        return withInfoOf(newNode(IDEStmtImplicitAdapter.class, List.of(ideStmt)), ideStmt);
+    }
+
+    public ISStmtImplicitAdapter isStmtImplicitAdapter(ISStmt isStmt) {
+        return withInfoOf(newNode(ISStmtImplicitAdapter.class, List.of(isStmt)), isStmt);
+    }
+
+    public ActionStmtAdapter actionStmtAdapter(ActionStmt actionStmt) {
+        return newNode(ActionStmtAdapter.class, List.of(actionStmt));
+    }
+
+    public IDEStmtExecAdapter ideStmtExecAdapter(IDEStmt ideStmt) {
+        return newNode(IDEStmtExecAdapter.class, List.of(ideStmt));
+    }
+
+    public DirectiveExecAdapter directiveExecAdapter(CompilerDirective directive) {
+        return newNode(DirectiveExecAdapter.class, List.of(directive));
     }
 }

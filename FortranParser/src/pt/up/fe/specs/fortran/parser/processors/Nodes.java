@@ -98,7 +98,7 @@ public class Nodes {
         processors.put(MainProgram.class, p::mainProgram);
         processors.put(SubprogramUnit.class, p::subprogramUnit);
         processors.put(Specification.class, p::specification);
-        processors.put(Execution.class, p::execution);
+        processors.put(ExecBlock.class, p::execBlock);
         processors.put(Subroutine.class, p::subroutine);
         processors.put(Function.class, p::function);
         processors.put(InternalSubprogramPart.class, p::internalSubprogramPart);
@@ -150,7 +150,6 @@ public class Nodes {
         processors.put(FormatStmt.class, s::formatStmt);
         processors.put(TypeDeclarationStmt.class, s::typeDeclarationStmt);
         processors.put(AssignmentStmt.class, s::assignmentStmt);
-        processors.put(StmtBlock.class, s::stmtBlock);
         processors.put(CompilerDirective.class, s::compilerDirective);
         processors.put(GotoStmt.class, s::gotoStmt);
         processors.put(StopStmt.class, s::stopStmt);

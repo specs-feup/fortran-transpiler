@@ -3,17 +3,13 @@ package pt.up.fe.specs.fortran.parser.processors;
 import pt.up.fe.specs.fortran.ast.FortranContext;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.program.*;
-import pt.up.fe.specs.fortran.ast.nodes.program.construct.DeclConstruct;
-import pt.up.fe.specs.fortran.ast.nodes.program.construct.SpecConstruct;
 import pt.up.fe.specs.fortran.ast.nodes.program.subprogram.Function;
 import pt.up.fe.specs.fortran.ast.nodes.program.subprogram.Subroutine;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.MainProgram;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.Module;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.ModuleSubprogramPart;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.SubprogramUnit;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.CompilerDirective;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.DeclStmt;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.SpecStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.*;
 import pt.up.fe.specs.fortran.parser.FlangName;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
 import pt.up.fe.specs.util.SpecsIo;
@@ -126,42 +122,14 @@ public class ProgramProcessors extends ANodeProcessor {
         }
     }
 
-    public DeclConstruct toDeclConstruct(FortranNode node) {
-        if (node instanceof DeclConstruct declConstruct) {
-            return declConstruct;
-        }
+    public void execBlock(ExecBlock execBlock) {
+        var rawExecPartConstructs = getChildren(execBlock, FlangName.EXECUTION_PART_CONSTRUCT);
 
-        if (node instanceof DeclStmt declStmt) {
-            return factory().declStmtAdapter(declStmt);
-        }
+        var execPartConstructs = rawExecPartConstructs.stream()
+                .map(this::toExecPartConstruct)
+                .toList();
 
-        if (node instanceof SpecStmt || node instanceof CompilerDirective) {
-            return toSpecConstruct(node);
-        }
-
-        throw new RuntimeException("Cannot convert node to DeclConstruct: " + node);
-    }
-
-    public SpecConstruct toSpecConstruct(FortranNode node) {
-        if (node instanceof SpecConstruct specConstruct) {
-            return specConstruct;
-        }
-
-        if (node instanceof SpecStmt specStmt) {
-            return factory().specStmtAdapter(specStmt);
-        }
-
-        if (node instanceof CompilerDirective compilerDirective) {
-            return factory().specDirectiveAdapter(compilerDirective);
-        }
-
-        throw new RuntimeException("Cannot convert node to SpecConstruct: " + node);
-    }
-
-    public void execution(Execution execution) {
-        if (attributes(execution).has(FlangName.EXECUTION_PART_CONSTRUCT)) {
-            execution.setChildren(getChildren(execution, FlangName.EXECUTION_PART_CONSTRUCT));
-        }
+        execBlock.addChildren(execPartConstructs);
     }
 
     public void internalSubprogramPart(InternalSubprogramPart part) {

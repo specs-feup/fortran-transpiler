@@ -2,7 +2,7 @@ package pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase;
 
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
-import pt.up.fe.specs.fortran.ast.nodes.program.StmtBlock;
+import pt.up.fe.specs.fortran.ast.nodes.program.ExecBlock;
 
 import java.util.Collection;
 
@@ -15,8 +15,8 @@ public class CaseBlock extends FortranNode {
         return getChild(CaseStmt.class, 0);
     }
 
-    public StmtBlock getStmtBlock() {
-        return getChild(StmtBlock.class, 1);
+    public ExecBlock getStmtBlock() {
+        return getChild(ExecBlock.class, 1);
     }
 
     @Override

@@ -6,8 +6,8 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.ActionStmt;
 
 import java.util.Collection;
 
-public class ActionStmtExecAdapter extends ExecConstruct {
-    public ActionStmtExecAdapter(DataStore data, Collection<? extends FortranNode> children) {
+public class ActionStmtAdapter extends ExecConstruct {
+    public ActionStmtAdapter(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);
     }
 

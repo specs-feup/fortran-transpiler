@@ -2,25 +2,25 @@ package pt.up.fe.specs.fortran.ast.nodes.program;
 
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
+import pt.up.fe.specs.fortran.ast.nodes.program.construct.ExecPartConstruct;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class StmtBlock extends FortranNode {
+public class ExecBlock extends FortranNode {
 
-    public StmtBlock(DataStore data, Collection<? extends FortranNode> children) {
+    public ExecBlock(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);
     }
 
-    // TODO(Process-ing): Modify the weaver to avoid needing this wrapper
-    public List<FortranNode> getStatements() {
-        return getChildren();
+    public List<ExecPartConstruct> getConstructs() {
+        return getChildren(ExecPartConstruct.class);
     }
 
     @Override
     public String getCode() {
-        return getStatements().stream()
+        return getConstructs().stream()
                 .map(FortranNode::getCode)
                 .collect(Collectors.joining(ln()));
     }

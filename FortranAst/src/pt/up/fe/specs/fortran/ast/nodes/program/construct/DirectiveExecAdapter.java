@@ -6,8 +6,8 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.CompilerDirective;
 
 import java.util.Collection;
 
-public class SpecDirectiveAdapter extends SpecConstruct {
-    public SpecDirectiveAdapter(DataStore data, Collection<? extends FortranNode> children) {
+public class DirectiveExecAdapter extends ExecConstruct {
+    public DirectiveExecAdapter(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);
     }
 

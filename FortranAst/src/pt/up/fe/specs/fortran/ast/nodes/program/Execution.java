@@ -12,9 +12,11 @@ import java.util.Collection;
  * executable-construct [execution-part-construct]...
  * <p>
  * Contains statements to execute
+ * <p>
+ * It is more specialized than ExecBlock, since it requires the last construct
+ * to be a ExecConstruct (if it exists) to avoid AST ambiguity.
  */
-public class Execution extends StmtBlock {
-
+public class Execution extends ExecBlock {
     public Execution(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);
     }

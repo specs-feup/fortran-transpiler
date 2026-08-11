@@ -4,8 +4,6 @@ import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.decl.NamedParameter;
 import pt.up.fe.specs.fortran.ast.nodes.expr.Expr;
 import pt.up.fe.specs.fortran.ast.nodes.loops.WhileLoopControl;
-import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
-import pt.up.fe.specs.fortran.ast.nodes.program.StmtBlock;
 import pt.up.fe.specs.fortran.ast.nodes.program.subprogram.*;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.EndModuleStmt;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.EndProgramStmt;
@@ -128,19 +126,15 @@ public class StmtProcessors extends ANodeProcessor {
         assignmentStmt.addChild(expression);
     }
 
-    public void stmtBlock(StmtBlock stmtBlock) {
-        stmtBlock.setChildren(getChildren(stmtBlock, FlangName.EXECUTION_PART_CONSTRUCT));
-    }
-
     public void ifConstruct(IfConstruct ifConstruct) {
         // Add if-then block
         var ifThenStmt = getStmtChild(ifConstruct, FlangName.IF_THEN_STMT);
 
-        var thenBlock = factory().newNode(Execution.class);
-        if (attributes(ifConstruct).has(FlangName.EXECUTION_PART_CONSTRUCT)) {
-            var blockStatements = getChildren(ifConstruct, FlangName.EXECUTION_PART_CONSTRUCT);
-            thenBlock.addChildren(blockStatements);
-        }
+        var rawConstructs = getChildren(ifConstruct, FlangName.EXECUTION_PART_CONSTRUCT);
+        var constructs = rawConstructs.stream()
+                .map(this::toExecPartConstruct)
+                .toList();
+        var thenBlock = factory().execBlock(constructs);
 
         var ifThenBlock = factory().newNode(IfThenBlock.class);
         ifThenBlock.addChild(ifThenStmt);
@@ -184,9 +178,11 @@ public class StmtProcessors extends ANodeProcessor {
         var elseIfStmt = getStmtChild(ifElseBlock, FlangName.ELSE_IF_STMT);
         ifElseBlock.addChild(elseIfStmt);
 
-        var blockStatements = getChildren(ifElseBlock, FlangName.EXECUTION_PART_CONSTRUCT);
-        var block = factory().newNode(Execution.class);
-        block.addChildren(blockStatements);
+        var rawConstructs = getChildren(ifElseBlock, FlangName.EXECUTION_PART_CONSTRUCT);
+        var constructs = rawConstructs.stream()
+                .map(this::toExecPartConstruct)
+                .toList();
+        var block = factory().execBlock(constructs);
         ifElseBlock.addChild(block);
     }
 
@@ -201,9 +197,10 @@ public class StmtProcessors extends ANodeProcessor {
         var elseStmt = getStmtChild(elseBlock, FlangName.ELSE_STMT);
         elseBlock.addChild(elseStmt);
 
-        var blockStatements = getChildren(elseBlock, FlangName.EXECUTION_PART_CONSTRUCT);
-        var block = factory().newNode(Execution.class);
-        block.addChildren(blockStatements);
+        var blockStatements = getChildren(elseBlock, FlangName.EXECUTION_PART_CONSTRUCT).stream()
+                .map(this::toExecPartConstruct)
+                .toList();
+        var block = factory().execBlock(blockStatements);
         elseBlock.addChild(block);
     }
 
@@ -255,9 +252,11 @@ public class StmtProcessors extends ANodeProcessor {
         var caseStmtId = attributes().get(caseStmtWrapperId).getString("statement");
         var caseStmt = buildCaseStmt(caseStmtId);
 
-        var blockStatements = getChildren(caseBlock, FlangName.EXECUTION_PART_CONSTRUCT);
-        var block = factory().newNode(StmtBlock.class);
-        block.addChildren(blockStatements);
+        var rawConstructs = getChildren(caseBlock, FlangName.EXECUTION_PART_CONSTRUCT);
+        var constructs = rawConstructs.stream()
+                .map(this::toExecPartConstruct)
+                .toList();
+        var block = factory().execBlock(constructs);
 
         caseBlock.addChild(caseStmt);
         caseBlock.addChild(block);
@@ -361,16 +360,19 @@ public class StmtProcessors extends ANodeProcessor {
         var doLabel = extractLabel(doStmtSource);
         doConstruct.set(DoConstruct.DO_LABEL, doLabel);
 
-        var bodyStmts = new ArrayList<>(getChildren(doConstruct, FlangName.EXECUTION_PART_CONSTRUCT));
+        var rawConstructs = new ArrayList<>(getChildren(doConstruct, FlangName.EXECUTION_PART_CONSTRUCT));
 
         // In labeled do loops with no continue statement at the end, Flang will add
         // an empty continue statement at the end, which we want to ignore
-        var lastStmt = bodyStmts.get(bodyStmts.size() - 1);
-        if (attributes(lastStmt).getOptionalString("source").map(String::isEmpty).orElse(false)) {
-            bodyStmts.remove(bodyStmts.size() - 1);  // Remove last element
+        var lastConstruct = rawConstructs.get(rawConstructs.size() - 1);
+        if (attributes(lastConstruct).getOptionalString("source").map(String::isEmpty).orElse(false)) {
+            rawConstructs.remove(rawConstructs.size() - 1);  // Remove last element
         }
 
-        var body = factory().newNode(Execution.class, bodyStmts);
+        var constructs = rawConstructs.stream()
+                .map(this::toExecPartConstruct)
+                .toList();
+        var body = factory().execBlock(constructs);
         doConstruct.addChild(body);
 
         var endDoStmt = getStmtChild(doConstruct, FlangName.END_DO_STMT);
