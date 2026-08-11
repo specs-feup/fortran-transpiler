@@ -8,6 +8,7 @@ import pt.up.fe.specs.fortran.ast.nodes.decl.LabelDecl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.LoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.enums.DoKind;
 import pt.up.fe.specs.fortran.ast.nodes.program.ExecBlock;
+import pt.up.fe.specs.fortran.ast.nodes.program.construct.ActionStmtAdapter;
 import pt.up.fe.specs.fortran.ast.nodes.program.construct.ExecConstruct;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.ContinueStmt;
 
@@ -85,13 +86,17 @@ public class DoConstruct extends ExecConstruct {
 
         var doLabel = doLabelOpt.get();
         var body = getBody();
-        var lastStmt = body.getChildTry(body.getNumChildren() - 1);
+        var lastConstruct = body.getChildTry(body.getNumChildren() - 1);
 
-        if (lastStmt.isEmpty() || !(lastStmt.get() instanceof ContinueStmt contLastStmt)) {
-            return false;
+        if (lastConstruct.isPresent() && lastConstruct.get() instanceof ActionStmtAdapter stmtAdapter) {
+            var lastStmt = stmtAdapter.getStmt();
+
+            if (lastStmt instanceof ContinueStmt contStmt) {
+                var contLabel = contStmt.getLabel().map(LabelDecl::getValue);
+                return contLabel.map(doLabel::equals).orElse(false);
+            }
         }
 
-        var contLabel = contLastStmt.getLabel().map(LabelDecl::getValue);
-        return contLabel.map(doLabel::equals).orElse(false);
+        return false;
     }
 }
