@@ -4,7 +4,7 @@ import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.FortranKeyword;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.omp.enums.OmpDirectiveKind;
-import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
+import pt.up.fe.specs.fortran.ast.nodes.program.ExecBlock;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -14,14 +14,14 @@ public class OmpBlockConstruct extends OmpConstruct {
         super(data, children);
     }
 
-    public Execution getBody() {
-        return getChild(Execution.class);
+    public ExecBlock getBody() {
+        return getChild(ExecBlock.class);
     }
 
-    public Execution setBody(Execution body) {
-        removeChildren(Execution.class);
+    public ExecBlock setBody(ExecBlock body) {
+        removeChildren(ExecBlock.class);
 
-        return (Execution) addChild(body);
+        return (ExecBlock) addChild(body);
     }
 
     @Override

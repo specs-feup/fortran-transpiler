@@ -32,7 +32,11 @@ public class OmpProcessors extends ANodeProcessor {
 
         ompBlockConstruct.set(OmpBlockConstruct.KINDS, kinds);
 
-        Execution body = factory().newNode(Execution.class, getChildren(ompBlockConstruct, FlangName.EXECUTION_PART_CONSTRUCT));
+        var rawInnerConstructs = getChildren(ompBlockConstruct, FlangName.EXECUTION_PART_CONSTRUCT);
+        var innerConstructs = rawInnerConstructs.stream()
+                        .map(this::toExecPartConstruct)
+                        .toList();
+        var body = factory().execBlock(innerConstructs);
         ompBlockConstruct.addChild(body);
 
         if (attributes().get(clauseList).has(FlangName.OMP_CLAUSE))
