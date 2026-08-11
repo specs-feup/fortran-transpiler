@@ -24,6 +24,8 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.dimstmt.DimensionDecl;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.dimstmt.DimensionStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.enums.ImportKind;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.ifstmt.*;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.DefaultImplicitStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.ImplicitNoneStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.AbstractInterfaceStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.DefaultInterfaceStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.EndInterfaceStmt;
@@ -73,18 +75,9 @@ public class StmtProcessors extends ANodeProcessor {
         });
     }
 
-    public void executableStmt(ExecutableStmt executableStmt) {
-        stmt(executableStmt);
-
-        // Uncomment this if we really need the statement source
-        // executableStmt.set(ExecutableStmt.SOURCE, attributes(executableStmt).getString("source"));
-    }
-
-
     public void actionStmt(ActionStmt actionStmt) {
-        executableStmt(actionStmt);
+        stmt(actionStmt);
     }
-
 
     public void printStmt(PrintStmt printStmt) {
         actionStmt(printStmt);
@@ -94,7 +87,7 @@ public class StmtProcessors extends ANodeProcessor {
     }
 
     public void formatStmt(FormatStmt formatStmt) {
-        executableStmt(formatStmt);
+        stmt(formatStmt);
 
         // TODO(Process-ing): Remove this
         var source = attributes(formatStmt).getString("source");
@@ -462,7 +455,7 @@ public class StmtProcessors extends ANodeProcessor {
     }
 
     public void containsStmt(ContainsStmt containsStmt) {
-        executableStmt(containsStmt);
+        stmt(containsStmt);
     }
 
     public void allocateStmt(AllocateStmt allocateStmt) {
@@ -654,7 +647,7 @@ public class StmtProcessors extends ANodeProcessor {
     }
 
     public void returnStmt(ReturnStmt returnStmt) {
-        executableStmt(returnStmt);
+        actionStmt(returnStmt);
 
         var target = attributes()
                 .getOptionalString(returnStmt, "CharBlock", FlangName.EXPR, FlangName.LITERAL_CONSTANT, FlangName.INT_LITERAL_CONSTANT)

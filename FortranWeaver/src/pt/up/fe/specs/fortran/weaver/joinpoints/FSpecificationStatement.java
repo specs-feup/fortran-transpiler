@@ -1,14 +1,14 @@
 package pt.up.fe.specs.fortran.weaver.joinpoints;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.SpecificationStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.SpecStmt;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.ASpecificationStatement;
 
 public class FSpecificationStatement extends ASpecificationStatement {
 
-    public final SpecificationStmt specificationStmt;
+    public final SpecStmt specificationStmt;
 
-    public FSpecificationStatement(SpecificationStmt specificationStmt) {
+    public FSpecificationStatement(SpecStmt specificationStmt) {
         super(new FStatement(specificationStmt));
         this.specificationStmt = specificationStmt;
     }

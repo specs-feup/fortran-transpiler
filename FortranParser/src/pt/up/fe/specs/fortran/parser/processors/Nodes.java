@@ -20,6 +20,8 @@ import pt.up.fe.specs.fortran.ast.nodes.specification.type.AbstractTypeAttr;
 import pt.up.fe.specs.fortran.ast.nodes.specification.type.AccessTypeAttr;
 import pt.up.fe.specs.fortran.ast.nodes.specification.type.BindTypeAttr;
 import pt.up.fe.specs.fortran.ast.nodes.specification.type.ExtendsTypeAttr;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.DefaultImplicitStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.ImplicitNoneStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.AbstractInterfaceStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.DefaultInterfaceStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.EndInterfaceStmt;

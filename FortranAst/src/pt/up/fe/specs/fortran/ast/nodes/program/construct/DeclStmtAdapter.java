@@ -11,12 +11,12 @@ public class DeclStmtAdapter extends DeclConstruct {
         super(data, children);
     }
 
-    public DeclStmt getDeclarationStmt() {
+    public DeclStmt getStmt() {
         return getChild(DeclStmt.class, 0);
     }
 
     @Override
     public String getCode() {
-        return getDeclarationStmt().getCode();
+        return getStmt().getCode();
     }
 }

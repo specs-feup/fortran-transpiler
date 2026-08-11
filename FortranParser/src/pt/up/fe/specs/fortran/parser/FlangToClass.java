@@ -18,6 +18,9 @@ import pt.up.fe.specs.fortran.ast.nodes.specification.funcspec.DeclTypeFunctionS
 import pt.up.fe.specs.fortran.ast.nodes.specification.funcspec.EmptyFunctionSpec;
 import pt.up.fe.specs.fortran.ast.nodes.specification.funcspec.FunctionSpec;
 import pt.up.fe.specs.fortran.ast.nodes.specification.type.*;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.DefaultImplicitStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.ImplicitNoneStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.ImplicitStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.AbstractInterfaceStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.DefaultInterfaceStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.EndInterfaceStmt;

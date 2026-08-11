@@ -4,7 +4,7 @@ import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.ExecutableConstruct;
+import pt.up.fe.specs.fortran.ast.nodes.program.construct.ExecConstruct;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.Optional;
 /**
  * R1134 if-construct
  */
-public class IfConstruct extends ExecutableConstruct {
+public class IfConstruct extends ExecConstruct {
     public static final DataKey<Optional<String>> NAME = KeyFactory.optional("name");
 
     public IfConstruct(DataStore data, Collection<? extends FortranNode> children) {

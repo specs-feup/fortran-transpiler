@@ -11,12 +11,12 @@ public class SpecDirectiveAdapter extends SpecConstruct {
         super(data, children);
     }
 
-    public CompilerDirective getCompilerDirective() {
+    public CompilerDirective getDirective() {
         return getChild(CompilerDirective.class, 0);
     }
 
     @Override
     public String getCode() {
-        return getCompilerDirective().getCode();
+        return getDirective().getCode();
     }
 }

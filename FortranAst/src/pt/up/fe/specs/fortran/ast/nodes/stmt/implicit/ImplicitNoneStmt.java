@@ -1,4 +1,4 @@
-package pt.up.fe.specs.fortran.ast.nodes.stmt;
+package pt.up.fe.specs.fortran.ast.nodes.stmt.implicit;
 
 import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;

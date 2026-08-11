@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ParameterStmt extends SpecStmt {
+public class ParameterStmt extends ISStmt {
     public ParameterStmt(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);
     }

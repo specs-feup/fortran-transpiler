@@ -6,7 +6,8 @@ import pt.up.fe.specs.fortran.ast.nodes.LiteralNode;
 
 import java.util.Collection;
 
-public class LiteralExecutionStmt extends ExecutableStmt implements LiteralNode {
+// TODO(Process-ing): Why does this exist?!?!
+public class LiteralExecutionStmt extends Stmt implements LiteralNode {
 
     public LiteralExecutionStmt(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);

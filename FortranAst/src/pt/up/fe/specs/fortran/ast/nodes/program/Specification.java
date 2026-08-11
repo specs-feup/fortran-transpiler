@@ -3,7 +3,7 @@ package pt.up.fe.specs.fortran.ast.nodes.program;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.program.construct.DeclConstruct;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.ImplicitPartStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.ImplicitPartStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.ImportStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.usestmt.UseStmt;
 

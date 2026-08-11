@@ -2,8 +2,6 @@ package pt.up.fe.specs.fortran.ast.nodes.program;
 
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.ExecutableConstruct;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.Stmt;
 
 import java.util.Collection;
 import java.util.List;

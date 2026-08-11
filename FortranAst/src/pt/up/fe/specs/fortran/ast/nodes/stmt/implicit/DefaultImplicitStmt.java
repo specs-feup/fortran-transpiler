@@ -1,11 +1,9 @@
-package pt.up.fe.specs.fortran.ast.nodes.stmt;
+package pt.up.fe.specs.fortran.ast.nodes.stmt.implicit;
 
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.FortranKeyword;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.specification.ImplicitSpec;
-import pt.up.fe.specs.fortran.ast.nodes.specification.LetterSpec;
-import pt.up.fe.specs.fortran.ast.nodes.type.decltype.DeclType;
 
 import java.util.Collection;
 import java.util.List;
