@@ -16,7 +16,7 @@ public class FOmpConstruct extends AOmpConstruct {
     public final OmpConstruct ompConstruct;
 
     public FOmpConstruct(OmpConstruct ompConstruct) {
-        super(new FExecutableConstruct(ompConstruct));
+        super(new FExecConstruct(ompConstruct));
         this.ompConstruct = ompConstruct;
     }
 

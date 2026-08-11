@@ -14,9 +14,7 @@
 
     <joinpoint class="binaryOperator" extends="expr" tooltip="Represents a binary operation"/>
 
-    <joinpoint class="executableStatement" extends="statement" tooltip="Represents an executable statement"/>
-
-    <joinpoint class="actionStatement" extends="executableStatement" tooltip="Represents an action statement"/>
+    <joinpoint class="actionStatement" extends="statement" tooltip="Represents an executable statement"/>
 
     <joinpoint class="assignmentStatement" extends="actionStatement" tooltip="Represents an assignment statement"/>
 
@@ -34,20 +32,22 @@
 
     <joinpoint class="realLiteral" extends="kindedLiteral"/>
 
-    <joinpoint class="executableConstruct"/>
+    <joinpoint class="execPartConstruct"/>
 
-    <joinpoint class="doConstruct" extends="executableConstruct" tooltip="Represents a do loop"/>
+    <joinpoint class="execConstruct" extends="execPartConstruct"/>
+
+    <joinpoint class="doConstruct" extends="execConstruct" tooltip="Represents a do loop"/>
 
     <joinpoint class="loopControl"
                tooltip="Represents the loop control structure, with specialized subclasses for different loop kinds"/>
 
     <joinpoint class="rangeLoopControl" extends="loopControl"/>
 
-    <joinpoint class="statementBlock"/>
+    <joinpoint class="execBlock"/>
 
-    <joinpoint class="execution" extends="statementBlock"/>
+    <joinpoint class="execution" extends="execBlock"/>
 
-    <joinpoint class="specification" extends="statementBlock"/>
+    <joinpoint class="specification"/>
 
     <joinpoint class="arraySubscriptExpr" extends="dataRef"
                tooltip="Represents an access to one (or several) elements of an array"/>
@@ -56,7 +56,7 @@
 
     <joinpoint class="nameValue" tooltip="Represents a name/value pair in a compiler directive"/>
 
-    <joinpoint class="ompConstruct" extends="executableConstruct" tooltip="Represents a generic OpenMP construct"/>
+    <joinpoint class="ompConstruct" extends="execConstruct" tooltip="Represents a generic OpenMP construct"/>
 
     <joinpoint class="ompBlockConstruct" tooltip="Represents an OpenMP block construct (such as parallel or task)"
                extends="ompConstruct"/>
@@ -109,7 +109,7 @@
 
     <joinpoint class="ifStatement" extends="actionStatement"/>
 
-    <joinpoint class="ifConstruct" extends="executableConstruct" tooltip="Represents the root of an if construct"/>
+    <joinpoint class="ifConstruct" extends="execConstruct" tooltip="Represents the root of an if construct"/>
 
     <joinpoint class="ifThenBlock" tooltip="Represents the first block of an if construct"/>
 

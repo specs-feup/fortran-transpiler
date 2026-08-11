@@ -2,38 +2,25 @@ package pt.up.fe.specs.fortran.weaver.joinpoints;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
-import pt.up.fe.specs.fortran.weaver.FortranJoinpoints;
-import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AExecutableStatement;
+import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AExecPartConstruct;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AExecution;
-import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AStatement;
-
-import java.util.stream.Collectors;
 
 public class FExecution extends AExecution {
 
     private final Execution execution;
 
     public FExecution(Execution execution) {
-        super(new FStatementBlock(execution));
+        super(new FExecBlock(execution));
         this.execution = execution;
     }
 
     @Override
-    public AExecutableStatement[] getExecutableStmtsArrayImpl() {
-        return execution.getStatements()
-                .stream()
-                .map(FortranJoinpoints::create)
-                .toList()
-                .toArray(new AExecutableStatement[0]);
-    }
-
-    @Override
-    public void insertBeginImpl(AExecutableStatement stmt) {
+    public void insertBeginImpl(AExecPartConstruct stmt) {
         execution.addChild(0, stmt.getNode());
     }
 
     @Override
-    public void insertEndImpl(AExecutableStatement stmt) {
+    public void insertEndImpl(AExecPartConstruct stmt) {
         execution.addChild(stmt.getNode());
     }
 

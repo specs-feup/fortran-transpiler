@@ -6,15 +6,15 @@ import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.ASpecificationStatemen
 
 public class FSpecificationStatement extends ASpecificationStatement {
 
-    public final SpecStmt specificationStmt;
+    public final SpecStmt specStmt;
 
-    public FSpecificationStatement(SpecStmt specificationStmt) {
-        super(new FStatement(specificationStmt));
-        this.specificationStmt = specificationStmt;
+    public FSpecificationStatement(SpecStmt specStmt) {
+        super(new FStatement(specStmt));
+        this.specStmt = specStmt;
     }
 
     @Override
     public FortranNode getNode() {
-        return specificationStmt;
+        return specStmt;
     }
 }

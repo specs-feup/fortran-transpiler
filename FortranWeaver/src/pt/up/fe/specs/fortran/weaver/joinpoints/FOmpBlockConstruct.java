@@ -2,8 +2,8 @@ package pt.up.fe.specs.fortran.weaver.joinpoints;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.omp.OmpBlockConstruct;
-import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
-import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AExecution;
+import pt.up.fe.specs.fortran.ast.nodes.program.ExecBlock;
+import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AExecBlock;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AOmpBlockConstruct;
 
 public class FOmpBlockConstruct extends AOmpBlockConstruct {
@@ -16,8 +16,8 @@ public class FOmpBlockConstruct extends AOmpBlockConstruct {
     }
 
     @Override
-    public void setBodyImpl(AExecution body) {
-        ompBlockConstruct.setBody((Execution) body.getNode());
+    public void setBodyImpl(AExecBlock body) {
+        ompBlockConstruct.setBody((ExecBlock) body.getNode());
     }
 
     @Override

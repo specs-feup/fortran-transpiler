@@ -72,7 +72,7 @@
         <attribute name="name" type="String"/>
     </artifact>
 
-    <!-- LITEARL -->
+    <!-- LITERAL -->
     <artifact class="literal">
     </artifact>
 
@@ -87,21 +87,20 @@
     <!-- DO LOOP -->
     <artifact class="doConstruct">
         <attribute name="control" type="loopControl"/>
-        <attribute name="body" type="execution"/>
+        <attribute name="body" type="execBlock"/>
         <attribute name="kind" type="{while, range, concurrent}"/>
     </artifact>
 
     <!-- STATEMENT BLOCKS -->
-    <artifact class="statementBlock">
-        <attribute name="stmts" type="statement[]"/>
+    <artifact class="execBlock">
+        <attribute name="constructs" type="execPartConstruct[]"/>
     </artifact>
 
     <artifact class="execution">
-        <attribute name="executableStmts" type="executableStatement[]"/>
     </artifact>
 
     <artifact class="specification">
-        <attribute name="specificationStmts" type="specificationStatement[]"/>
+        <!--        <attribute name="declConstructs" type="declConstructs[]"/>-->
     </artifact>
 
     <!-- ARRAY SUBSCRIPT -->
@@ -129,8 +128,11 @@
 
     <!-- SUBPROGRAM -->
     <artifact class="subprogram">
-        <attribute name="moduleName" type="String"/>
         <attribute name="specification" type="specification" tooltip="Returns the subprogram's specification part"/>
+    </artifact>
+
+    <artifact class="subroutine">
+        <attribute name="name" type="String"/>
     </artifact>
 
     <!-- USE STATEMENT -->
@@ -157,7 +159,7 @@
 
     <artifact class="ifThenBlock">
         <attribute name="header" type="ifThenStatement"/>
-        <attribute name="body" type="statementBlock"/>
+        <attribute name="body" type="execBlock"/>
     </artifact>
 
     <artifact class="ifThenStatement">
@@ -166,7 +168,7 @@
 
     <artifact class="elseIfBlock">
         <attribute name="header" type="elseIfStatement"/>
-        <attribute name="body" type="statementBlock"/>
+        <attribute name="body" type="execBlock"/>
     </artifact>
 
     <artifact class="elseIfStatement">
@@ -174,7 +176,7 @@
     </artifact>
 
     <artifact class="elseBlock">
-        <attribute name="body" type="statementBlock"/>
+        <attribute name="body" type="execBlock"/>
     </artifact>
 
     <!-- DECLARATIONS -->

@@ -5,7 +5,7 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.ifstmt.ElseIfBlock;
 import pt.up.fe.specs.fortran.weaver.FortranJoinpoints;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AElseIfBlock;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AElseIfStatement;
-import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AStatementBlock;
+import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AExecBlock;
 
 public class FElseIfBlock extends AElseIfBlock {
 
@@ -16,8 +16,8 @@ public class FElseIfBlock extends AElseIfBlock {
     }
 
     @Override
-    public AStatementBlock getBodyImpl() {
-        return FortranJoinpoints.create(elseIfBlock.getBlock(), AStatementBlock.class);
+    public AExecBlock getBodyImpl() {
+        return FortranJoinpoints.create(elseIfBlock.getBlock(), AExecBlock.class);
     }
 
     @Override

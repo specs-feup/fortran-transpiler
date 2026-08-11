@@ -70,7 +70,7 @@
     </action>
 
     <action name="setBody" class="ompBlockConstruct">
-        <parameter name="body" type="execution"/>
+        <parameter name="body" type="execBlock"/>
     </action>
 
     <action name="setDirective" class="ompConstruct">
@@ -85,11 +85,11 @@
 
     <!-- EXECUTION -->
     <action name="insertBegin" class="execution">
-        <parameter name="stmt" type="executableStatement"/>
+        <parameter name="stmt" type="execPartConstruct"/>
     </action>
 
     <action name="insertEnd" class="execution">
-        <parameter name="stmt" type="executableStatement"/>
+        <parameter name="stmt" type="execPartConstruct"/>
     </action>
 
     <!-- RangeLoopControl -->

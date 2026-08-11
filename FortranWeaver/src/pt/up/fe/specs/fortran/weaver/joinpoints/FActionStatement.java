@@ -9,7 +9,7 @@ public class FActionStatement extends AActionStatement {
     private final ActionStmt actionStmt;
 
     public FActionStatement(ActionStmt actionStmt) {
-        super(new FExecutableStatement(actionStmt));
+        super(new FStatement(actionStmt));
         this.actionStmt = actionStmt;
     }
 

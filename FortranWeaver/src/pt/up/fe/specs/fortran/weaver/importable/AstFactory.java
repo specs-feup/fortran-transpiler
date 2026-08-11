@@ -1,6 +1,5 @@
 package pt.up.fe.specs.fortran.weaver.importable;
 
-import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.expr.Argument;
 import pt.up.fe.specs.fortran.ast.nodes.expr.DataRef;
 import pt.up.fe.specs.fortran.ast.nodes.expr.Expr;
@@ -8,6 +7,7 @@ import pt.up.fe.specs.fortran.ast.nodes.expr.enums.BinaryOperatorKind;
 import pt.up.fe.specs.fortran.ast.nodes.loops.RangeLoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.omp.clause.OmpClause;
 import pt.up.fe.specs.fortran.ast.nodes.omp.enums.OmpClauseKind;
+import pt.up.fe.specs.fortran.ast.nodes.program.construct.ExecPartConstruct;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.DoConstruct;
 import pt.up.fe.specs.fortran.weaver.FortranJoinpoints;
 import pt.up.fe.specs.fortran.weaver.FortranWeaver;
@@ -70,12 +70,12 @@ public class AstFactory {
     }
 
     public static AExecution execution(Object[] args) {
-        List<FortranNode> stmts = SpecsCollections.asListT(AExecutableStatement.class, args)
+        List<ExecPartConstruct> constructs = SpecsCollections.asListT(AExecPartConstruct.class, args)
                 .stream()
-                .map(AExecutableStatement::getNode)
+                .map(stmt -> (ExecPartConstruct) stmt.getNode())
                 .toList();
 
-        return FortranJoinpoints.create(FortranWeaver.getFactory().execution(stmts), AExecution.class);
+        return FortranJoinpoints.create(FortranWeaver.getFactory().execution(constructs), AExecution.class);
     }
 
     public static AOmpOrderedClause ompOrderedClause(int value) {

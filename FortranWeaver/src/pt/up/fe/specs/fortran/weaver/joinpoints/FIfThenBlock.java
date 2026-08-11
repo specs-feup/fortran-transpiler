@@ -3,9 +3,9 @@ package pt.up.fe.specs.fortran.weaver.joinpoints;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.ifstmt.IfThenBlock;
 import pt.up.fe.specs.fortran.weaver.FortranJoinpoints;
+import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AExecBlock;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AIfThenBlock;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AIfThenStatement;
-import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AStatementBlock;
 
 public class FIfThenBlock extends AIfThenBlock {
 
@@ -16,8 +16,8 @@ public class FIfThenBlock extends AIfThenBlock {
     }
 
     @Override
-    public AStatementBlock getBodyImpl() {
-        return FortranJoinpoints.create(ifThenBlock.getBlock(), AStatementBlock.class);
+    public AExecBlock getBodyImpl() {
+        return FortranJoinpoints.create(ifThenBlock.getBlock(), AExecBlock.class);
     }
 
     @Override

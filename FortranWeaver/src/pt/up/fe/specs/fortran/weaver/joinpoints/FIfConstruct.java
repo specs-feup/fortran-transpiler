@@ -13,7 +13,7 @@ public class FIfConstruct extends AIfConstruct {
     public final IfConstruct ifConstruct;
 
     public FIfConstruct(IfConstruct ifConstruct) {
-        super(new FExecutableConstruct(ifConstruct));
+        super(new FExecConstruct(ifConstruct));
         this.ifConstruct = ifConstruct;
     }
 

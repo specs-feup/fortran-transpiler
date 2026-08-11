@@ -19,11 +19,6 @@ public class FSubprogram extends ASubprogram {
     }
 
     @Override
-    public String getModuleNameImpl() {
-        return subprogram.getName();
-    }
-
-    @Override
     public ASpecification getSpecificationImpl() {
         return FortranJoinpoints.create(subprogram.getSpecification(), ASpecification.class);
     }

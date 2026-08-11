@@ -66,7 +66,6 @@ public class FortranJoinpoints {
         JOINPOINT_FACTORY.put(DataRef.class, FDataRef::new);
         JOINPOINT_FACTORY.put(Designator.class, FDesignator::new);
         JOINPOINT_FACTORY.put(DoConstruct.class, FDoConstruct::new);
-        JOINPOINT_FACTORY.put(ExecutableStmt.class, FExecutableStatement::new);
         JOINPOINT_FACTORY.put(Execution.class, FExecution::new);
         JOINPOINT_FACTORY.put(Expr.class, FExpr::new);
         JOINPOINT_FACTORY.put(IntLiteral.class, FIntLiteral::new);
@@ -75,7 +74,7 @@ public class FortranJoinpoints {
         JOINPOINT_FACTORY.put(NameValue.class, FNameValue::new);
         JOINPOINT_FACTORY.put(RangeLoopControl.class, FRangeLoopControl::new);
         JOINPOINT_FACTORY.put(RealLiteral.class, FRealLiteral::new);
-        JOINPOINT_FACTORY.put(StmtBlock.class, FStatementBlock::new);
+        JOINPOINT_FACTORY.put(ExecBlock.class, FExecBlock::new);
         JOINPOINT_FACTORY.put(StringLiteral.class, FStringLiteral::new);
         JOINPOINT_FACTORY.put(Specification.class, FSpecification::new);
         JOINPOINT_FACTORY.put(OmpConstruct.class, FOmpConstruct::new);
@@ -95,7 +94,7 @@ public class FortranJoinpoints {
         JOINPOINT_FACTORY.put(ElseIfBlock.class, FElseIfBlock::new);
         JOINPOINT_FACTORY.put(ElseIfStmt.class, FElseIfStatement::new);
         JOINPOINT_FACTORY.put(ElseBlock.class, FElseBlock::new);
-        JOINPOINT_FACTORY.put(SpecificationStmt.class, FSpecificationStatement::new);
+        JOINPOINT_FACTORY.put(SpecStmt.class, FSpecificationStatement::new);
         JOINPOINT_FACTORY.put(TypeDeclarationStmt.class, FTypeDeclarationStatement::new);
         JOINPOINT_FACTORY.put(AttributeSpecifier.class, FAttributeSpecifier::new);
         JOINPOINT_FACTORY.put(KeywordAttributeSpecifier.class, FKeywordAttributeSpecifier::new);

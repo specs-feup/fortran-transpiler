@@ -14,6 +14,11 @@ public class FSubroutine extends ASubroutine {
     }
 
     @Override
+    public String getNameImpl() {
+        return subroutine.getName();
+    }
+
+    @Override
     public FortranNode getNode() {
         return subroutine;
     }
