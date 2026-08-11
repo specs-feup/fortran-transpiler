@@ -36,7 +36,7 @@ public class ANodeProcessor implements NodeProcessor {
             return factory().ideStmtDeclAdapter(ideStmt);
         }
 
-        if (node instanceof SpecStmt || node instanceof CompilerDirective) {
+        if (node instanceof SpecStmt || node instanceof ISStmt || node instanceof CompilerDirective) {
             return toSpecConstruct(node);
         }
 
