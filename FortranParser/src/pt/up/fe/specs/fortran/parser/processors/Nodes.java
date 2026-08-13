@@ -71,8 +71,7 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.usestmt.UseName;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.usestmt.UseOnlyStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.usestmt.UseRenameStmt;
 import pt.up.fe.specs.fortran.ast.nodes.type.*;
-import pt.up.fe.specs.fortran.ast.nodes.type.attributes.IntentSpec;
-import pt.up.fe.specs.fortran.ast.nodes.type.attributes.KeywordAttributeSpecifier;
+import pt.up.fe.specs.fortran.ast.nodes.type.attributes.IntentAttrSpec;
 import pt.up.fe.specs.fortran.ast.nodes.type.lenselector.ConstLenSelector;
 import pt.up.fe.specs.fortran.ast.nodes.type.lenselector.KindParamLenSelector;
 import pt.up.fe.specs.fortran.ast.nodes.type.lenselector.ParamLenSelector;
@@ -257,8 +256,8 @@ public class Nodes {
 
         var a = new AttributesProcessor(data);
         processors.put(ArraySpec.class, a::arraySpecification);
-        processors.put(KeywordAttributeSpecifier.class, a::keywordSpecifier);
-        processors.put(IntentSpec.class, a::intentSpec);
+        processors.put(KeywordAttrSpec.class, a::keywordSpecifier);
+        processors.put(IntentAttrSpec.class, a::intentSpec);
         processors.put(NamedConstantDef.class, a::namedConstantDef);
 
         var shapes = new ShapesProcessor(data);

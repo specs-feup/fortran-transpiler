@@ -11,11 +11,11 @@ import java.util.Collection;
 
 import static pt.up.fe.specs.fortran.ast.FortranKeyword.INTENT;
 
-public class IntentSpec extends AttributeSpecifier {
+public class IntentAttrSpec extends AttrSpec {
 
     public final static DataKey<IntentKind> KIND = KeyFactory.enumeration("kind", IntentKind.class);
 
-    public IntentSpec(DataStore data, Collection<? extends FortranNode> children) {
+    public IntentAttrSpec(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);
     }
 
@@ -25,9 +25,6 @@ public class IntentSpec extends AttributeSpecifier {
 
     @Override
     public String getCode() {
-        var kind = getKind();
-        var lowercase = getContext().get(FortranContext.FORTRAN_KEYWORDS).isLowercase();
-
-        return keyword(INTENT) + "(" + kind.getCode(lowercase) + ")";
+        return keyword(INTENT) + "(" + encase(getKind().getString()) + ")";
     }
 }

@@ -7,18 +7,18 @@ import pt.up.fe.specs.fortran.ast.nodes.specification.shape.ArraySpec;
 
 import java.util.Collection;
 
-public class DimensionSpec extends AttributeSpecifier {
-    public DimensionSpec(DataStore data, Collection<? extends FortranNode> children) {
+public class DimAttrSpec extends AttrSpec {
+    public DimAttrSpec(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);
+    }
+
+    private ArraySpec getArraySpec() {
+        return getChild(ArraySpec.class, 0);
     }
 
     @Override
     public String getCode() {
-        var arraySpec = getArraySpecification();
+        var arraySpec = getArraySpec();
         return keyword(FortranKeyword.DIMENSION) + arraySpec.getCode();
-    }
-
-    private ArraySpec getArraySpecification() {
-        return getChild(ArraySpec.class, 0);
     }
 }

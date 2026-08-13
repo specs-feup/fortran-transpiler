@@ -3,8 +3,7 @@ package pt.up.fe.specs.fortran.parser.processors;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.specification.shape.ArraySpec;
 import pt.up.fe.specs.fortran.ast.nodes.specification.NamedConstantDef;
-import pt.up.fe.specs.fortran.ast.nodes.type.attributes.IntentSpec;
-import pt.up.fe.specs.fortran.ast.nodes.type.attributes.KeywordAttributeSpecifier;
+import pt.up.fe.specs.fortran.ast.nodes.type.attributes.IntentAttrSpec;
 import pt.up.fe.specs.fortran.ast.nodes.type.attributes.enums.IntentKind;
 import pt.up.fe.specs.fortran.parser.FlangName;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
@@ -46,16 +45,16 @@ public class AttributesProcessor extends ANodeProcessor {
         additionalShape.ifPresent(arraySpecification::addChild);
     }
 
-    public void keywordSpecifier(KeywordAttributeSpecifier keywordSpecifier) {
+    public void keywordSpecifier(KeywordAttrSpec keywordSpecifier) {
         var keyword = attributes(keywordSpecifier).getString("keyword");
 
-        keywordSpecifier.set(KeywordAttributeSpecifier.KEYWORD, keyword);
+        keywordSpecifier.set(KeywordAttrSpec.KEYWORD, keyword);
     }
 
-    public void intentSpec(IntentSpec intentSpec) {
-        intentSpec.set(
-                IntentSpec.KIND,
-                IntentKind.convertTry(attributes(intentSpec).getString("intent")).get()
+    public void intentSpec(IntentAttrSpec intentAttrSpec) {
+        intentAttrSpec.set(
+                IntentAttrSpec.KIND,
+                IntentKind.convertTry(attributes(intentAttrSpec).getString("intent")).get()
         );
     }
 

@@ -35,7 +35,7 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.DataComponentDefStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.DerivedTypeStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.EndTypeStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.usestmt.*;
-import pt.up.fe.specs.fortran.ast.nodes.type.attributes.DimensionSpec;
+import pt.up.fe.specs.fortran.ast.nodes.type.attributes.DimAttrSpec;
 import pt.up.fe.specs.fortran.parser.FlangAttributes;
 import pt.up.fe.specs.fortran.parser.FlangName;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
@@ -109,7 +109,7 @@ public class StmtProcessors extends ANodeProcessor {
             var attributes = getChildren(typeDeclarationStmt, FlangName.ATTR_SPEC);
             var processedAttributes = attributes.stream()
                     .map(attr -> attr instanceof ArraySpec
-                            ? factory().newNode(DimensionSpec.class, List.of(attr))
+                            ? factory().newNode(DimAttrSpec.class, List.of(attr))
                             : attr)
                     .toList();
             typeDeclarationStmt.addChildren(processedAttributes);

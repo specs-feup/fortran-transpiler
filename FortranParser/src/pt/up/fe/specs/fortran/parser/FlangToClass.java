@@ -71,9 +71,7 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.EndSelectStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.SelectCaseStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.usestmt.*;
 import pt.up.fe.specs.fortran.ast.nodes.type.*;
-import pt.up.fe.specs.fortran.ast.nodes.type.attributes.AllocatableKeyword;
-import pt.up.fe.specs.fortran.ast.nodes.type.attributes.IntentSpec;
-import pt.up.fe.specs.fortran.ast.nodes.type.attributes.ParameterKeyword;
+import pt.up.fe.specs.fortran.ast.nodes.type.attributes.IntentAttrSpec;
 import pt.up.fe.specs.fortran.ast.nodes.utils.NameValue;
 
 import java.util.HashMap;
@@ -305,7 +303,7 @@ public class FlangToClass {
 
         ///  ATTRIBUTES
         NAME_TO_MAPPER.put(FlangName.ALLOCATABLE, ClassMapper.always(AllocatableKeyword.class));
-        NAME_TO_MAPPER.put(FlangName.INTENT_SPEC, ClassMapper.always(IntentSpec.class));
+        NAME_TO_MAPPER.put(FlangName.INTENT_SPEC, ClassMapper.always(IntentAttrSpec.class));
         NAME_TO_MAPPER.put(FlangName.PARAMETER, ClassMapper.always(ParameterKeyword.class));
 
         ///  SHAPES
