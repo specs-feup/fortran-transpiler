@@ -1,9 +1,11 @@
 package pt.up.fe.specs.fortran.parser.processors;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
+import pt.up.fe.specs.fortran.ast.nodes.specification.enums.AccessKind;
 import pt.up.fe.specs.fortran.ast.nodes.specification.shape.ArraySpec;
 import pt.up.fe.specs.fortran.ast.nodes.specification.NamedConstantDef;
-import pt.up.fe.specs.fortran.ast.nodes.type.attributes.IntentAttrSpec;
+import pt.up.fe.specs.fortran.ast.nodes.type.attributes.*;
+import pt.up.fe.specs.fortran.ast.nodes.type.attributes.enums.AttrSpecKind;
 import pt.up.fe.specs.fortran.ast.nodes.type.attributes.enums.IntentKind;
 import pt.up.fe.specs.fortran.parser.FlangName;
 import pt.up.fe.specs.fortran.parser.FortranJsonResult;
@@ -45,17 +47,38 @@ public class AttributesProcessor extends ANodeProcessor {
         additionalShape.ifPresent(arraySpecification::addChild);
     }
 
-    public void keywordSpecifier(KeywordAttrSpec keywordSpecifier) {
-        var keyword = attributes(keywordSpecifier).getString("keyword");
-
-        keywordSpecifier.set(KeywordAttrSpec.KEYWORD, keyword);
+    public void accessAttrSpec(AccessAttrSpec accessAttrSpec) {
+        var accessKindSrc = attributes().getString(accessAttrSpec, "value", FlangName.ACCESS_SPEC, FlangName.KIND);
+        var accessKind = AccessKind.valueOf(accessKindSrc.toUpperCase());
+        accessAttrSpec.set(AccessAttrSpec.ACCESS_KIND, accessKind);
     }
 
-    public void intentSpec(IntentAttrSpec intentAttrSpec) {
-        intentAttrSpec.set(
-                IntentAttrSpec.KIND,
-                IntentKind.convertTry(attributes(intentAttrSpec).getString("intent")).get()
-        );
+    public void codimAttrSpec(CodimAttrSpec codimAttrSpec) {
+        var coarraySpec = getChild(codimAttrSpec, FlangName.COARRAY_SPEC);
+        codimAttrSpec.addChild(coarraySpec);
+    }
+
+    public void dimAttrSpec(DimAttrSpec dimAttrSpec) {
+        var arraySpec = getChild(dimAttrSpec, FlangName.ARRAY_SPEC);
+        dimAttrSpec.addChild(arraySpec);
+    }
+
+    public void intentAttrSpec(IntentAttrSpec intentAttrSpec) {
+        var intentKindSrc = attributes().getString(intentAttrSpec, "intent", FlangName.INTENT_SPEC);
+        var intentKind = IntentKind.convertTry(intentKindSrc)
+                .orElseThrow(() -> new RuntimeException("Invalid intent kind: " + intentKindSrc));
+        intentAttrSpec.set(IntentAttrSpec.KIND, intentKind);
+    }
+
+    public void langBindAttrSpec(LangBindAttrSpec langBindAttrSpec) {
+        var languageBindingSpec = getChild(langBindAttrSpec, FlangName.LANGUAGE_BINDING_SPEC);
+        langBindAttrSpec.addChild(languageBindingSpec);
+    }
+
+    public void otherAttrSpec(OtherAttrSpec otherAttrSpec) {
+        var variantKey = attributes(otherAttrSpec).getVariantKey();
+        var kind = AttrSpecKind.valueOf(variantKey.toUpperCase());
+        otherAttrSpec.set(OtherAttrSpec.KIND, kind);
     }
 
     public void namedConstantDef(NamedConstantDef namedConstantDef) {

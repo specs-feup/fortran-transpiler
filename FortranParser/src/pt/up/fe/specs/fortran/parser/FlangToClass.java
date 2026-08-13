@@ -28,6 +28,7 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.InterfaceStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.DataComponentDefStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.DerivedTypeStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.EndTypeStmt;
+import pt.up.fe.specs.fortran.ast.nodes.type.attributes.*;
 import pt.up.fe.specs.fortran.ast.nodes.type.decltype.DeclType;
 import pt.up.fe.specs.fortran.ast.nodes.type.decltype.DerivedDeclType;
 import pt.up.fe.specs.fortran.ast.nodes.type.decltype.IntrinsicDeclType;
@@ -71,7 +72,6 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.EndSelectStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.SelectCaseStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.usestmt.*;
 import pt.up.fe.specs.fortran.ast.nodes.type.*;
-import pt.up.fe.specs.fortran.ast.nodes.type.attributes.IntentAttrSpec;
 import pt.up.fe.specs.fortran.ast.nodes.utils.NameValue;
 
 import java.util.HashMap;
@@ -302,9 +302,25 @@ public class FlangToClass {
         NAME_TO_MAPPER.put(FlangName.CONCURRENT_CONTROL, ClassMapper.always(ConcurrentRange.class));
 
         ///  ATTRIBUTES
-        NAME_TO_MAPPER.put(FlangName.ALLOCATABLE, ClassMapper.always(AllocatableKeyword.class));
-        NAME_TO_MAPPER.put(FlangName.INTENT_SPEC, ClassMapper.always(IntentAttrSpec.class));
-        NAME_TO_MAPPER.put(FlangName.PARAMETER, ClassMapper.always(ParameterKeyword.class));
+        NAME_TO_MAPPER.put(FlangName.ATTR_SPEC, ClassMapper.caseFor(AttrSpec.class)
+                .map(FlangName.ACCESS_SPEC, AccessAttrSpec.class)
+                .map(FlangName.ALLOCATABLE, OtherAttrSpec.class)
+                .map(FlangName.ASYNCHRONOUS, OtherAttrSpec.class)
+                .map(FlangName.COARRAY_SPEC, CodimAttrSpec.class)
+                .map(FlangName.CONTIGUOUS, OtherAttrSpec.class)
+                .map(FlangName.ARRAY_SPEC, DimAttrSpec.class)
+                .map(FlangName.EXTERNAL, OtherAttrSpec.class)
+                .map(FlangName.INTENT_SPEC, IntentAttrSpec.class)
+                .map(FlangName.INTRINSIC, OtherAttrSpec.class)
+                .map(FlangName.LANGUAGE_BINDING_SPEC, LangBindAttrSpec.class)
+                .map(FlangName.OPTIONAL, OtherAttrSpec.class)
+                .map(FlangName.PARAMETER, OtherAttrSpec.class)
+                .map(FlangName.POINTER, OtherAttrSpec.class)
+                .map(FlangName.PROTECTED, OtherAttrSpec.class)
+                .map(FlangName.SAVE, OtherAttrSpec.class)
+                .map(FlangName.TARGET, OtherAttrSpec.class)
+                .map(FlangName.VALUE, OtherAttrSpec.class)
+                .map(FlangName.VOLATILE, OtherAttrSpec.class));
 
         ///  SHAPES
         NAME_TO_MAPPER.put(FlangName.EXPLICIT_SHAPE_SPEC, ClassMapper.always(ExplicitShape.class));

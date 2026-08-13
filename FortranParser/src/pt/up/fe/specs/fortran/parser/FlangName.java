@@ -327,6 +327,13 @@ public enum FlangName implements StringProvider {
     PARAMETER,
     ASSUMED_IMPLIED_SPEC,
     ASSUMED_RANK_SPEC,
+    INTRINSIC,
+    OPTIONAL,
+    PROTECTED,
+    SAVE,
+    TARGET,
+    VALUE,
+    VOLATILE,
 
     // OTHER
     INITIALIZATION,

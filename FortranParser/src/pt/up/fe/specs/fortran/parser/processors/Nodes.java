@@ -28,6 +28,7 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.EndInterfaceStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.DataComponentDefStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.DerivedTypeStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.EndTypeStmt;
+import pt.up.fe.specs.fortran.ast.nodes.type.attributes.*;
 import pt.up.fe.specs.fortran.ast.nodes.type.decltype.DerivedDeclType;
 import pt.up.fe.specs.fortran.ast.nodes.type.decltype.IntrinsicDeclType;
 import pt.up.fe.specs.fortran.ast.nodes.type.decltype.StarDeclType;
@@ -71,7 +72,6 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.usestmt.UseName;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.usestmt.UseOnlyStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.usestmt.UseRenameStmt;
 import pt.up.fe.specs.fortran.ast.nodes.type.*;
-import pt.up.fe.specs.fortran.ast.nodes.type.attributes.IntentAttrSpec;
 import pt.up.fe.specs.fortran.ast.nodes.type.lenselector.ConstLenSelector;
 import pt.up.fe.specs.fortran.ast.nodes.type.lenselector.KindParamLenSelector;
 import pt.up.fe.specs.fortran.ast.nodes.type.lenselector.ParamLenSelector;
@@ -256,8 +256,12 @@ public class Nodes {
 
         var a = new AttributesProcessor(data);
         processors.put(ArraySpec.class, a::arraySpecification);
-        processors.put(KeywordAttrSpec.class, a::keywordSpecifier);
-        processors.put(IntentAttrSpec.class, a::intentSpec);
+        processors.put(AccessAttrSpec.class, a::accessAttrSpec);
+        processors.put(CodimAttrSpec.class, a::codimAttrSpec);
+        processors.put(DimAttrSpec.class, a::dimAttrSpec);
+        processors.put(IntentAttrSpec.class, a::intentAttrSpec);
+        processors.put(LangBindAttrSpec.class, a::langBindAttrSpec);
+        processors.put(OtherAttrSpec.class, a::otherAttrSpec);
         processors.put(NamedConstantDef.class, a::namedConstantDef);
 
         var shapes = new ShapesProcessor(data);
