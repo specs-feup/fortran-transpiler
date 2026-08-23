@@ -14,9 +14,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-// TODO(Process-ing): Include support for `prefix`
 public class FunctionStmt extends Stmt {
     public static final DataKey<String> FUNCTION_NAME = KeyFactory.string("function_name");
     public static final DataKey<Optional<String>> RESULT_NAME = KeyFactory.optional("result_name");

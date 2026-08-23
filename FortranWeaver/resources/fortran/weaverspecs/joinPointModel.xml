@@ -93,11 +93,9 @@
 
     <joinpoint class="typeDeclarationStatement" extends="specificationStatement"/>
 
-    <joinpoint class="attributeSpecifier"/>
+    <joinpoint class="attrSpec"/>
 
-    <joinpoint class="keywordAttributeSpecifier" extends="attributeSpecifier"/>
-
-    <joinpoint class="parameterKeyword" extends="keywordAttributeSpecifier"/>
+    <joinpoint class="otherAttrSpec" extends="attrSpec"/>
 
     <joinpoint class="fortranDecl"/>
 

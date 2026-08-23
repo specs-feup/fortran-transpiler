@@ -3,9 +3,8 @@ package pt.up.fe.specs.fortran.weaver.joinpoints;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.TypeDeclarationStmt;
 import pt.up.fe.specs.fortran.weaver.FortranJoinpoints;
-import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AAttributeSpecifier;
+import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AAttrSpec;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AEntityDecl;
-import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AExpr;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.ATypeDeclarationStatement;
 
 public class FTypeDeclarationStatement extends ATypeDeclarationStatement {
@@ -18,12 +17,12 @@ public class FTypeDeclarationStatement extends ATypeDeclarationStatement {
     }
 
     @Override
-    public AAttributeSpecifier[] getAttrsArrayImpl() {
+    public AAttrSpec[] getAttrsArrayImpl() {
         return typeDeclarationStmt.getAttributes()
                 .stream()
                 .map(FortranJoinpoints::create)
                 .toList()
-                .toArray(new AAttributeSpecifier[0]);
+                .toArray(new AAttrSpec[0]);
     }
 
     @Override
