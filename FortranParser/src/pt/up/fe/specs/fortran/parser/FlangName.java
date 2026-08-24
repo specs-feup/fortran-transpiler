@@ -158,6 +158,10 @@ public enum FlangName implements StringProvider {
     ACCESS_ID,
     IMPORT_STMT,
     IMPORT_KIND,
+    POINTER_ASSIGNMENT_STMT,
+    BOUNDS,
+    BOUNDS_SPEC,
+    BOUNDS_REMAPPING,
 
     // Variables
     VARIABLE,

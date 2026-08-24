@@ -4,6 +4,7 @@ import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
+import pt.up.fe.specs.fortran.ast.nodes.decl.init.Initialization;
 import pt.up.fe.specs.fortran.ast.nodes.specification.shape.ArraySpec;
 import pt.up.fe.specs.fortran.ast.nodes.type.decltype.DeclType;
 

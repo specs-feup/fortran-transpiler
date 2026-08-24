@@ -1,7 +1,7 @@
 package pt.up.fe.specs.fortran.weaver.joinpoints;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
-import pt.up.fe.specs.fortran.ast.nodes.decl.ExprInitialization;
+import pt.up.fe.specs.fortran.ast.nodes.decl.init.ExprInitialization;
 import pt.up.fe.specs.fortran.weaver.FortranJoinpoints;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AExpr;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AExprInitialization;

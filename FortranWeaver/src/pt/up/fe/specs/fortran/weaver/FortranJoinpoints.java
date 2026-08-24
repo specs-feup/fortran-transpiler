@@ -15,9 +15,9 @@ package pt.up.fe.specs.fortran.weaver;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.decl.EntityDecl;
-import pt.up.fe.specs.fortran.ast.nodes.decl.ExprInitialization;
 import pt.up.fe.specs.fortran.ast.nodes.decl.FortranDecl;
-import pt.up.fe.specs.fortran.ast.nodes.decl.Initialization;
+import pt.up.fe.specs.fortran.ast.nodes.decl.init.ExprInitialization;
+import pt.up.fe.specs.fortran.ast.nodes.decl.init.Initialization;
 import pt.up.fe.specs.fortran.ast.nodes.expr.*;
 import pt.up.fe.specs.fortran.ast.nodes.loops.LoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.RangeLoopControl;
