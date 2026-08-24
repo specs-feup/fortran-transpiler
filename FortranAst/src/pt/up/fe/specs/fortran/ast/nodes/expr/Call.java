@@ -8,13 +8,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Call extends Expr {
-
     public Call(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);
     }
 
-    public DataRef getCallee() {
-        return getChild(DataRef.class, 0);
+    public ProcDesignator getCallee() {
+        return getChild(ProcDesignator.class, 0);
     }
 
     public List<Argument> getArgs() {
