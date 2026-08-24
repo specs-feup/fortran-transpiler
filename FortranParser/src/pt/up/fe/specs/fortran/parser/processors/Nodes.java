@@ -10,10 +10,14 @@ import pt.up.fe.specs.fortran.ast.nodes.decl.component.attr.AccessComponentAttr;
 import pt.up.fe.specs.fortran.ast.nodes.decl.component.attr.CodimComponentAttr;
 import pt.up.fe.specs.fortran.ast.nodes.decl.component.attr.DimComponentAttr;
 import pt.up.fe.specs.fortran.ast.nodes.decl.component.attr.OtherComponentAttr;
-import pt.up.fe.specs.fortran.ast.nodes.decl.init.DataTargetInitialization;
-import pt.up.fe.specs.fortran.ast.nodes.decl.init.ExprInitialization;
-import pt.up.fe.specs.fortran.ast.nodes.decl.init.ListInitialization;
-import pt.up.fe.specs.fortran.ast.nodes.decl.init.NullInitialization;
+import pt.up.fe.specs.fortran.ast.nodes.decl.init.*;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.ProcDecl;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.attr.AccessProcAttr;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.attr.IntentProcAttr;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.attr.LangBindProcAttr;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.attr.OtherProcAttr;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.NamedProcInterface;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.TypeProcInterface;
 import pt.up.fe.specs.fortran.ast.nodes.expr.*;
 import pt.up.fe.specs.fortran.ast.nodes.io.*;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentLoopControl;
@@ -150,6 +154,15 @@ public class Nodes {
         processors.put(InterfaceBlock.class, d::interfaceBlock);
         processors.put(InterfaceFunction.class, d::interfaceFunction);
         processors.put(InterfaceSubroutine.class, d::interfaceSubroutine);
+        processors.put(NameProcPointerInit.class, d::nameProcPointerInit);
+        processors.put(NullProcPointerInit.class, d::nullProcPointerInit);
+        processors.put(NamedProcInterface.class, d::namedProcInterface);
+        processors.put(TypeProcInterface.class, d::typeProcInterface);
+        processors.put(AccessProcAttr.class, d::accessProcAttr);
+        processors.put(LangBindProcAttr.class, d::langBindProcAttr);
+        processors.put(IntentProcAttr.class, d::intentProcAttr);
+        processors.put(OtherProcAttr.class, d::otherProcAttr);
+        processors.put(ProcDecl.class, d::procDecl);
 
         var v = new VariableProcessor(data);
         processors.put(DataRef.class, v::dataRef);
@@ -223,6 +236,7 @@ public class Nodes {
         processors.put(DefaultInterfaceStmt.class, s::defaultInterfaceStmt);
         processors.put(AbstractInterfaceStmt.class, s::abstractInterfaceStmt);
         processors.put(EndInterfaceStmt.class, s::endInterfaceStmt);
+        processors.put(ProcDeclStmt.class, s::procDeclStmt);
 
         var e = new ExprProcessors(data);
         processors.put(StringLiteral.class, e::stringLiteral);

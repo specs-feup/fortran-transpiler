@@ -10,10 +10,15 @@ import pt.up.fe.specs.fortran.ast.nodes.decl.component.attr.CodimComponentAttr;
 import pt.up.fe.specs.fortran.ast.nodes.decl.component.attr.DimComponentAttr;
 import pt.up.fe.specs.fortran.ast.nodes.decl.component.attr.OtherComponentAttr;
 import pt.up.fe.specs.fortran.ast.nodes.decl.enums.ComponentAttrKind;
-import pt.up.fe.specs.fortran.ast.nodes.decl.init.DataTargetInitialization;
-import pt.up.fe.specs.fortran.ast.nodes.decl.init.ExprInitialization;
-import pt.up.fe.specs.fortran.ast.nodes.decl.init.ListInitialization;
-import pt.up.fe.specs.fortran.ast.nodes.decl.init.NullInitialization;
+import pt.up.fe.specs.fortran.ast.nodes.decl.enums.ProcAttrKind;
+import pt.up.fe.specs.fortran.ast.nodes.decl.init.*;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.ProcDecl;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.attr.AccessProcAttr;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.attr.IntentProcAttr;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.attr.LangBindProcAttr;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.attr.OtherProcAttr;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.NamedProcInterface;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.TypeProcInterface;
 import pt.up.fe.specs.fortran.ast.nodes.expr.enums.BinaryOperatorKind;
 import pt.up.fe.specs.fortran.ast.nodes.specification.*;
 import pt.up.fe.specs.fortran.ast.nodes.specification.enums.AccessKind;
@@ -32,6 +37,7 @@ import pt.up.fe.specs.fortran.ast.nodes.specification.type.AccessTypeAttr;
 import pt.up.fe.specs.fortran.ast.nodes.specification.type.BindTypeAttr;
 import pt.up.fe.specs.fortran.ast.nodes.specification.type.ExtendsTypeAttr;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.AccessStmt;
+import pt.up.fe.specs.fortran.ast.nodes.type.attributes.enums.IntentKind;
 import pt.up.fe.specs.fortran.ast.nodes.type.typeparam.DeferredTypeParamValue;
 import pt.up.fe.specs.fortran.ast.nodes.type.typeparam.ExprTypeParamValue;
 import pt.up.fe.specs.fortran.ast.nodes.type.typeparam.StarTypeParamValue;
@@ -282,5 +288,57 @@ public class DeclProcessors extends ANodeProcessor {
 
         var endSubroutineStmt = getStmtChild(interfaceSubroutine, FlangName.END_SUBROUTINE_STMT);
         interfaceSubroutine.addChild(endSubroutineStmt);
+    }
+
+    public void nameProcPointerInit(NameProcPointerInit nameProcPointerInit) {
+        var name = attributes().getString(nameProcPointerInit, "source", FlangName.NAME);
+        nameProcPointerInit.set(NameProcPointerInit.NAME, name);
+    }
+
+    public void nullProcPointerInit(NullProcPointerInit nullProcPointerInit) {
+        var nullInit = getChild(nullProcPointerInit, FlangName.NULL_INIT);
+        nullProcPointerInit.addChild(nullInit);
+    }
+
+    public void namedProcInterface(NamedProcInterface namedProcInterface) {
+        var name = attributes().getString(namedProcInterface, "source", FlangName.NAME);
+        namedProcInterface.set(NamedProcInterface.NAME, name);
+    }
+
+    public void typeProcInterface(TypeProcInterface typeProcInterface) {
+        var declType = getChild(typeProcInterface, FlangName.DECLARATION_TYPE_SPEC);
+        typeProcInterface.addChild(declType);
+    }
+
+    public void accessProcAttr(AccessProcAttr accessProcAttr) {
+        var accessKindSrc = attributes().getString(accessProcAttr, "value", FlangName.ACCESS_SPEC, FlangName.KIND);
+        var accessKind = AccessKind.valueOf(accessKindSrc.toUpperCase());
+        accessProcAttr.set(AccessProcAttr.ACCESS_KIND, accessKind);
+    }
+
+    public void langBindProcAttr(LangBindProcAttr langBindProcAttr) {
+        var languageBindingSpec = getChild(langBindProcAttr, FlangName.LANGUAGE_BINDING_SPEC);
+        langBindProcAttr.addChild(languageBindingSpec);
+    }
+
+    public void intentProcAttr(IntentProcAttr intentProcAttr) {
+        var intentKindSrc = attributes().getString(intentProcAttr, "intent", FlangName.INTENT_SPEC);
+        var intentKind = IntentKind.convertTry(intentKindSrc)
+                .orElseThrow(() -> new RuntimeException("Invalid intent kind: " + intentKindSrc));
+        intentProcAttr.set(IntentProcAttr.INTENT_KIND, intentKind);
+    }
+
+    public void otherProcAttr(OtherProcAttr otherProcAttr) {
+        var variantKey = attributes(otherProcAttr).getVariantKey();
+        var kind = ProcAttrKind.valueOf(variantKey.toUpperCase());
+        otherProcAttr.set(OtherProcAttr.KIND, kind);
+    }
+
+    public void procDecl(ProcDecl procDecl) {
+        var name = attributes().getString(procDecl, "source", FlangName.NAME);
+        procDecl.set(ProcDecl.NAME, name);
+
+        var init = getChildOptional(procDecl, FlangName.PROC_POINTER_INIT);
+        init.ifPresent(procDecl::addChild);
     }
 }

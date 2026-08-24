@@ -4,15 +4,18 @@ import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.decl.NamedParameter;
 import pt.up.fe.specs.fortran.ast.nodes.expr.Expr;
 import pt.up.fe.specs.fortran.ast.nodes.loops.WhileLoopControl;
-import pt.up.fe.specs.fortran.ast.nodes.program.subprogram.*;
+import pt.up.fe.specs.fortran.ast.nodes.program.subprogram.EndFunctionStmt;
+import pt.up.fe.specs.fortran.ast.nodes.program.subprogram.EndSubroutineStmt;
+import pt.up.fe.specs.fortran.ast.nodes.program.subprogram.FunctionStmt;
+import pt.up.fe.specs.fortran.ast.nodes.program.subprogram.SubroutineStmt;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.EndModuleStmt;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.EndProgramStmt;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.ModuleStmt;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.ProgramStmt;
-import pt.up.fe.specs.fortran.ast.nodes.specification.shape.ArraySpec;
 import pt.up.fe.specs.fortran.ast.nodes.specification.LanguageBindingSpec;
 import pt.up.fe.specs.fortran.ast.nodes.specification.NamedConstantDef;
 import pt.up.fe.specs.fortran.ast.nodes.specification.enums.AccessKind;
+import pt.up.fe.specs.fortran.ast.nodes.specification.shape.ArraySpec;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.*;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.datastmt.DataStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.datastmt.DataStmtObject;
@@ -849,5 +852,18 @@ public class StmtProcessors extends ANodeProcessor {
 
     public void endInterfaceStmt(EndInterfaceStmt endInterfaceStmt) {
         stmt(endInterfaceStmt);
+    }
+
+    public void procDeclStmt(ProcDeclStmt procDeclStmt) {
+        stmt(procDeclStmt);
+
+        var procInterface = getChildOptional(procDeclStmt, FlangName.PROC_INTERFACE);
+        procInterface.ifPresent(procDeclStmt::addChild);
+
+        var procAttrs = getChildren(procDeclStmt, FlangName.PROC_ATTR_SPEC);
+        procDeclStmt.addChildren(procAttrs);
+
+        var procDecls = getChildren(procDeclStmt, FlangName.PROC_DECL);
+        procDeclStmt.addChildren(procDecls);
     }
 }
