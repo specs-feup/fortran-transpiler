@@ -79,7 +79,6 @@ public enum FlangName implements StringProvider {
     SUBROUTINE,
     PROCEDURE_STMT,
     END_INTERFACE_STMT,
-    NULL_INIT,
     PROC_POINTER_INIT,
     PROC_INTERFACE,
     PROC_DECL,
@@ -217,6 +216,7 @@ public enum FlangName implements StringProvider {
     COMPLEX_LITERAL_CONSTANT,
     SUBSTRING,
     SUBSTRING_RANGE,
+    NULL_INIT,
 
     // ARRAYs
     ARRAY_CONSTRUCTOR,

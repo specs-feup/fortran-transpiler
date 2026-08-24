@@ -433,4 +433,11 @@ public class FortranNodeFactory {
     public DirectiveExecAdapter directiveExecAdapter(CompilerDirective directive) {
         return newNode(DirectiveExecAdapter.class, List.of(directive));
     }
+
+    public NamedProcDesignator namedProcDesignator(String name) {
+        var data = newDataStore(NamedProcDesignator.class);
+        data.set(NamedProcDesignator.NAME, name);
+
+        return new NamedProcDesignator(data, List.of());
+    }
 }

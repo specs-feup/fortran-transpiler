@@ -238,4 +238,14 @@ public class ExprProcessors extends ANodeProcessor {
             substring.setOptional(Substring.UPPER_IDX, upper.indexOfSelf());
         });
     }
+
+    public void nullInit(NullInit nullInit) {
+        var nullRef = factory().namedProcDesignator("null");
+        nullInit.addChild(nullRef);
+    }
+
+    public void namedProcDesignator(NamedProcDesignator namedProcDesignator) {
+        var name = attributes().getString(namedProcDesignator, "source", FlangName.NAME);
+        namedProcDesignator.set(NamedProcDesignator.NAME, name);
+    }
 }

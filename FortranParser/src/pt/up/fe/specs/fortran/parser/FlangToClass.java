@@ -295,6 +295,9 @@ public class FlangToClass {
                 .map(FlangName.SIGNED_REAL_LITERAL_CONSTANT, RealComplexPart.class)
                 .map(FlangName.NAMED_CONSTANT, NamedComplexPart.class));
         NAME_TO_MAPPER.put(FlangName.SUBSTRING, ClassMapper.always(Substring.class));
+        NAME_TO_MAPPER.put(FlangName.NULL_INIT, ClassMapper.always(NullInit.class));
+        NAME_TO_MAPPER.put(FlangName.PROCEDURE_DESIGNATOR, ClassMapper.caseFor(ProcDesignator.class)
+                .map(FlangName.NAME, NamedProcDesignator.class));
 
         /// TYPEs
         NAME_TO_MAPPER.put(FlangName.INTEGER_TYPE_SPEC, ClassMapper.always(IntegerType.class));

@@ -10,7 +10,10 @@ import pt.up.fe.specs.fortran.ast.nodes.decl.component.attr.CodimComponentAttr;
 import pt.up.fe.specs.fortran.ast.nodes.decl.component.attr.DimComponentAttr;
 import pt.up.fe.specs.fortran.ast.nodes.decl.component.attr.OtherComponentAttr;
 import pt.up.fe.specs.fortran.ast.nodes.decl.enums.ComponentAttrKind;
-import pt.up.fe.specs.fortran.ast.nodes.decl.init.Initialization;
+import pt.up.fe.specs.fortran.ast.nodes.decl.init.DataTargetInitialization;
+import pt.up.fe.specs.fortran.ast.nodes.decl.init.ExprInitialization;
+import pt.up.fe.specs.fortran.ast.nodes.decl.init.ListInitialization;
+import pt.up.fe.specs.fortran.ast.nodes.decl.init.NullInitialization;
 import pt.up.fe.specs.fortran.ast.nodes.expr.enums.BinaryOperatorKind;
 import pt.up.fe.specs.fortran.ast.nodes.specification.*;
 import pt.up.fe.specs.fortran.ast.nodes.specification.enums.AccessKind;
@@ -54,36 +57,29 @@ public class DeclProcessors extends ANodeProcessor {
         }
 
         if (attributes(entityDecl).has(FlangName.INITIALIZATION)) {
-            var initId = attributes(entityDecl).getString(FlangName.INITIALIZATION);
-            var init = buildInitialization(initId);
+            var init = getChild(entityDecl, FlangName.INITIALIZATION);
             entityDecl.addChild(init);
         }
     }
 
-    public Initialization buildInitialization(String id) {
-        var attrs = attributes().getAttrs(id);
-        var variantKey = attrs.getVariantKey();
+    public void exprInitialization(ExprInitialization exprInitialization) {
+        var expr = getChild(exprInitialization, FlangName.EXPR);
+        exprInitialization.addChild(expr);
+    }
 
-        if (variantKey.equals(FlangName.DATA_STMT_VALUE.getString())) {
-            var dataStmtValueIds = attrs.getStringList(FlangName.DATA_STMT_VALUE);
-            var dataStmtValues = dataStmtValueIds.stream()
-                    .map(this::getNode)
-                    .toList();
+    public void nullInitialization(NullInitialization nullInitialization) {
+        var nullInit = getChild(nullInitialization, FlangName.NULL_INIT);
+        nullInitialization.addChild(nullInit);
+    }
 
-            var init = factory().listInitialization();
-            init.addChildren(dataStmtValues);
+    public void dataTargetInitialization(DataTargetInitialization dataTargetInitialization) {
+        var designator = getChild(dataTargetInitialization, FlangName.DESIGNATOR);
+        dataTargetInitialization.addChild(designator);
+    }
 
-            return init;
-        }
-
-        // Otherwise, we assume it's an ExprInitialization
-        var childId = attrs.getString(variantKey);
-        var initExpr = getChild(childId);
-
-        var init = factory().exprInitialization();
-        init.addChild(initExpr);
-
-        return init;
+    public void listInitialization(ListInitialization listInitialization) {
+        var dataStmtValues = getChildren(listInitialization, FlangName.DATA_STMT_VALUE);
+        listInitialization.addChildren(dataStmtValues);
     }
 
     public void dataStmtValue(DataStmtValue dataStmtValue) {
