@@ -26,7 +26,7 @@ public class SingleBoundPointerAssignStmt extends PointerAssignStmt {
         var bounds = getBounds();
         var boundsCode = bounds.isEmpty() ? ""
                 : bounds.stream()
-                .map(Expr::getCode)
+                .map(bound -> bound.getCode() + ":")
                 .collect(Collectors.joining(", ", "(", ")"));
 
         return objectCode + boundsCode + " => " + targetCode;
