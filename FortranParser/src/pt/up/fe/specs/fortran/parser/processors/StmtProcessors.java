@@ -33,6 +33,9 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.EndInterfaceStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.DoConstruct;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.DoStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.EndDoStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.pointerassign.DoubleBound;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.pointerassign.DoubleBoundPointerAssignStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.pointerassign.SingleBoundPointerAssignStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.*;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.DataComponentDefStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.DerivedTypeStmt;
@@ -865,5 +868,39 @@ public class StmtProcessors extends ANodeProcessor {
 
         var procDecls = getChildren(procDeclStmt, FlangName.PROC_DECL);
         procDeclStmt.addChildren(procDecls);
+    }
+
+    public void singleBoundPointerAssignStmt(SingleBoundPointerAssignStmt pointerAssignStmt) {
+        stmt(pointerAssignStmt);
+
+        var object = getChild(pointerAssignStmt, FlangName.DATA_REF);
+        pointerAssignStmt.addChild(object);
+
+        var bounds = getChildren(pointerAssignStmt, FlangName.BOUNDS_SPEC);
+        pointerAssignStmt.addChildren(bounds);
+
+        var target = getChild(pointerAssignStmt, FlangName.EXPR);
+        pointerAssignStmt.addChild(target);
+    }
+
+    public void doubleBoundPointerAssignStmt(DoubleBoundPointerAssignStmt pointerAssignStmt) {
+        stmt(pointerAssignStmt);
+
+        var object = getChild(pointerAssignStmt, FlangName.DATA_REF);
+        pointerAssignStmt.addChild(object);
+
+        var bounds = getChildren(pointerAssignStmt, FlangName.BOUNDS_REMAPPING);
+        pointerAssignStmt.addChildren(bounds);
+
+        var target = getChild(pointerAssignStmt, FlangName.EXPR);
+        pointerAssignStmt.addChild(target);
+    }
+
+    public void doubleBound(DoubleBound doubleBound) {
+        var lower = getChild(doubleBound, "lower");
+        doubleBound.addChild(lower);
+
+        var upper = getChild(doubleBound, "upper");
+        doubleBound.addChild(upper);
     }
 }

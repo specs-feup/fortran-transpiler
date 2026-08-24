@@ -63,6 +63,9 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.EndInterfaceStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.DoConstruct;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.DoStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.EndDoStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.pointerassign.DoubleBound;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.pointerassign.DoubleBoundPointerAssignStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.pointerassign.SingleBoundPointerAssignStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.CaseBlock;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.CaseConstruct;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.EndSelectStmt;
@@ -237,6 +240,9 @@ public class Nodes {
         processors.put(AbstractInterfaceStmt.class, s::abstractInterfaceStmt);
         processors.put(EndInterfaceStmt.class, s::endInterfaceStmt);
         processors.put(ProcDeclStmt.class, s::procDeclStmt);
+        processors.put(SingleBoundPointerAssignStmt.class, s::singleBoundPointerAssignStmt);
+        processors.put(DoubleBoundPointerAssignStmt.class, s::doubleBoundPointerAssignStmt);
+        processors.put(DoubleBound.class, s::doubleBound);
 
         var e = new ExprProcessors(data);
         processors.put(StringLiteral.class, e::stringLiteral);

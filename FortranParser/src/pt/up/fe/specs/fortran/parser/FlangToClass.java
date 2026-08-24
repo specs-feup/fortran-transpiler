@@ -62,6 +62,10 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.InterfaceStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.DoConstruct;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.DoStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.EndDoStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.pointerassign.DoubleBound;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.pointerassign.DoubleBoundPointerAssignStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.pointerassign.PointerAssignStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.pointerassign.SingleBoundPointerAssignStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.CaseBlock;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.CaseConstruct;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.EndSelectStmt;
@@ -243,6 +247,10 @@ public class FlangToClass {
                 .map(FlangName.ABSTRACT, AbstractInterfaceStmt.class));
         NAME_TO_MAPPER.put(FlangName.END_INTERFACE_STMT, ClassMapper.always(EndInterfaceStmt.class));
         NAME_TO_MAPPER.put(FlangName.PROCEDURE_DECLARATION_STMT, ClassMapper.always(ProcDeclStmt.class));
+        NAME_TO_MAPPER.put(FlangName.POINTER_ASSIGNMENT_STMT, ClassMapper.caseFor(PointerAssignStmt.class)
+                .map(FlangName.BOUNDS_SPEC, SingleBoundPointerAssignStmt.class)
+                .map(FlangName.BOUNDS_REMAPPING, DoubleBoundPointerAssignStmt.class));
+        NAME_TO_MAPPER.put(FlangName.BOUNDS_REMAPPING, ClassMapper.always(DoubleBound.class));
 
         /// Variables
         //NAME_TO_CLASS.put(FlangName.DATA_REF, DataRef.class);  // TODO(Process-ing): Improve this
