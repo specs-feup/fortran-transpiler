@@ -8,33 +8,12 @@ import pt.up.fe.specs.fortran.ast.nodes.alloc.VarAllocOption;
 import pt.up.fe.specs.fortran.ast.nodes.decl.*;
 import pt.up.fe.specs.fortran.ast.nodes.decl.component.ComponentDecl;
 import pt.up.fe.specs.fortran.ast.nodes.decl.component.attr.*;
-import pt.up.fe.specs.fortran.ast.nodes.specification.coshape.DeferredCoshapeSpec;
-import pt.up.fe.specs.fortran.ast.nodes.specification.coshape.ExplicitCoshapeSpec;
-import pt.up.fe.specs.fortran.ast.nodes.specification.interfaces.InterfaceBlock;
-import pt.up.fe.specs.fortran.ast.nodes.specification.interfaces.InterfaceFunction;
-import pt.up.fe.specs.fortran.ast.nodes.specification.interfaces.InterfaceSubroutine;
-import pt.up.fe.specs.fortran.ast.nodes.specification.shape.*;
-import pt.up.fe.specs.fortran.ast.nodes.specification.funcspec.DeclTypeFunctionSpec;
-import pt.up.fe.specs.fortran.ast.nodes.specification.funcspec.EmptyFunctionSpec;
-import pt.up.fe.specs.fortran.ast.nodes.specification.funcspec.FunctionSpec;
-import pt.up.fe.specs.fortran.ast.nodes.specification.type.*;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.DefaultImplicitStmt;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.ImplicitNoneStmt;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.ImplicitStmt;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.AbstractInterfaceStmt;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.DefaultInterfaceStmt;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.EndInterfaceStmt;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.InterfaceStmt;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.DataComponentDefStmt;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.DerivedTypeStmt;
-import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.EndTypeStmt;
-import pt.up.fe.specs.fortran.ast.nodes.type.attributes.*;
-import pt.up.fe.specs.fortran.ast.nodes.type.decltype.DeclType;
-import pt.up.fe.specs.fortran.ast.nodes.type.decltype.DerivedDeclType;
-import pt.up.fe.specs.fortran.ast.nodes.type.decltype.IntrinsicDeclType;
-import pt.up.fe.specs.fortran.ast.nodes.type.decltype.StarDeclType;
-import pt.up.fe.specs.fortran.ast.nodes.type.lenselector.*;
-import pt.up.fe.specs.fortran.ast.nodes.type.typeparam.*;
+import pt.up.fe.specs.fortran.ast.nodes.decl.init.*;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.ProcDecl;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.attr.*;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.NamedProcInterface;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.ProcInterface;
+import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.TypeProcInterface;
 import pt.up.fe.specs.fortran.ast.nodes.expr.*;
 import pt.up.fe.specs.fortran.ast.nodes.io.*;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentLoopControl;
@@ -53,16 +32,33 @@ import pt.up.fe.specs.fortran.ast.nodes.program.subprogram.*;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.*;
 import pt.up.fe.specs.fortran.ast.nodes.program.unit.Module;
 import pt.up.fe.specs.fortran.ast.nodes.specification.*;
+import pt.up.fe.specs.fortran.ast.nodes.specification.coshape.DeferredCoshapeSpec;
+import pt.up.fe.specs.fortran.ast.nodes.specification.coshape.ExplicitCoshapeSpec;
+import pt.up.fe.specs.fortran.ast.nodes.specification.funcspec.DeclTypeFunctionSpec;
+import pt.up.fe.specs.fortran.ast.nodes.specification.funcspec.EmptyFunctionSpec;
+import pt.up.fe.specs.fortran.ast.nodes.specification.funcspec.FunctionSpec;
 import pt.up.fe.specs.fortran.ast.nodes.specification.genericspec.GenericSpec;
 import pt.up.fe.specs.fortran.ast.nodes.specification.genericspec.NameGenericSpec;
 import pt.up.fe.specs.fortran.ast.nodes.specification.genericspec.OpGenericSpec;
 import pt.up.fe.specs.fortran.ast.nodes.specification.genericspec.OtherGenericSpec;
+import pt.up.fe.specs.fortran.ast.nodes.specification.interfaces.InterfaceBlock;
+import pt.up.fe.specs.fortran.ast.nodes.specification.interfaces.InterfaceFunction;
+import pt.up.fe.specs.fortran.ast.nodes.specification.interfaces.InterfaceSubroutine;
+import pt.up.fe.specs.fortran.ast.nodes.specification.shape.*;
+import pt.up.fe.specs.fortran.ast.nodes.specification.type.*;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.*;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.datastmt.DataStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.datastmt.DataStmtSet;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.dimstmt.DimensionDecl;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.dimstmt.DimensionStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.ifstmt.*;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.DefaultImplicitStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.ImplicitNoneStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.implicit.ImplicitStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.AbstractInterfaceStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.DefaultInterfaceStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.EndInterfaceStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.interfaces.InterfaceStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.DoConstruct;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.DoStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.EndDoStmt;
@@ -70,8 +66,18 @@ import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.CaseBlock;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.CaseConstruct;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.EndSelectStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.selectcase.SelectCaseStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.DataComponentDefStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.DerivedTypeStmt;
+import pt.up.fe.specs.fortran.ast.nodes.stmt.typedef.EndTypeStmt;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.usestmt.*;
 import pt.up.fe.specs.fortran.ast.nodes.type.*;
+import pt.up.fe.specs.fortran.ast.nodes.type.attributes.*;
+import pt.up.fe.specs.fortran.ast.nodes.type.decltype.DeclType;
+import pt.up.fe.specs.fortran.ast.nodes.type.decltype.DerivedDeclType;
+import pt.up.fe.specs.fortran.ast.nodes.type.decltype.IntrinsicDeclType;
+import pt.up.fe.specs.fortran.ast.nodes.type.decltype.StarDeclType;
+import pt.up.fe.specs.fortran.ast.nodes.type.lenselector.*;
+import pt.up.fe.specs.fortran.ast.nodes.type.typeparam.*;
 import pt.up.fe.specs.fortran.ast.nodes.utils.NameValue;
 
 import java.util.HashMap;
@@ -137,6 +143,26 @@ public class FlangToClass {
         NAME_TO_MAPPER.put(FlangName.INTERFACE_BLOCK, ClassMapper.always(InterfaceBlock.class));
         NAME_TO_MAPPER.put(FlangName.FUNCTION, ClassMapper.always(InterfaceFunction.class));
         NAME_TO_MAPPER.put(FlangName.SUBROUTINE, ClassMapper.always(InterfaceSubroutine.class));
+        NAME_TO_MAPPER.put(FlangName.INITIALIZATION, ClassMapper.caseFor(Initialization.class)
+                .map(FlangName.EXPR, ExprInitialization.class)
+                .map(FlangName.NULL_INIT, NullInitialization.class)
+                .map(FlangName.DESIGNATOR, DataTargetInitialization.class)
+                .map(FlangName.DATA_STMT_VALUE, ListInitialization.class));
+        NAME_TO_MAPPER.put(FlangName.PROC_POINTER_INIT, ClassMapper.caseFor(ProcPointerInit.class)
+                .map(FlangName.NAME, NameProcPointerInit.class)
+                .map(FlangName.NULL_INIT, NullProcPointerInit.class));
+        NAME_TO_MAPPER.put(FlangName.PROC_INTERFACE, ClassMapper.caseFor(ProcInterface.class)
+                .map(FlangName.NAME, NamedProcInterface.class)
+                .map(FlangName.DECLARATION_TYPE_SPEC, TypeProcInterface.class));
+        NAME_TO_MAPPER.put(FlangName.PROC_ATTR_SPEC, ClassMapper.caseFor(ProcAttr.class)
+                .map(FlangName.ACCESS_SPEC, AccessProcAttr.class)
+                .map(FlangName.LANGUAGE_BINDING_SPEC, LangBindProcAttr.class)
+                .map(FlangName.INTENT_SPEC, IntentProcAttr.class)
+                .map(FlangName.OPTIONAL, OtherProcAttr.class)
+                .map(FlangName.POINTER, OtherProcAttr.class)
+                .map(FlangName.PROTECTED, OtherProcAttr.class)
+                .map(FlangName.SAVE, OtherProcAttr.class));
+        NAME_TO_MAPPER.put(FlangName.PROC_DECL, ClassMapper.always(ProcDecl.class));
 
         /// STMTs
         NAME_TO_MAPPER.put(FlangName.PRINT_STMT, ClassMapper.always(PrintStmt.class));
@@ -216,6 +242,7 @@ public class FlangToClass {
                 .map(FlangName.GENERIC_SPEC, DefaultInterfaceStmt.class)
                 .map(FlangName.ABSTRACT, AbstractInterfaceStmt.class));
         NAME_TO_MAPPER.put(FlangName.END_INTERFACE_STMT, ClassMapper.always(EndInterfaceStmt.class));
+        NAME_TO_MAPPER.put(FlangName.PROCEDURE_DECLARATION_STMT, ClassMapper.always(ProcDeclStmt.class));
 
         /// Variables
         //NAME_TO_CLASS.put(FlangName.DATA_REF, DataRef.class);  // TODO(Process-ing): Improve this

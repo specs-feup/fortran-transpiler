@@ -79,6 +79,11 @@ public enum FlangName implements StringProvider {
     SUBROUTINE,
     PROCEDURE_STMT,
     END_INTERFACE_STMT,
+    NULL_INIT,
+    PROC_POINTER_INIT,
+    PROC_INTERFACE,
+    PROC_DECL,
+    PROC_ATTR_SPEC,
 
     /// STMTs
     STATEMENT,
@@ -162,6 +167,7 @@ public enum FlangName implements StringProvider {
     BOUNDS,
     BOUNDS_SPEC,
     BOUNDS_REMAPPING,
+    PROCEDURE_DECLARATION_STMT,
 
     // Variables
     VARIABLE,

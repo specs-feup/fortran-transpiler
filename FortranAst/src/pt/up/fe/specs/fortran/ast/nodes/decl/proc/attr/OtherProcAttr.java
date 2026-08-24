@@ -8,10 +8,10 @@ import pt.up.fe.specs.fortran.ast.nodes.decl.enums.ProcAttrKind;
 
 import java.util.Collection;
 
-public class OtherProcStmt extends ProcAttr {
+public class OtherProcAttr extends ProcAttr {
     public static final DataKey<ProcAttrKind> KIND = KeyFactory.enumeration("kind", ProcAttrKind.class);
 
-    public OtherProcStmt(DataStore data, Collection<? extends FortranNode> children) {
+    public OtherProcAttr(DataStore data, Collection<? extends FortranNode> children) {
         super(data, children);
     }
 
