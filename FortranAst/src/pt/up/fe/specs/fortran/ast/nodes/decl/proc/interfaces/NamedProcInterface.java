@@ -1,4 +1,4 @@
-package pt.up.fe.specs.fortran.ast.nodes.decl.proc;
+package pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces;
 
 import org.suikasoft.jOptions.Datakey.DataKey;
 import org.suikasoft.jOptions.Datakey.KeyFactory;
