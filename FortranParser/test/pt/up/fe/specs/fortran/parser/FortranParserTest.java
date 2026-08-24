@@ -13,7 +13,6 @@ import pt.up.fe.specs.util.utilities.StringLines;
 
 import java.util.function.BiFunction;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class FortranParserTest {
@@ -639,6 +638,7 @@ public class FortranParserTest {
             testNative("type/length_selector.f90");
         }
     }
+
     @Test
     void testIoControl() {
         testJson("io/io_control.json");
@@ -696,6 +696,18 @@ public class FortranParserTest {
     void testImplicitNative() {
         if (SpecsPlatforms.isLinux()) {
             testNative("program/implicit.f90");
+        }
+    }
+
+    @Test
+    void testPointerAssign() {
+        testJson("stmt/pointer_assign.json");
+    }
+
+    @Test
+    void testPointerAssignNative() {
+        if (SpecsPlatforms.isLinux()) {
+            testNative("stmt/pointer_assign.f90");
         }
     }
 
