@@ -1,6 +1,7 @@
 package pt.up.fe.specs.fortran.parser.processors;
 
 import pt.up.fe.specs.fortran.ast.nodes.expr.*;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.ArrayElement;
 import pt.up.fe.specs.fortran.ast.nodes.expr.enums.BinaryOperatorKind;
 import pt.up.fe.specs.fortran.ast.nodes.expr.enums.UnaryOperatorKind;
 import pt.up.fe.specs.fortran.parser.FlangName;
@@ -131,16 +132,16 @@ public class ExprProcessors extends ANodeProcessor {
             call.addChildren(getChildren(call, FlangName.ACTUAL_ARG_SPEC));
     }
 
-    public void arraySubscriptExpr(ArraySubscriptExpr arraySubscriptExpr) {
-        var base = getChild(arraySubscriptExpr, "base");
-        arraySubscriptExpr.addChild(base);
+    public void arraySubscriptExpr(ArrayElement arrayElement) {
+        var base = getChild(arrayElement, "base");
+        arrayElement.addChild(base);
 
-        var subscriptIds = attributes(arraySubscriptExpr).getStringList("subscripts");
+        var subscriptIds = attributes(arrayElement).getStringList("subscripts");
         var subscripts = subscriptIds.stream()
                 .map(this::getSectionSubscript)
                 .toList();
 
-        arraySubscriptExpr.addChildren(subscripts);
+        arrayElement.addChildren(subscripts);
     }
 
     public SectionSubscript getSectionSubscript(String id) {

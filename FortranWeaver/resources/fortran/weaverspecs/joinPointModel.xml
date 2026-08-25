@@ -49,7 +49,7 @@
 
     <joinpoint class="specification"/>
 
-    <joinpoint class="arraySubscriptExpr" extends="dataRef"
+    <joinpoint class="arrayElement" extends="dataRef"
                tooltip="Represents an access to one (or several) elements of an array"/>
 
     <joinpoint class="compilerDirective" extends="statement"/>

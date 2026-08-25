@@ -19,6 +19,7 @@ import pt.up.fe.specs.fortran.ast.nodes.decl.proc.attr.OtherProcAttr;
 import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.NamedProcInterface;
 import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.TypeProcInterface;
 import pt.up.fe.specs.fortran.ast.nodes.expr.*;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.ArrayElement;
 import pt.up.fe.specs.fortran.ast.nodes.io.*;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentLoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentRange;
@@ -255,7 +256,7 @@ public class Nodes {
         processors.put(BinaryOperator.class, e::binaryOperator);
         processors.put(ArrayConstructor.class, e::arrayConstructor);
         processors.put(AcSpecification.class, e::acSpecification);
-        processors.put(ArraySubscriptExpr.class, e::arraySubscriptExpr);
+        processors.put(ArrayElement.class, e::arraySubscriptExpr);
         processors.put(SubscriptTriplet.class, e::subscriptTriplet);
         processors.put(Call.class, e::call);
         processors.put(Argument.class, e::argument);

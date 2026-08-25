@@ -104,7 +104,7 @@
     </artifact>
 
     <!-- ARRAY SUBSCRIPT -->
-    <artifact class="arraySubscriptExpr">
+    <artifact class="arrayElement">
         <attribute name="var" type="dataRef"/>
         <attribute name="subscripts" type="expr[]"/>
     </artifact>

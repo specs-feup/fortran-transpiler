@@ -15,6 +15,7 @@ import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.NamedProcInterface;
 import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.ProcInterface;
 import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.TypeProcInterface;
 import pt.up.fe.specs.fortran.ast.nodes.expr.*;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.ArrayElement;
 import pt.up.fe.specs.fortran.ast.nodes.io.*;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentLoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentRange;
@@ -289,7 +290,7 @@ public class FlangToClass {
         NAME_TO_MAPPER.put(FlangName.CONCAT, ClassMapper.always(BinaryOperator.class));
         NAME_TO_MAPPER.put(FlangName.ARRAY_CONSTRUCTOR, ClassMapper.always(ArrayConstructor.class));
         NAME_TO_MAPPER.put(FlangName.AC_SPEC, ClassMapper.always(AcSpecification.class));
-        NAME_TO_MAPPER.put(FlangName.ARRAY_ELEMENT, ClassMapper.always(ArraySubscriptExpr.class));
+        NAME_TO_MAPPER.put(FlangName.ARRAY_ELEMENT, ClassMapper.always(ArrayElement.class));
         NAME_TO_MAPPER.put(FlangName.SUBSCRIPT, ClassMapper.always(Subscript.class));
         NAME_TO_MAPPER.put(FlangName.SUBSCRIPT_TRIPLET, ClassMapper.always(SubscriptTriplet.class));
         NAME_TO_MAPPER.put(FlangName.CALL, ClassMapper.always(Call.class));

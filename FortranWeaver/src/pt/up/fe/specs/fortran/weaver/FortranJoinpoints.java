@@ -19,6 +19,7 @@ import pt.up.fe.specs.fortran.ast.nodes.decl.FortranDecl;
 import pt.up.fe.specs.fortran.ast.nodes.decl.init.ExprInitialization;
 import pt.up.fe.specs.fortran.ast.nodes.decl.init.Initialization;
 import pt.up.fe.specs.fortran.ast.nodes.expr.*;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.ArrayElement;
 import pt.up.fe.specs.fortran.ast.nodes.loops.LoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.RangeLoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.omp.OmpBlockConstruct;
@@ -58,7 +59,7 @@ public class FortranJoinpoints {
         JOINPOINT_FACTORY.put(FortranFile.class, FFile::new);
         JOINPOINT_FACTORY.put(Stmt.class, FStatement::new);
         JOINPOINT_FACTORY.put(ActionStmt.class, FActionStatement::new);
-        JOINPOINT_FACTORY.put(ArraySubscriptExpr.class, FArraySubscriptExpr::new);
+        JOINPOINT_FACTORY.put(ArrayElement.class, FArraySubscriptExpr::new);
         JOINPOINT_FACTORY.put(AssignmentStmt.class, FAssignmentStatement::new);
         JOINPOINT_FACTORY.put(BinaryOperator.class, FBinaryOperator::new);
         JOINPOINT_FACTORY.put(CompilerDirective.class, FCompilerDirective::new);
