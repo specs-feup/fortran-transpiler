@@ -8,6 +8,8 @@ import pt.up.fe.specs.fortran.ast.nodes.decl.NamedParameter;
 import pt.up.fe.specs.fortran.ast.nodes.decl.init.ExprInitialization;
 import pt.up.fe.specs.fortran.ast.nodes.decl.init.ListInitialization;
 import pt.up.fe.specs.fortran.ast.nodes.expr.*;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.DataRef;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.NameDataRef;
 import pt.up.fe.specs.fortran.ast.nodes.expr.enums.BinaryOperatorKind;
 import pt.up.fe.specs.fortran.ast.nodes.io.Format;
 import pt.up.fe.specs.fortran.ast.nodes.io.StarFormat;
@@ -281,12 +283,9 @@ public class FortranNodeFactory {
 
     public DataRef dataRef(String name) {
         DataStore data = newDataStore(DataRef.class);
+        data.set(NameDataRef.NAME, name);
 
-        DataRef newNode = new DataRef(data, Collections.emptyList());
-
-        newNode.set(DataRef.NAME, name);
-
-        return newNode;
+        return new NameDataRef(data, Collections.emptyList());
     }
 
     public UseRenameStmt useRenameStmt(String moduleName) {

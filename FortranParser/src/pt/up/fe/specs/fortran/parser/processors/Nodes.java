@@ -20,6 +20,7 @@ import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.NamedProcInterface;
 import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.TypeProcInterface;
 import pt.up.fe.specs.fortran.ast.nodes.expr.*;
 import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.ArrayElement;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.DataRef;
 import pt.up.fe.specs.fortran.ast.nodes.io.*;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentLoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentRange;

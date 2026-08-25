@@ -1,6 +1,6 @@
 package pt.up.fe.specs.fortran.parser.processors;
 
-import pt.up.fe.specs.fortran.ast.nodes.expr.DataRef;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.DataRef;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentLoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentRange;
 import pt.up.fe.specs.fortran.ast.nodes.loops.RangeLoopControl;

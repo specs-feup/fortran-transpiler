@@ -3,7 +3,6 @@ package pt.up.fe.specs.fortran.ast.nodes.stmt.datastmt;
 import org.suikasoft.jOptions.Interfaces.DataStore;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.decl.Variable;
-import pt.up.fe.specs.fortran.ast.nodes.expr.DataRef;
 
 import java.util.Collection;
 

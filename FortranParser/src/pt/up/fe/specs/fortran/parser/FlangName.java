@@ -172,6 +172,7 @@ public enum FlangName implements StringProvider {
     VARIABLE,
     DESIGNATOR,
     DATA_REF,
+    STRUCTURE_COMPONENT,
     FUNCTION_REFERENCE,
 
     /// EXPRs

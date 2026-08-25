@@ -1,8 +1,8 @@
 package pt.up.fe.specs.fortran.weaver.importable;
 
 import pt.up.fe.specs.fortran.ast.nodes.expr.Argument;
-import pt.up.fe.specs.fortran.ast.nodes.expr.DataRef;
 import pt.up.fe.specs.fortran.ast.nodes.expr.Expr;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.DataRef;
 import pt.up.fe.specs.fortran.ast.nodes.expr.enums.BinaryOperatorKind;
 import pt.up.fe.specs.fortran.ast.nodes.loops.RangeLoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.omp.clause.OmpClause;

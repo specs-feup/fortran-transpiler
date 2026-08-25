@@ -16,6 +16,8 @@ import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.ProcInterface;
 import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.TypeProcInterface;
 import pt.up.fe.specs.fortran.ast.nodes.expr.*;
 import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.ArrayElement;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.DataRef;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.NameDataRef;
 import pt.up.fe.specs.fortran.ast.nodes.io.*;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentLoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentRange;
@@ -254,8 +256,9 @@ public class FlangToClass {
         NAME_TO_MAPPER.put(FlangName.BOUNDS_REMAPPING, ClassMapper.always(DoubleBound.class));
 
         /// Variables
-        //NAME_TO_CLASS.put(FlangName.DATA_REF, DataRef.class);  // TODO(Process-ing): Improve this
-        NAME_TO_MAPPER.put(FlangName.NAME, ClassMapper.always(DataRef.class));
+        NAME_TO_MAPPER.put(FlangName.DATA_REF, ClassMapper.caseFor(DataRef.class)
+                .map(FlangName.NAME, NameDataRef.class)
+                .map(FlangName.ARRAY_ELEMENT, ArrayElement.class));
         NAME_TO_MAPPER.put(FlangName.VARIABLE, ClassMapper.caseFor(Variable.class)
                 .map(FlangName.DESIGNATOR, DesignatorVariable.class)
                 .map(FlangName.FUNCTION_REFERENCE, FunctionRefVariable.class));

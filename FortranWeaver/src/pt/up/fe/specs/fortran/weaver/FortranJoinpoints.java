@@ -20,6 +20,7 @@ import pt.up.fe.specs.fortran.ast.nodes.decl.init.ExprInitialization;
 import pt.up.fe.specs.fortran.ast.nodes.decl.init.Initialization;
 import pt.up.fe.specs.fortran.ast.nodes.expr.*;
 import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.ArrayElement;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.DataRef;
 import pt.up.fe.specs.fortran.ast.nodes.loops.LoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.RangeLoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.omp.OmpBlockConstruct;
