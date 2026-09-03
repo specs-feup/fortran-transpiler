@@ -43,3 +43,9 @@ The next steps for the Fortran source-to-source compiler are as follows:
   - Loop strip-mining
   - OpenMP directive transformations. These tranformations should transform code with OpenMP directives not-yet supported by Flang into code with supported directives. The particular transformations to target are dependent of inputs from partners
   
+
+# Acknowledgments
+
+This work was supported by EU funds through the [Digital Autonomy with RISC-V in Europe (DARE)](https://dare-riscv.eu/home/) Specific Grant Agreement 1 (SGA1) Project under European High-Performance Computing Joint Undertaking (JU) under Agreement 101202459. 
+
+This work was developed in the context of research activities conducted at [INESC TEC](https://www.inesctec.pt/en) and the [Faculty of Engineering of the University of Porto (FEUP)](https://www.up.pt/feup/en/).
