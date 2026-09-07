@@ -1,6 +1,6 @@
-import Query from "@specs-feup/lara/api/weaver/Query.js";
-import FortranJoinPoints from "../FortranJoinPoints.js";
-import { DataRef, DoStatement, ExecutableStatement, RangeLoopControl } from "../Joinpoints.js";
+import Query from "@specs-feup/lara/api/weaver/Query.ts";
+import FortranJoinPoints from "../FortranJoinPoints.ts";
+import { DataRef, DoStatement, ExecutableStatement, RangeLoopControl } from "../Joinpoints.ts";
 
 /**
  * Deep-copies a body statement and replaces every reference to `varName` with
@@ -23,7 +23,7 @@ function substituteVar(stmt: ExecutableStatement, varName: string, offset: numbe
  * Two loops replace the original:
  *  - A **main loop** that steps by `factor`, with the body replicated `factor`
  *    times (each copy substitutes `var` with `var+offset` for offset 0..factor-1).
- *  - A **cleanup loop** that handles the remaining < `factor` iterations with the
+ *  - A **cleanup loop** that handles the remaining iterations (fewer than `factor`) with the
  *    original body. When `factor` exactly divides the trip count, the cleanup
  *    loop's bounds produce a no-op and it generates no iterations.
  *

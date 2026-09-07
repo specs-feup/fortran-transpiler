@@ -1,10 +1,12 @@
-import JavaTypes, {JavaClasses} from "@specs-feup/lara/api/lara/util/JavaTypes.js";
+import JavaTypes, {
+    type JavaClasses,
+} from "@specs-feup/lara/api/lara/util/JavaTypes.ts";
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
+// oxlint-disable-next-line typescript/no-namespace
 export namespace FortranJavaClasses {
-    /* eslint-disable @typescript-eslint/no-empty-object-type */
+    /* oxlint-disable typescript/no-empty-object-type */
     export interface AstFactory extends JavaClasses.JavaClass {}
-    /* eslint-enable @typescript-eslint/no-empty-object-type */
+    /* oxlint-enable typescript/no-empty-object-type */
 }
 
 export default class FortranJavaTypes {

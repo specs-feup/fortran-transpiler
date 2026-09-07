@@ -1,4 +1,4 @@
-import { DoStatement } from "../Joinpoints.js";
+import { DoStatement } from "../Joinpoints.ts";
 
 /**
  * Fuses an array of do-loops with identical range controls into a single loop.

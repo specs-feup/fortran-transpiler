@@ -1,8 +1,8 @@
-import Pass from "@specs-feup/lara/api/lara/pass/Pass.js";
-import PassResult from "@specs-feup/lara/api/lara/pass/results/PassResult.js";
-import Query from "@specs-feup/lara/api/weaver/Query.js";
-import { DoStatement, Joinpoint } from "../Joinpoints.js";
-import loopTile, { canTile } from "../code/LoopTiling.js";
+import Pass from "@specs-feup/lara/api/lara/pass/Pass.ts";
+import PassResult from "@specs-feup/lara/api/lara/pass/results/PassResult.ts";
+import Query from "@specs-feup/lara/api/weaver/Query.ts";
+import { DoStatement, Joinpoint } from "../Joinpoints.ts";
+import loopTile, { canTile } from "../code/LoopTiling.ts";
 
 /**
  * Pass that tiles every top-level 2-deep perfect loop nest in the subtree.
@@ -19,8 +19,11 @@ import loopTile, { canTile } from "../code/LoopTiling.js";
 export default class LoopTilingPass extends Pass {
   protected _name = "LoopTilingPass";
 
-  constructor(private readonly tileSize: number = 32) {
+  private readonly tileSize: number;
+
+  constructor(tileSize: number = 32) {
     super();
+    this.tileSize = tileSize;
   }
 
   protected _apply_impl($jp: Joinpoint): PassResult {

@@ -1,6 +1,6 @@
-import Query from "@specs-feup/lara/api/weaver/Query.js";
-import LoopUnrollPass from "../pass/LoopUnrollPass.js";
-import { Subroutine } from "../Joinpoints.js";
+import Query from "@specs-feup/lara/api/weaver/Query.ts";
+import LoopUnrollPass from "../pass/LoopUnrollPass.ts";
+import { Subroutine } from "../Joinpoints.ts";
 
 const FACTOR = 4;
 

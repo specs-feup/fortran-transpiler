@@ -1,7 +1,7 @@
-import Pass from "@specs-feup/lara/api/lara/pass/Pass.js"
-import PassResult from "@specs-feup/lara/api/lara/pass/results/PassResult.js";
-import { DoStatement, Joinpoint } from "../Joinpoints.js";
-import loopFission, { canFission } from "../code/LoopFission.js";
+import Pass from "@specs-feup/lara/api/lara/pass/Pass.ts"
+import PassResult from "@specs-feup/lara/api/lara/pass/results/PassResult.ts";
+import { DoStatement, Joinpoint } from "../Joinpoints.ts";
+import loopFission, { canFission } from "../code/LoopFission.ts";
 
 /**
  * Pass that splits every range do-loop with more than one body statement into

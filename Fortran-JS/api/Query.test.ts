@@ -1,6 +1,6 @@
-import { registerSourceCodes } from "@specs-feup/lara/jest/jestHelpers.js";
-import Query from "@specs-feup/lara/api/weaver/Query.js";
-import { Joinpoint, Statement } from "./Joinpoints.js";
+import { registerSourceCodes } from "@specs-feup/lara/vitest/weaverTestHelpers.ts";
+import Query from "@specs-feup/lara/api/weaver/Query.ts";
+import { Joinpoint, Statement } from "./Joinpoints.ts";
 
 const code = `{
   "nodes": [

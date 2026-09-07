@@ -1,6 +1,6 @@
-import Query from "@specs-feup/lara/api/weaver/Query.js";
-import LoopTilingPass from "../pass/LoopTilingPass.js";
-import { Subroutine } from "../Joinpoints.js";
+import Query from "@specs-feup/lara/api/weaver/Query.ts";
+import LoopTilingPass from "../pass/LoopTilingPass.ts";
+import { Subroutine } from "../Joinpoints.ts";
 
 const TILE_SIZE = 32;
 

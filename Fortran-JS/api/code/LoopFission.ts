@@ -1,4 +1,4 @@
-import { DoStatement, RangeLoopControl } from "../Joinpoints.js";
+import { DoStatement, RangeLoopControl } from "../Joinpoints.ts";
 
 /**
  * Splits a do-loop with multiple body statements into one loop per statement.

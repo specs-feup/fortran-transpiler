@@ -1,5 +1,5 @@
-import FortranJoinPoints from "../FortranJoinPoints.js";
-import { DataRef, DoStatement, ExecutableStatement, RangeLoopControl } from "../Joinpoints.js";
+import FortranJoinPoints from "../FortranJoinPoints.ts";
+import { DataRef, DoStatement, ExecutableStatement, RangeLoopControl } from "../Joinpoints.ts";
 
 /**
  * Tiles a perfect 2-deep loop nest by `tileSize`.

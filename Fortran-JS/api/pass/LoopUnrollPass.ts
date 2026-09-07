@@ -1,7 +1,7 @@
-import Pass from "@specs-feup/lara/api/lara/pass/Pass.js";
-import PassResult from "@specs-feup/lara/api/lara/pass/results/PassResult.js";
-import { DoStatement, Joinpoint } from "../Joinpoints.js";
-import loopUnroll, { canUnroll } from "../code/LoopUnroll.js";
+import Pass from "@specs-feup/lara/api/lara/pass/Pass.ts";
+import PassResult from "@specs-feup/lara/api/lara/pass/results/PassResult.ts";
+import { DoStatement, Joinpoint } from "../Joinpoints.ts";
+import loopUnroll, { canUnroll } from "../code/LoopUnroll.ts";
 
 /**
  * Pass that unrolls every innermost range do-loop in the subtree by a given
@@ -18,12 +18,15 @@ import loopUnroll, { canUnroll } from "../code/LoopUnroll.js";
 export default class LoopUnrollPass extends Pass {
   protected _name = "LoopUnrollPass";
 
-  constructor(private readonly factor: number = 4) {
+  private readonly factor: number;
+
+  constructor(factor: number = 4) {
     super();
+    this.factor = factor;
   }
 
   protected _apply_impl($jp: Joinpoint): PassResult {
-    const loops = [...this._findInnermostLoops($jp)];
+    const loops = this._findInnermostLoops($jp);
     let appliedPass = false;
     for (const $loop of loops) {
       loopUnroll($loop, this.factor);
@@ -46,7 +49,7 @@ export default class LoopUnrollPass extends Pass {
         return;
       }
     }
-    for (const child of [...$jp.children]) {
+    for (const child of $jp.children) {
       yield* this._findInnermostLoops(child);
     }
   }

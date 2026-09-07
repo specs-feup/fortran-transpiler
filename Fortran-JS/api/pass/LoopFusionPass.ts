@@ -1,7 +1,7 @@
-import Pass from "@specs-feup/lara/api/lara/pass/Pass.js";
-import PassResult from "@specs-feup/lara/api/lara/pass/results/PassResult.js";
-import { DoStatement, Joinpoint, RangeLoopControl } from "../Joinpoints.js";
-import loopFusion from "../code/LoopFusion.js";
+import Pass from "@specs-feup/lara/api/lara/pass/Pass.ts";
+import PassResult from "@specs-feup/lara/api/lara/pass/results/PassResult.ts";
+import { DoStatement, Joinpoint } from "../Joinpoints.ts";
+import loopFusion from "../code/LoopFusion.ts";
 
 /**
  * Pass that fuses consecutive range do-loops with identical boundaries into a
@@ -18,7 +18,7 @@ export default class LoopFusionPass extends Pass {
   protected _name = "LoopFusionPass";
 
   protected _apply_impl($jp: Joinpoint): PassResult {
-    const allSets = [...this._findAllFusableSets($jp)];
+    const allSets = Array.from(this._findAllFusableSets($jp));
     let appliedPass = false;
     for (const set of allSets) {
       loopFusion(set);
@@ -32,7 +32,7 @@ export default class LoopFusionPass extends Pass {
    * inner loops are fused before their containing scope is inspected.
    */
   protected *_findAllFusableSets($jp: Joinpoint): Generator<DoStatement[]> {
-    for (const child of [...$jp.children]) {
+    for (const child of $jp.children) {
       yield* this._findAllFusableSets(child);
     }
     for (const set of this._findFusableSets($jp)) {
