@@ -166,11 +166,11 @@ public class FortranWeaver extends AFortranWeaver {
         return buildLanguageSpecification();
     }
 
-    public static FortranNodeFactory getFactory() {
+    public FortranNodeFactory getFactory() {
         return getContext().get(FortranContext.FACTORY);
     }
 
-    public static FortranContext getContext() {
-        return getFortranWeaver().currentRoot.get(FortranNode.CONTEXT);
+    public FortranContext getContext() {
+        return currentRoot.get(FortranNode.CONTEXT);
     }
 }

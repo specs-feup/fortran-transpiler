@@ -3,6 +3,7 @@ package pt.up.fe.specs.fortran.weaver.joinpoints;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.ifstmt.ElseBlock;
 import pt.up.fe.specs.fortran.weaver.FortranJoinpoints;
+import pt.up.fe.specs.fortran.weaver.FortranWeaver;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AElseBlock;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AStatementBlock;
 
@@ -10,13 +11,14 @@ public class FElseBlock extends AElseBlock {
 
     public final ElseBlock elseBlock;
 
-    public FElseBlock(ElseBlock elseBlock) {
+    public FElseBlock(ElseBlock elseBlock, FortranWeaver weaver) {
+        super(weaver);
         this.elseBlock = elseBlock;
     }
 
     @Override
     public AStatementBlock getBodyImpl() {
-        return FortranJoinpoints.create(elseBlock.getBlock(), AStatementBlock.class);
+        return FortranJoinpoints.create(elseBlock.getBlock(), getWeaverEngine(), AStatementBlock.class);
     }
 
     @Override

@@ -3,6 +3,7 @@ package pt.up.fe.specs.fortran.weaver.joinpoints;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.stmt.loop.DoConstruct;
 import pt.up.fe.specs.fortran.weaver.FortranJoinpoints;
+import pt.up.fe.specs.fortran.weaver.FortranWeaver;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.ADoStatement;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AExecution;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.ALoopControl;
@@ -13,19 +14,19 @@ public class FDoConstruct extends ADoStatement {
 
     private final DoConstruct doConstruct;
 
-    public FDoConstruct(DoConstruct doConstruct) {
-        super(new FExecutableStatement(doConstruct));
+    public FDoConstruct(DoConstruct doConstruct, FortranWeaver weaver) {
+        super(new FExecutableStatement(doConstruct, weaver), weaver);
         this.doConstruct = doConstruct;
     }
 
     @Override
     public AExecution getBodyImpl() {
-        return FortranJoinpoints.create(doConstruct.getBody(), AExecution.class);
+        return FortranJoinpoints.create(doConstruct.getBody(), getWeaverEngine(), AExecution.class);
     }
 
     @Override
     public ALoopControl getControlImpl() {
-        return FortranJoinpoints.create(doConstruct.getControl().get(), ALoopControl.class);
+        return FortranJoinpoints.create(doConstruct.getControl().get(), getWeaverEngine(), ALoopControl.class);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class FDoConstruct extends ADoStatement {
     public ADoStatement copyScopeImpl() {
         DoConstruct copiedDoStmt = (DoConstruct) doConstruct.copy();
         copiedDoStmt.getBody().removeChildren();
-        return new FDoConstruct(copiedDoStmt);
+        return new FDoConstruct(copiedDoStmt, getWeaverEngine());
     }
 
     @Override

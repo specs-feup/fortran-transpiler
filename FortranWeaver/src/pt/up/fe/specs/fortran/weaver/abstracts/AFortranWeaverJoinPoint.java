@@ -70,7 +70,7 @@ public abstract class AFortranWeaverJoinPoint extends AJoinPoint {
 
     @Override
     public AJoinPoint[] getDescendantsArrayImpl() {
-        return FortranJoinpoints.create(getNode().getDescendants(), AJoinPoint.class);
+        return FortranJoinpoints.create(getNode().getDescendants(), getWeaverEngine(), AJoinPoint.class);
     }
 
     @Override
@@ -81,7 +81,7 @@ public abstract class AFortranWeaverJoinPoint extends AJoinPoint {
     @Override
     public Stream<JoinPoint> getJpChildrenStream() {
         return getNode().getChildrenStream()
-                .map(node -> FortranJoinpoints.create(node, AJoinPoint.class));
+                .map(node -> FortranJoinpoints.create(node, getWeaverEngine(), AJoinPoint.class));
     }
 
     @Override
@@ -93,28 +93,28 @@ public abstract class AFortranWeaverJoinPoint extends AJoinPoint {
     public AJoinPoint[] insertImpl(String position, JoinPoint joinPoint) {
         var insertedNode = getNode().insert(Position.valueOf(position.toUpperCase()), (FortranNode) joinPoint.getNode());
 
-        return new AJoinPoint[]{FortranJoinpoints.create(insertedNode, AJoinPoint.class)};
+        return new AJoinPoint[]{FortranJoinpoints.create(insertedNode, getWeaverEngine(), AJoinPoint.class)};
     }
 
     @Override
     public AJoinPoint[] insertImpl(String position, String code) {
         var insertedNode = getNode().insert(Position.valueOf(position.toUpperCase()), code);
 
-        return new AJoinPoint[]{FortranJoinpoints.create(insertedNode, AJoinPoint.class)};
+        return new AJoinPoint[]{FortranJoinpoints.create(insertedNode, getWeaverEngine(), AJoinPoint.class)};
     }
 
     @Override
     public AJoinPoint insertAfterImpl(AJoinPoint node) {
         var insertedNode = getNode().insert(Position.AFTER, node.getNode());
 
-        return FortranJoinpoints.create(insertedNode);
+        return FortranJoinpoints.create(insertedNode, getWeaverEngine());
     }
 
     @Override
     public AJoinPoint insertBeforeImpl(AJoinPoint node) {
         var insertedNode = getNode().insert(Position.AFTER, node.getNode());
 
-        return FortranJoinpoints.create(insertedNode);
+        return FortranJoinpoints.create(insertedNode, getWeaverEngine());
     }
 
 
@@ -124,7 +124,7 @@ public abstract class AFortranWeaverJoinPoint extends AJoinPoint {
 
     @Override
     public AJoinPoint replaceWithImpl(AJoinPoint node) {
-        return FortranJoinpoints.create(replace(getNode(), node.getNode()));
+        return FortranJoinpoints.create(replace(getNode(), node.getNode()), getWeaverEngine());
     }
 
     @Override
@@ -184,7 +184,7 @@ public abstract class AFortranWeaverJoinPoint extends AJoinPoint {
         FortranNode currentNode = getNode();
         while (currentNode.hasParent()) {
             // Create join point for testing type
-            AFortranWeaverJoinPoint parentJp = FortranJoinpoints.create(currentNode.getParent());
+            AFortranWeaverJoinPoint parentJp = FortranJoinpoints.create(currentNode.getParent(), getWeaverEngine());
 
             if (parentJp.instanceOf(type)) {
                 return parentJp;
@@ -206,12 +206,12 @@ public abstract class AFortranWeaverJoinPoint extends AJoinPoint {
 
     @Override
     public AJoinPoint getLeftJpImpl() {
-        return getNode().getLeft().map(FortranJoinpoints::create).orElse(null);
+        return getNode().getLeft().map(node -> FortranJoinpoints.create(node, getWeaverEngine())).orElse(null);
     }
 
     @Override
     public AJoinPoint getRightJpImpl() {
-        return getNode().getRight().map(FortranJoinpoints::create).orElse(null);
+        return getNode().getRight().map(node -> FortranJoinpoints.create(node, getWeaverEngine())).orElse(null);
     }
 
     @Override
@@ -222,12 +222,12 @@ public abstract class AFortranWeaverJoinPoint extends AJoinPoint {
     @Override
     public AJoinPoint copyImpl() {
         FortranNode copiedNode = getNode().copyShallow();
-        return FortranJoinpoints.create(copiedNode);
+        return FortranJoinpoints.create(copiedNode, getWeaverEngine());
     }
 
     @Override
     public AJoinPoint deepCopyImpl() {
         FortranNode copiedNode = getNode().copy();
-        return FortranJoinpoints.create(copiedNode);
+        return FortranJoinpoints.create(copiedNode, getWeaverEngine());
     }
 }
