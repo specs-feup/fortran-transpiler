@@ -2,14 +2,15 @@ package pt.up.fe.specs.fortran.weaver.joinpoints;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.expr.DataRef;
+import pt.up.fe.specs.fortran.weaver.FortranWeaver;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.ADataRef;
 
 public class FDataRef extends ADataRef {
 
     private final DataRef dataRef;
 
-    public FDataRef(DataRef dataRef) {
-        super(new FDesignator(dataRef));
+    public FDataRef(DataRef dataRef, FortranWeaver weaver) {
+        super(new FDesignator(dataRef, weaver), weaver);
         this.dataRef = dataRef;
     }
 

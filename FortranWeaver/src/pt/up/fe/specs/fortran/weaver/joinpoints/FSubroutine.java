@@ -2,14 +2,15 @@ package pt.up.fe.specs.fortran.weaver.joinpoints;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.program.Subroutine;
+import pt.up.fe.specs.fortran.weaver.FortranWeaver;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.ASubroutine;
 
 public class FSubroutine extends ASubroutine {
 
     public final Subroutine subroutine;
 
-    public FSubroutine(Subroutine subroutine) {
-        super(new FProgramUnit(subroutine));
+    public FSubroutine(Subroutine subroutine, FortranWeaver weaver) {
+        super(new FProgramUnit(subroutine, weaver), weaver);
         this.subroutine = subroutine;
     }
 

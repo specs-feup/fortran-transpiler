@@ -3,6 +3,7 @@ package pt.up.fe.specs.fortran.weaver.joinpoints;
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.program.Execution;
 import pt.up.fe.specs.fortran.weaver.FortranJoinpoints;
+import pt.up.fe.specs.fortran.weaver.FortranWeaver;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AExecutableStatement;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AExecution;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AStatement;
@@ -13,8 +14,8 @@ public class FExecution extends AExecution {
 
     private final Execution execution;
 
-    public FExecution(Execution execution) {
-        super(new FStatementBlock(execution));
+    public FExecution(Execution execution, FortranWeaver weaver) {
+        super(new FStatementBlock(execution, weaver), weaver);
         this.execution = execution;
     }
 
@@ -22,7 +23,7 @@ public class FExecution extends AExecution {
     public AExecutableStatement[] getExecutableStmtsArrayImpl() {
         return execution.getStatements()
                 .stream()
-                .map(FortranJoinpoints::create)
+                .map(node -> FortranJoinpoints.create(node, getWeaverEngine()))
                 .toList()
                 .toArray(new AExecutableStatement[0]);
     }

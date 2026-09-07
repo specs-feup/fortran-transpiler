@@ -5,6 +5,7 @@ import pt.up.fe.specs.fortran.ast.nodes.omp.OmpConstruct;
 import pt.up.fe.specs.fortran.ast.nodes.omp.clause.OmpClause;
 import pt.up.fe.specs.fortran.ast.nodes.omp.enums.OmpDirectiveKind;
 import pt.up.fe.specs.fortran.weaver.FortranJoinpoints;
+import pt.up.fe.specs.fortran.weaver.FortranWeaver;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AExpr;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AOmpClause;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AOmpConstruct;
@@ -16,8 +17,8 @@ public class FOmpConstruct extends AOmpConstruct {
 
     public final OmpConstruct ompConstruct;
 
-    public FOmpConstruct(OmpConstruct ompConstruct) {
-        super(new FExecutableStatement(ompConstruct));
+    public FOmpConstruct(OmpConstruct ompConstruct, FortranWeaver weaver) {
+        super(new FExecutableStatement(ompConstruct, weaver), weaver);
         this.ompConstruct = ompConstruct;
     }
 
@@ -25,7 +26,7 @@ public class FOmpConstruct extends AOmpConstruct {
     public AOmpClause[] getClausesArrayImpl() {
         return ompConstruct.getClauses()
                 .stream()
-                .map(FortranJoinpoints::create)
+                .map(node -> FortranJoinpoints.create(node, getWeaverEngine()))
                 .toList()
                 .toArray(new AOmpClause[0]);
     }

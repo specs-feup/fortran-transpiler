@@ -3,7 +3,6 @@ package pt.up.fe.specs.fortran.weaver;
 import org.lara.interpreter.joptions.config.interpreter.LaraiKeys;
 import org.lara.interpreter.weaver.interf.AGear;
 import org.lara.interpreter.weaver.interf.JoinPoint;
-import org.lara.interpreter.weaver.interf.WeaverEngine;
 import org.lara.interpreter.weaver.options.WeaverOption;
 import org.lara.interpreter.weaver.options.WeaverOptionUtils;
 import org.lara.interpreter.weaver.utils.SourcesGatherer;
@@ -86,7 +85,7 @@ public class FortranWeaver extends AFortranWeaver {
      */
     @Override
     public JoinPoint getRootJp() {
-        return FortranJoinpoints.create(currentRoot);
+        return FortranJoinpoints.create(currentRoot, this);
     }
 
     /**
@@ -147,13 +146,6 @@ public class FortranWeaver extends AFortranWeaver {
     }
 
     /**
-     * Returns thread-local instance of weaver engine.
-     */
-    public static FortranWeaver getFortranWeaver() {
-        return (FortranWeaver) WeaverEngine.getThreadLocalWeaver();
-    }
-
-    /**
      * Builds the language specification, based on the input XML files.
      *
      * @return a new {@link LanguageSpecification} instance for this weaver
@@ -174,11 +166,11 @@ public class FortranWeaver extends AFortranWeaver {
         return buildLanguageSpecification();
     }
 
-    public static FortranNodeFactory getFactory() {
+    public FortranNodeFactory getFactory() {
         return getContext().get(FortranContext.FACTORY);
     }
 
-    public static FortranContext getContext() {
-        return getFortranWeaver().currentRoot.get(FortranNode.CONTEXT);
+    public FortranContext getContext() {
+        return currentRoot.get(FortranNode.CONTEXT);
     }
 }

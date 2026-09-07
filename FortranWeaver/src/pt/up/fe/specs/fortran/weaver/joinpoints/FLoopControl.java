@@ -2,13 +2,15 @@ package pt.up.fe.specs.fortran.weaver.joinpoints;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.loops.LoopControl;
+import pt.up.fe.specs.fortran.weaver.FortranWeaver;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.ALoopControl;
 
 public class FLoopControl extends ALoopControl {
 
     private final LoopControl loopControl;
 
-    public FLoopControl(LoopControl loopControl) {
+    public FLoopControl(LoopControl loopControl, FortranWeaver weaver) {
+        super(weaver);
         this.loopControl = loopControl;
     }
 

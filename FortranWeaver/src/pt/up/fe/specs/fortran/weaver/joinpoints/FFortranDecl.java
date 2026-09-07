@@ -2,13 +2,15 @@ package pt.up.fe.specs.fortran.weaver.joinpoints;
 
 import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.decl.FortranDecl;
+import pt.up.fe.specs.fortran.weaver.FortranWeaver;
 import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AFortranDecl;
 
 public class FFortranDecl extends AFortranDecl {
 
     public final FortranDecl fortranDecl;
 
-    public FFortranDecl(FortranDecl fortranDecl) {
+    public FFortranDecl(FortranDecl fortranDecl, FortranWeaver weaver) {
+        super(weaver);
         this.fortranDecl = fortranDecl;
     }
 
