@@ -1,14 +1,18 @@
 package pt.up.fe.specs.fortran.weaver;
 
+import java.io.File;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 import org.lara.interpreter.joptions.config.interpreter.LaraiKeys;
+import org.lara.interpreter.weaver.ast.AstMethods;
 import org.lara.interpreter.weaver.interf.AGear;
-import org.lara.interpreter.weaver.interf.JoinPoint;
 import org.lara.interpreter.weaver.options.WeaverOption;
 import org.lara.interpreter.weaver.options.WeaverOptionUtils;
 import org.lara.interpreter.weaver.utils.SourcesGatherer;
-import org.lara.language.specification.dsl.LanguageSpecification;
-import org.suikasoft.jOptions.DataStore.SimpleDataStore;
 import org.suikasoft.jOptions.Interfaces.DataStore;
+
 import pt.up.fe.specs.fortran.ast.FortranAstOptions;
 import pt.up.fe.specs.fortran.ast.FortranContext;
 import pt.up.fe.specs.fortran.ast.FortranNodeFactory;
@@ -16,19 +20,18 @@ import pt.up.fe.specs.fortran.ast.nodes.FortranNode;
 import pt.up.fe.specs.fortran.ast.nodes.program.Application;
 import pt.up.fe.specs.fortran.ast.nodes.program.FortranFile;
 import pt.up.fe.specs.fortran.parser.ApplicationParser;
+import pt.up.fe.specs.fortran.weaver.abstracts.joinpoints.AJoinpoint;
 import pt.up.fe.specs.fortran.weaver.abstracts.weaver.AFortranWeaver;
 import pt.up.fe.specs.util.SpecsIo;
 import pt.up.fe.specs.util.SpecsLogs;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Weaver Implementation for FortranWeaver<br>
- * Since the generated abstract classes are always overwritten, their implementation should be done by extending those abstract classes with user-defined classes.<br>
- * The abstract class {@link pt.up.fe.specs.fortran.weaver.abstracts.AFortranWeaverJoinPoint} contains attributes and actions common to all join points.
+ * Since the generated abstract classes are always overwritten, their implementation should be done by extending those
+ * abstract classes with user-defined classes.<br>
+ * The abstract class {@link pt.up.fe.specs.fortran.weaver.joinpoints.FortranJoinpoint} can be used to add
+ * user-defined methods and fields which the user intends to add for all join points and are not intended to be used in
+ * LARA aspects.
  *
  * @author Lara Weaver Generator
  */
@@ -37,15 +40,11 @@ public class FortranWeaver extends AFortranWeaver {
     private final static String WOVEN_CODE_DIR = "woven_code";
 
     private List<File> currentSources;
-    private DataStore currentArgs;
-
     private Map<File, File> allSourceFiles;
     private Application currentRoot;
 
     public FortranWeaver() {
         this.currentSources = Collections.emptyList();
-        this.currentArgs = new SimpleDataStore(getStoreDefinition());
-
         this.allSourceFiles = Collections.emptyMap();
         this.currentRoot = null;
     }
@@ -59,13 +58,11 @@ public class FortranWeaver extends AFortranWeaver {
      * @return true if initialization occurred without problems, false otherwise
      */
     @Override
-    public boolean begin(List<File> sources, File outputDir, DataStore args) {
+    protected boolean begin(List<File> sources, File outputDir, DataStore args) {
+        setData(args);
 
         // Set fields
         this.currentSources = sources;
-
-        //this.currentOutputDir = outputDir;
-        this.currentArgs = args;
 
         this.allSourceFiles = SourcesGatherer.build(sources, List.of("json", "f90", "f", "for")).getSourceFiles();
 
@@ -84,7 +81,7 @@ public class FortranWeaver extends AFortranWeaver {
      * @return an instance of the join point root/program
      */
     @Override
-    public JoinPoint getRootJp() {
+    public AJoinpoint<?> getRootJp() {
         return FortranJoinpoints.create(currentRoot, this);
     }
 
@@ -94,9 +91,9 @@ public class FortranWeaver extends AFortranWeaver {
      * @return if close was successful
      */
     @Override
-    public boolean close() {
+    protected boolean close() {
 
-        var baseOutputFolder = currentArgs.hasValue(LaraiKeys.OUTPUT_FOLDER) ? currentArgs.get(LaraiKeys.OUTPUT_FOLDER) :
+        var baseOutputFolder = dataStore.hasValue(LaraiKeys.OUTPUT_FOLDER) ? dataStore.get(LaraiKeys.OUTPUT_FOLDER) :
                 new File("./");
 
         var outputFolder = new File(baseOutputFolder, WOVEN_CODE_DIR);
@@ -145,25 +142,13 @@ public class FortranWeaver extends AFortranWeaver {
         return WeaverOptionUtils.toWeaverOption(FortranAstOptions.STORE_DEFINITION);
     }
 
-    /**
-     * Builds the language specification, based on the input XML files.
-     *
-     * @return a new {@link LanguageSpecification} instance for this weaver
-     */
-    public static LanguageSpecification buildLanguageSpecification() {
-        return LanguageSpecification.newInstance(() -> "fortran/weaverspecs/" + LanguageSpecification.getJoinPointsFilename(),
-                () -> "fortran/weaverspecs/" + LanguageSpecification.getAttributesFilename(),
-                () -> "fortran/weaverspecs/" + LanguageSpecification.getActionsFilename());
+    @Override
+    public String getName() {
+        return "FortranWeaver";
     }
 
-    /**
-     * Builds the language specification, based on the input XML files.
-     *
-     * @return a new {@link LanguageSpecification} instance for this weaver
-     */
-    @Override
-    protected LanguageSpecification buildLangSpecs() {
-        return buildLanguageSpecification();
+    public Application getRootNode() {
+        return currentRoot;
     }
 
     public FortranNodeFactory getFactory() {
@@ -172,5 +157,10 @@ public class FortranWeaver extends AFortranWeaver {
 
     public FortranContext getContext() {
         return currentRoot.get(FortranNode.CONTEXT);
+    }
+
+    @Override
+    public AstMethods getAstMethods() {
+        return new FortranAstMethods(this);
     }
 }

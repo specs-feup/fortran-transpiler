@@ -21,10 +21,10 @@ public class AstFactory {
     public static AOmpLoopConstruct ompLoopConstruct(FortranWeaver weaver, ADoStatement loop, Object[] args) {
         List<OmpClause> clauses = SpecsCollections.asListT(AOmpClause.class, args)
                 .stream()
-                .map(clause -> (OmpClause) clause.getNode())
+                .map(clause -> (OmpClause) clause.getNodeImpl())
                 .toList();
 
-        var doConstruct = (DoConstruct) loop.getNode();
+        var doConstruct = (DoConstruct) loop.getNodeImpl();
 
         return FortranJoinpoints.create(weaver.getFactory().ompLoopConstruct(doConstruct, clauses), weaver, AOmpLoopConstruct.class);
     }
@@ -40,7 +40,7 @@ public class AstFactory {
     public static AOmpDataSharingClause ompPrivateClause(FortranWeaver weaver, Object[] args) {
         List<DataRef> dataRefs = SpecsCollections.asListT(ADataRef.class, args)
                 .stream()
-                .map(clause -> (DataRef) clause.getNode())
+                .map(clause -> (DataRef) clause.getNodeImpl())
                 .toList();
 
         return FortranJoinpoints.create(weaver.getFactory().ompDataSharingClause(OmpClauseKind.PRIVATE, dataRefs), weaver, AOmpDataSharingClause.class);
@@ -57,7 +57,7 @@ public class AstFactory {
     public static AOmpReductionClause ompReductionClause(FortranWeaver weaver, String operator, Object[] args) {
         List<DataRef> dataRefs = SpecsCollections.asListT(ADataRef.class, args)
                 .stream()
-                .map(clause -> (DataRef) clause.getNode())
+                .map(clause -> (DataRef) clause.getNodeImpl())
                 .toList();
 
         BinaryOperatorKind kind = BinaryOperatorKind.valueOf(operator);
@@ -68,7 +68,7 @@ public class AstFactory {
     public static AExecution execution(FortranWeaver weaver, Object[] args) {
         List<ExecutableStmt> stmts = SpecsCollections.asListT(AExecutableStatement.class, args)
                 .stream()
-                .map(stmt -> (ExecutableStmt) stmt.getNode())
+                .map(stmt -> (ExecutableStmt) stmt.getNodeImpl())
                 .toList();
 
         return FortranJoinpoints.create(weaver.getFactory().execution(stmts), weaver, AExecution.class);
@@ -99,9 +99,9 @@ public class AstFactory {
     }
 
     public static ARangeLoopControl rangeLoopControl(FortranWeaver weaver, ADataRef var, AExpr lower, AExpr upper) {
-        DataRef varNode = (DataRef) var.getNode();
-        Expr lowerNode = (Expr) lower.getNode();
-        Expr upperNode = (Expr) upper.getNode();
+        DataRef varNode = (DataRef) var.getNodeImpl();
+        Expr lowerNode = (Expr) lower.getNodeImpl();
+        Expr upperNode = (Expr) upper.getNodeImpl();
         return FortranJoinpoints.create(
                 weaver.getFactory().rangeLoopControl(varNode, lowerNode, upperNode),
                 weaver,
@@ -110,7 +110,7 @@ public class AstFactory {
     }
 
     public static ADoStatement doStatement(FortranWeaver weaver, ARangeLoopControl control) {
-        RangeLoopControl ctrl = (RangeLoopControl) control.getNode();
+        RangeLoopControl ctrl = (RangeLoopControl) control.getNodeImpl();
         return FortranJoinpoints.create(
                 weaver.getFactory().doConstruct(ctrl),
                 weaver,
@@ -122,7 +122,7 @@ public class AstFactory {
         DataRef callee = weaver.getFactory().dataRef(name);
         List<Argument> argNodes = SpecsCollections.asListT(AExpr.class, args)
                 .stream()
-                .map(a -> weaver.getFactory().argument((Expr) a.getNode()))
+                .map(a -> weaver.getFactory().argument((Expr) a.getNodeImpl()))
                 .collect(Collectors.toList());
         return FortranJoinpoints.create(
                 weaver.getFactory().functionCall(callee, argNodes),
@@ -131,8 +131,8 @@ public class AstFactory {
     }
 
     private static ABinaryOperator binaryOperator(FortranWeaver weaver, BinaryOperatorKind kind, AExpr lhs, AExpr rhs) {
-        Expr lhsNode = (Expr) lhs.getNode();
-        Expr rhsNode = (Expr) rhs.getNode();
+        Expr lhsNode = (Expr) lhs.getNodeImpl();
+        Expr rhsNode = (Expr) rhs.getNodeImpl();
         return FortranJoinpoints.create(
                 weaver.getFactory().binaryOperator(kind, lhsNode, rhsNode),
                 weaver,
