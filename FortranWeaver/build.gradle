@@ -20,27 +20,15 @@ configurations {
     weaverGeneratorRuntime
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.0'
-
-    implementation ":jOptions"
-    implementation ":SpecsUtils"
-    implementation ":GsonPlus"
-
-    implementation ":LanguageSpecification"
-    implementation ":LARAI"
-    implementation ":LaraUtils"
-    implementation ":WeaverInterface"
-
-    implementation ":FortranAst"
-    implementation ":FortranParser"
-
-    weaverGeneratorRuntime ":WeaverGenerator"
-}
-
 // Project sources
 sourceSets {
+    // Spec source set: compiled independently to avoid circular dependency
+    spec {
+        java {
+            srcDir 'src-spec'
+        }
+    }
+
     main {
         java {
             srcDir 'src'
@@ -60,25 +48,78 @@ sourceSets {
     }
 }
 
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.0'
+
+    implementation ":jOptions"
+    implementation ":SpecsUtils"
+    implementation ":GsonPlus"
+
+    implementation ":LangSpec2"
+    implementation ":LARAI"
+    implementation ":LaraUtils"
+    implementation ":WeaverInterface"
+
+    implementation ":FortranAst"
+    implementation ":FortranParser"
+
+    weaverGeneratorRuntime ":WeaverGen2"
+
+    // Spec source set: only needs LangSpec2 and WeaverInterface (for BaseJoinPointSpec)
+    specImplementation ":LangSpec2"
+    specImplementation ":WeaverInterface"
+}
+
 test {
     useJUnitPlatform()
 }
 
-// Run the weaver generator
+// Generate weaver abstracts using WeaverGen2 (Java DSL-based)
 tasks.register('generateWeaver', JavaExec) {
     group = "Execution"
-    description = "Generates the Weaver Abstracts"
-    classpath = configurations.weaverGeneratorRuntime
-    mainClass = 'org.lara.interpreter.weaver.generator.commandline.WeaverGenerator'
+    description = "Generates the Weaver Abstracts using WeaverGen2"
+    classpath = configurations.weaverGeneratorRuntime + sourceSets.spec.runtimeClasspath
+    mainClass = 'org.lara.weavergen2.cli.WeaverGen2Cli'
     args = [
-        "-w", "FortranWeaver",
-        "-x", "./resources/fortran/weaverspecs",
-        "-o", "./src",
-        "-p", "pt.up.fe.specs.fortran.weaver",
-        "-n", "pt.up.fe.specs.fortran.ast.nodes.FortranNode",
-        "-e",
-        "-j"
+        "pt.up.fe.specs.fortran.weaver.FortranSpec",
+        "${projectDir}/src",
+        "--base", "org.lara.interpreter.weaver.interf.BaseJoinPointSpec",
+        "--node", "pt.up.fe.specs.fortran.ast.nodes.FortranNode"
     ]
 }
 
 compileJava.dependsOn generateWeaver
+
+def fortranWeaverInstallDir = layout.buildDirectory.dir('install/FortranWeaver')
+def fortJsJavaBinaries = layout.projectDirectory.dir('../Fortran-JS/java-binaries')
+
+def syncFortranJsJavaBinaries = tasks.register('syncFortranJsJavaBinaries', Sync) {
+    group = 'distribution'
+    description = 'Synchronizes the FortranWeaver installDist output used by Fortran-JS.'
+    dependsOn tasks.named('installDist')
+    from fortranWeaverInstallDir
+    into fortJsJavaBinaries
+
+    // The destination is also used by npm packaging and must not retain files
+    // that are no longer part of installDist.
+    outputs.upToDateWhen { false }
+
+    doFirst {
+        def installLib = fortranWeaverInstallDir.get().dir('lib').asFile
+        if (!installLib.isDirectory()) {
+            throw new GradleException("FortranWeaver installDist output is missing: ${installLib}")
+        }
+
+        def destination = fortJsJavaBinaries.asFile.toPath()
+        if (java.nio.file.Files.isSymbolicLink(destination)) {
+            java.nio.file.Files.delete(destination)
+        } else if (java.nio.file.Files.exists(destination) && !java.nio.file.Files.isDirectory(destination)) {
+            throw new GradleException("Fortran-JS java-binaries is not a directory: ${destination}")
+        }
+    }
+}
+
+tasks.named('installDist') {
+    finalizedBy syncFortranJsJavaBinaries
+}
