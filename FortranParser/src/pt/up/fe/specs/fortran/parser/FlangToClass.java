@@ -263,6 +263,8 @@ public class FlangToClass {
                 .ignore(FlangName.STRUCTURE_COMPONENT));
         NAME_TO_MAPPER.put(FlangName.ARRAY_ELEMENT, ClassMapper.always(ArrayElement.class));
         NAME_TO_MAPPER.put(FlangName.STRUCTURE_COMPONENT, ClassMapper.always(StructureComponent.class));
+        NAME_TO_MAPPER.put(FlangName.ALLOCATE_OBJECT, ClassMapper.caseFor(DataRef.class)
+                .map(FlangName.NAME, NameDataRef.class));
         NAME_TO_MAPPER.put(FlangName.VARIABLE, ClassMapper.caseFor(Variable.class)
                 .map(FlangName.DESIGNATOR, DesignatorVariable.class)
                 .map(FlangName.FUNCTION_REFERENCE, FunctionRefVariable.class));
