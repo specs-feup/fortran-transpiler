@@ -18,6 +18,7 @@ import pt.up.fe.specs.fortran.ast.nodes.expr.*;
 import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.ArrayElement;
 import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.DataRef;
 import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.NameDataRef;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.StructureComponent;
 import pt.up.fe.specs.fortran.ast.nodes.io.*;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentLoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentRange;
@@ -258,7 +259,10 @@ public class FlangToClass {
         /// Variables
         NAME_TO_MAPPER.put(FlangName.DATA_REF, ClassMapper.caseFor(DataRef.class)
                 .map(FlangName.NAME, NameDataRef.class)
-                .map(FlangName.ARRAY_ELEMENT, ArrayElement.class));
+                .ignore(FlangName.ARRAY_ELEMENT)
+                .ignore(FlangName.STRUCTURE_COMPONENT));
+        NAME_TO_MAPPER.put(FlangName.ARRAY_ELEMENT, ClassMapper.always(ArrayElement.class));
+        NAME_TO_MAPPER.put(FlangName.STRUCTURE_COMPONENT, ClassMapper.always(StructureComponent.class));
         NAME_TO_MAPPER.put(FlangName.VARIABLE, ClassMapper.caseFor(Variable.class)
                 .map(FlangName.DESIGNATOR, DesignatorVariable.class)
                 .map(FlangName.FUNCTION_REFERENCE, FunctionRefVariable.class));
@@ -293,7 +297,6 @@ public class FlangToClass {
         NAME_TO_MAPPER.put(FlangName.CONCAT, ClassMapper.always(BinaryOperator.class));
         NAME_TO_MAPPER.put(FlangName.ARRAY_CONSTRUCTOR, ClassMapper.always(ArrayConstructor.class));
         NAME_TO_MAPPER.put(FlangName.AC_SPEC, ClassMapper.always(AcSpecification.class));
-        NAME_TO_MAPPER.put(FlangName.ARRAY_ELEMENT, ClassMapper.always(ArrayElement.class));
         NAME_TO_MAPPER.put(FlangName.SUBSCRIPT, ClassMapper.always(Subscript.class));
         NAME_TO_MAPPER.put(FlangName.SUBSCRIPT_TRIPLET, ClassMapper.always(SubscriptTriplet.class));
         NAME_TO_MAPPER.put(FlangName.CALL, ClassMapper.always(Call.class));

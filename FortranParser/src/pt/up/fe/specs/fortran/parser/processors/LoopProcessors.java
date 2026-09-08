@@ -1,6 +1,6 @@
 package pt.up.fe.specs.fortran.parser.processors;
 
-import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.DataRef;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.NameDataRef;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentLoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentRange;
 import pt.up.fe.specs.fortran.ast.nodes.loops.RangeLoopControl;
@@ -14,8 +14,8 @@ public class LoopProcessors extends ANodeProcessor {
 
     public void loopRange(RangeLoopControl rangeLoopControl) {
         String varName = attributes().getAttrs(attributes().getString(rangeLoopControl, "var")).getString("source");
-        DataRef varRef = factory().newNode(DataRef.class);
-        varRef.set(DataRef.NAME, varName);
+        NameDataRef varRef = factory().newNode(NameDataRef.class);
+        varRef.set(NameDataRef.NAME, varName);
         rangeLoopControl.addChild(varRef);
 
         rangeLoopControl.addChild(getChild(rangeLoopControl, "lower"));

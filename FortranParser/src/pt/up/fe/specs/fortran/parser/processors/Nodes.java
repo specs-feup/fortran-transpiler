@@ -20,7 +20,8 @@ import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.NamedProcInterface;
 import pt.up.fe.specs.fortran.ast.nodes.decl.proc.interfaces.TypeProcInterface;
 import pt.up.fe.specs.fortran.ast.nodes.expr.*;
 import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.ArrayElement;
-import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.DataRef;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.NameDataRef;
+import pt.up.fe.specs.fortran.ast.nodes.expr.dataref.StructureComponent;
 import pt.up.fe.specs.fortran.ast.nodes.io.*;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentLoopControl;
 import pt.up.fe.specs.fortran.ast.nodes.loops.ConcurrentRange;
@@ -170,7 +171,8 @@ public class Nodes {
         processors.put(ProcDecl.class, d::procDecl);
 
         var v = new VariableProcessor(data);
-        processors.put(DataRef.class, v::dataRef);
+        processors.put(NameDataRef.class, v::nameDataRef);
+        processors.put(StructureComponent.class, v::structureComponent);
         processors.put(DesignatorVariable.class, v::designatorVariable);
 
         var s = new StmtProcessors(data);
