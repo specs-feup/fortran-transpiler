@@ -67,8 +67,8 @@
         <attribute name="expr" type="expr"/>
     </artifact>
 
-    <!-- DATAREF -->
-    <artifact class="dataRef">
+    <!-- NAMEDATAREF -->
+    <artifact class="nameDataRef">
         <attribute name="name" type="String"/>
     </artifact>
 
@@ -105,7 +105,7 @@
 
     <!-- ARRAY SUBSCRIPT -->
     <artifact class="arrayElement">
-        <attribute name="var" type="dataRef"/>
+        <attribute name="array" type="dataRef"/>
         <attribute name="subscripts" type="expr[]"/>
     </artifact>
 

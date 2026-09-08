@@ -22,6 +22,8 @@
 
     <joinpoint class="dataRef" extends="designator" tooltip="Represents a data reference"/>
 
+    <joinpoint class="nameDataRef" extends="dataRef" tooltip="Represents a data reference that is a name"/>
+
     <joinpoint class="literal" extends="expr" tooltip="Represents a literal"/>
 
     <joinpoint class="kindedLiteral" extends="literal" tooltip="Represents a literal with a kind specifier"/>
