@@ -22,10 +22,11 @@ public class VariableProcessor extends ANodeProcessor {
     }
 
     public void structureComponent(StructureComponent structureComponent) {
-        var base = getChild(structureComponent, FlangName.DATA_REF);
+        var base = getChild(structureComponent, "base");
         structureComponent.addChild(base);
 
-        var componentName = attributes().getString(structureComponent, "source", FlangName.NAME);
+        var componentNameId = attributes().getString(structureComponent, "component");
+        var componentName = attributes().get(componentNameId).getString("source");
         structureComponent.set(StructureComponent.COMPONENT_NAME, componentName);
     }
 
